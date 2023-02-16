@@ -7,18 +7,37 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C4043A15299C665D0036C40F /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = C4043A14299C665D0036C40F /* WrappingHStack */; };
 		C42044FA29990571009699F7 /* TranslationAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42044F929990571009699F7 /* TranslationAppApp.swift */; };
-		C42044FC29990571009699F7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42044FB29990571009699F7 /* ContentView.swift */; };
+		C42044FC29990571009699F7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42044FB29990571009699F7 /* HomeView.swift */; };
 		C42044FE29990574009699F7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C42044FD29990574009699F7 /* Assets.xcassets */; };
 		C420450129990574009699F7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C420450029990574009699F7 /* Preview Assets.xcassets */; };
+		C420450A299905A2009699F7 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4204509299905A2009699F7 /* LoginView.swift */; };
+		C420450E299905EC009699F7 /* LoggedInHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C420450D299905EC009699F7 /* LoggedInHomeView.swift */; };
+		C420451129990D60009699F7 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C420451029990D60009699F7 /* FirebaseAuth */; };
+		C420451329990D60009699F7 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C420451229990D60009699F7 /* FirebaseFirestore */; };
+		C420451529990DBE009699F7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C420451429990DBD009699F7 /* GoogleService-Info.plist */; };
+		C420453A29992A78009699F7 /* LyricsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C420453929992A78009699F7 /* LyricsView.swift */; };
+		C420453D29992B0D009699F7 /* ManualSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C420453C29992B0D009699F7 /* ManualSearchView.swift */; };
+		C4204541299945D2009699F7 /* LyricsApiData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4204540299945D2009699F7 /* LyricsApiData.swift */; };
+		C420454329995FF0009699F7 /* LanguageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C420454229995FF0009699F7 /* LanguageModel.swift */; };
+		C44C62D1299B8EE20091C401 /* SetDefaultLanguageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44C62D0299B8EE20091C401 /* SetDefaultLanguageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		C42044F629990571009699F7 /* TranslationApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TranslationApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C42044F929990571009699F7 /* TranslationAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationAppApp.swift; sourceTree = "<group>"; };
-		C42044FB29990571009699F7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C42044FB29990571009699F7 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		C42044FD29990574009699F7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C420450029990574009699F7 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		C4204509299905A2009699F7 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		C420450D299905EC009699F7 /* LoggedInHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInHomeView.swift; sourceTree = "<group>"; };
+		C420451429990DBD009699F7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C420453929992A78009699F7 /* LyricsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsView.swift; sourceTree = "<group>"; };
+		C420453C29992B0D009699F7 /* ManualSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualSearchView.swift; sourceTree = "<group>"; };
+		C4204540299945D2009699F7 /* LyricsApiData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsApiData.swift; sourceTree = "<group>"; };
+		C420454229995FF0009699F7 /* LanguageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageModel.swift; sourceTree = "<group>"; };
+		C44C62D0299B8EE20091C401 /* SetDefaultLanguageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetDefaultLanguageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,6 +45,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C420451129990D60009699F7 /* FirebaseAuth in Frameworks */,
+				C4043A15299C665D0036C40F /* WrappingHStack in Frameworks */,
+				C420451329990D60009699F7 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -51,9 +73,11 @@
 		C42044F829990571009699F7 /* TranslationApp */ = {
 			isa = PBXGroup;
 			children = (
+				C420450829990580009699F7 /* Models */,
+				C42045072999057A009699F7 /* Views */,
 				C42044F929990571009699F7 /* TranslationAppApp.swift */,
-				C42044FB29990571009699F7 /* ContentView.swift */,
 				C42044FD29990574009699F7 /* Assets.xcassets */,
+				C420451429990DBD009699F7 /* GoogleService-Info.plist */,
 				C42044FF29990574009699F7 /* Preview Content */,
 			);
 			path = TranslationApp;
@@ -65,6 +89,36 @@
 				C420450029990574009699F7 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		C42045072999057A009699F7 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C42044FB29990571009699F7 /* HomeView.swift */,
+				C4204509299905A2009699F7 /* LoginView.swift */,
+				C420453B29992A89009699F7 /* ProtectedViews */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C420450829990580009699F7 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C4204540299945D2009699F7 /* LyricsApiData.swift */,
+				C420454229995FF0009699F7 /* LanguageModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C420453B29992A89009699F7 /* ProtectedViews */ = {
+			isa = PBXGroup;
+			children = (
+				C420450D299905EC009699F7 /* LoggedInHomeView.swift */,
+				C420453929992A78009699F7 /* LyricsView.swift */,
+				C420453C29992B0D009699F7 /* ManualSearchView.swift */,
+				C44C62D0299B8EE20091C401 /* SetDefaultLanguageView.swift */,
+			);
+			path = ProtectedViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -83,6 +137,11 @@
 			dependencies = (
 			);
 			name = TranslationApp;
+			packageProductDependencies = (
+				C420451029990D60009699F7 /* FirebaseAuth */,
+				C420451229990D60009699F7 /* FirebaseFirestore */,
+				C4043A14299C665D0036C40F /* WrappingHStack */,
+			);
 			productName = TranslationApp;
 			productReference = C42044F629990571009699F7 /* TranslationApp.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +170,10 @@
 				Base,
 			);
 			mainGroup = C42044ED29990571009699F7;
+			packageReferences = (
+				C420450F29990D60009699F7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				C4043A13299C665D0036C40F /* XCRemoteSwiftPackageReference "WrappingHStack" */,
+			);
 			productRefGroup = C42044F729990571009699F7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -127,6 +190,7 @@
 			files = (
 				C420450129990574009699F7 /* Preview Assets.xcassets in Resources */,
 				C42044FE29990574009699F7 /* Assets.xcassets in Resources */,
+				C420451529990DBE009699F7 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,7 +201,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C42044FC29990571009699F7 /* ContentView.swift in Sources */,
+				C4204541299945D2009699F7 /* LyricsApiData.swift in Sources */,
+				C420453A29992A78009699F7 /* LyricsView.swift in Sources */,
+				C420450A299905A2009699F7 /* LoginView.swift in Sources */,
+				C420454329995FF0009699F7 /* LanguageModel.swift in Sources */,
+				C42044FC29990571009699F7 /* HomeView.swift in Sources */,
+				C420450E299905EC009699F7 /* LoggedInHomeView.swift in Sources */,
+				C420453D29992B0D009699F7 /* ManualSearchView.swift in Sources */,
+				C44C62D1299B8EE20091C401 /* SetDefaultLanguageView.swift in Sources */,
 				C42044FA29990571009699F7 /* TranslationAppApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -273,8 +344,8 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -302,8 +373,8 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -339,6 +410,43 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C4043A13299C665D0036C40F /* XCRemoteSwiftPackageReference "WrappingHStack" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dkk/WrappingHStack";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+		C420450F29990D60009699F7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C4043A14299C665D0036C40F /* WrappingHStack */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C4043A13299C665D0036C40F /* XCRemoteSwiftPackageReference "WrappingHStack" */;
+			productName = WrappingHStack;
+		};
+		C420451029990D60009699F7 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C420450F29990D60009699F7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		C420451229990D60009699F7 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C420450F29990D60009699F7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C42044EE29990571009699F7 /* Project object */;
 }
