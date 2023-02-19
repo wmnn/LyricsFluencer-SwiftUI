@@ -7,12 +7,12 @@
 
 import SwiftUI
 import FirebaseAuth
+import FirebaseFirestore
 
 struct LoginView: View {
-    @State private var email: String = ""
-    @State private var password: String = ""
-    @State private var isLoggedIn = false
-    //@Binding var path: NavigationPath
+    @ObservedObject var loginViewHandler = LoginViewHandler()
+    @FocusState private var focusedField: String?
+    
     
     var body: some View {
         ZStack{
@@ -27,7 +27,8 @@ struct LoginView: View {
                     .foregroundColor(Color("textColor"))
                     .padding()
                     .cornerRadius(18)
-                TextField(text: $email){
+                
+                TextField(text: $loginViewHandler.email){
                     Text("Email").foregroundColor(.gray)
                 }
                     .font(.system(size:18))
@@ -39,7 +40,13 @@ struct LoginView: View {
                     }
                     .cornerRadius(18)
                     .cornerRadius(18)
-                SecureField(text: $password){
+                    .onSubmit {
+                        focusedField = "password"
+                    }
+                    .submitLabel(SubmitLabel.next)
+                    .focused($focusedField, equals: "email")
+                
+                SecureField(text: $loginViewHandler.password){
                     Text("Password").foregroundColor(.gray)
                 }
                     .font(.system(size:18))
@@ -50,14 +57,36 @@ struct LoginView: View {
                         Color("inputColor")
                     }
                     .cornerRadius(18)
+                    .onSubmit {
+                        focusedField = ""
+                        loginViewHandler.login()
+                    }
+                    .submitLabel(SubmitLabel.done)
+                    .focused($focusedField, equals: "password")
                 
                 Button {
-                    login()
+                    self.focusedField = nil
+                    loginViewHandler.login()
                 } label: {
-                    HStack{
-                        Text("Login")
-                        Image(systemName: "arrow.right")
-                    }
+                    if loginViewHandler.isLoading{
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .black))
+                            .font(.system(size:24))
+                            .bold()
+                            .frame(width: 300, height: 20, alignment: .center)
+                            .foregroundColor(Color.black)
+                            .padding()
+                            .background {
+                                Color("primaryColor")
+                            }
+                            .cornerRadius(18)
+                    }else{
+                        HStack{
+                            
+                            Text("Login")
+                            Image(systemName: "arrow.right")
+                            
+                        }
                         .bold()
                         .font(.system(size:18))
                         .frame(width: 300, height: 20, alignment: .center)
@@ -67,34 +96,31 @@ struct LoginView: View {
                             Color("primaryColor")
                         }
                         .cornerRadius(18)
-                }
+                    }
+                    }
+                
                 .navigationTitle("Login")
                 
-                .navigationDestination(isPresented: $isLoggedIn) {
-                    LoggedInHomeView()
-                    Text("")
-                        .hidden()
+                .navigationDestination(isPresented: $loginViewHandler.isLoggedIn) {
+                    HomeView()
+                }
+                .navigationDestination(isPresented: $loginViewHandler.isNotSetUp) {
+                    DefaultLanguageView()
                 }
             }
         }
     }
-    func login(){
-        
-        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
-            if let e = error {
-                print(e.localizedDescription)
-            }else{
-                //Make an api call which call is active
-                
-                //Navigate
-                self.isLoggedIn = true
-            }
-        }
-    }
+    
 }
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         LoginView()
+    }
+}
+
+extension View {
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }

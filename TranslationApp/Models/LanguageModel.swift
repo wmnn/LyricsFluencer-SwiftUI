@@ -155,11 +155,7 @@ struct LanguageModel: Codable{
         language
     }
 }
-/*
- struct Language: Codable{
- let language: String
- let name: String
- }*/
+
 struct Language: Codable, Identifiable {
     var language: String
     var name: String

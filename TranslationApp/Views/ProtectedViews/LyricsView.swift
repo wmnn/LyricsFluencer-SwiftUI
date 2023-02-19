@@ -20,7 +20,6 @@ struct LyricsView: View {
         let word: Int
     }
     
-    
     var body: some View {
         ZStack{
             Color("appColor")
@@ -33,21 +32,13 @@ struct LyricsView: View {
                         .font(.system(size: 24))
                         .bold()
                         .padding(.bottom)
-                    
-                    /*ForEach(0..<self.combinedLyrics.count, id: \.self) { index in
+                    ForEach(0..<self.combinedLyrics.count, id: \.self) { index in
                         Text(self.combinedLyrics[index])
                             .foregroundColor(index % 2 == 0 ? Color("textColor") : Color("primaryColor"))
                             .font(.system(size: 24))
-                        
-                    }*/
-                        
-                     
-                    //
+                    }
                 }
-              
             }
-            
-            
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -64,7 +55,7 @@ struct LyricsView: View {
             }
         }//toolbar
         .navigationDestination(isPresented: $isBackButtonClicked) {
-            LoggedInHomeView()
+            HomeView()
         }
         .onAppear {
             self.isBackButtonClicked = false
@@ -77,5 +68,3 @@ struct LyricsView_Previews: PreviewProvider {
         LyricsView(artist: "Apache", song: "Roller", combinedLyrics: ["Hey now, you're an all star bleyblade day date\n", "Get your game on, go play\n", "c", "d"])
     }
 }
-
-

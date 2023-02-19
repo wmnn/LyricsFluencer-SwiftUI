@@ -9,10 +9,11 @@ import SwiftUI
 import FirebaseAuth
 import FirebaseFirestore
 
-struct SetDefaultLanguageView: View {
+struct DefaultLanguageView: View {
     let db = Firestore.firestore()
     @State var targetLanguage = LanguageModel(language: "None", name: "Undefined")
     @State private var isDefaultLanguage = false
+    @EnvironmentObject var appBrain: AppBrain
     
     var body: some View {
         ZStack{
@@ -63,7 +64,7 @@ struct SetDefaultLanguageView: View {
             }
         }
         .navigationDestination(isPresented: $isDefaultLanguage) {
-            LoggedInHomeView()
+            HomeView()
         }
     }
     func handleDefaultLanguage(_ targetLanguage: LanguageModel){
@@ -73,10 +74,10 @@ struct SetDefaultLanguageView: View {
             
             let defaults = UserDefaults.standard
             defaults.set(targetLanguage.language, forKey: "defaultLanguage") //Item like array
-            defaults.set(targetLanguage.name, forKey: "defaultLanguageName") //I
-            //print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as String)
-            let uid = getCurrentUser()
-            defaults.set(uid, forKey: "uid")
+            defaults.set(targetLanguage.name, forKey: "defaultLanguageName")
+            defaults.set("free", forKey: "subscriptionPlan")
+            appBrain.targetLanguage.language = targetLanguage.language
+            appBrain.targetLanguage.name = targetLanguage.name
             isDefaultLanguage = true
         }
     }
@@ -88,13 +89,13 @@ struct SetDefaultLanguageView: View {
         return uid
     }
     func createDocumentWithUI(_ uid: String, _ targetLanguage: LanguageModel){
-        let data: [String: Any] = ["defaultLanguage": targetLanguage.language, "requests": 0]
+        let data: [String: Any] = ["defaultLanguage": targetLanguage.language, "requests": 0, "subscriptionPlan": "free"]
         db.collection("users").document(uid).setData(data)
     }
 }
 
 struct SetDefaultLanguageView_Previews: PreviewProvider {
     static var previews: some View {
-        SetDefaultLanguageView()
+        DefaultLanguageView()
     }
 }
