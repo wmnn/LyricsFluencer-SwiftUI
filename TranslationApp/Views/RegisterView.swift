@@ -147,7 +147,6 @@ struct RegisterView: View {
             switch newScenePhase {
             case .active:
                 print("App is active")
-                registerViewHandler.isLoginClicked = false
                 handleAutomaticNavigation()
             case .inactive:
                 print("App is inactive")
@@ -157,10 +156,10 @@ struct RegisterView: View {
                 print("Interesting: Unexpected new value.")
             }
         }
-        
-        
     }
     func handleAutomaticNavigation(){
+        registerViewHandler.isLoginClicked = false
+        registerViewHandler.isLoggedIn = false
         if Auth.auth().currentUser != nil {
             let defaultLanguage = defaults.string(forKey: "defaultLanguage")
             let defaultLanguageName = defaults.string(forKey: "defaultLanguageName")
@@ -170,10 +169,7 @@ struct RegisterView: View {
             if defaultLanguage != nil, defaultLanguageName != nil, requests != nil, subscriptionPlan != nil{
                 appBrain.targetLanguage.language = defaultLanguage!
                 appBrain.targetLanguage.name = defaultLanguageName!
-                appBrain.handleTrial()
-                DispatchQueue.main.async {
-                    registerViewHandler.isLoggedIn.toggle()
-                }
+                registerViewHandler.isLoggedIn = true
             }else{
                 //registerViewHandler.isRegistered = true
             }
