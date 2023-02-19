@@ -9,15 +9,12 @@ import SwiftUI
 import Firebase
 import FirebaseFirestore
 
-struct HomeView: View {
-    let db = Firestore.firestore()
-    @State private var email: String = ""
-    @State private var password: String = ""
-    @State private var isRegistered = false
-    @State private var isLoggedIn = false
-    @State private var isSignUpLoading = false
-    //@State private var path = NavigationPath() //creating a costum NavigationPath
+struct RegisterView: View {
     @Environment(\.scenePhase) var scenePhase
+    @EnvironmentObject var appBrain: AppBrain
+    @StateObject var registerViewHandler = RegisterViewHandler()
+    let db = Firestore.firestore()
+    let defaults = UserDefaults.standard
     
     var body: some View {
         NavigationStack() {
@@ -26,15 +23,16 @@ struct HomeView: View {
                     .ignoresSafeArea()
                 
                 VStack {
-                    Text("Learn languages with music !")
+                    Text("Learn languages with lyrics translations !")
                         .padding()
+                        .frame(width: 300, height: 20, alignment: .center)
                         .bold()
                         .font(.system(size:32))
                         .foregroundColor(Color("textColor"))
                         .padding()
                         .cornerRadius(18)
                     
-                    TextField(text: $email){
+                    TextField(text: $registerViewHandler.email){
                         Text("Email").foregroundColor(.gray)
                     }
                     .font(.system(size:18))
@@ -47,7 +45,7 @@ struct HomeView: View {
                     .cornerRadius(18)
                     
                     
-                    SecureField(text: $password){
+                    SecureField(text: $registerViewHandler.password){
                         Text("Password").foregroundColor(.gray)
                     }
                     
@@ -61,9 +59,9 @@ struct HomeView: View {
                     .cornerRadius(18)
                     
                     Button {
-                        register()
+                        registerViewHandler.register()
                     } label: {
-                        if isSignUpLoading {
+                        if registerViewHandler.isSignUpLoading {
                             ProgressView()
                                 .progressViewStyle(CircularProgressViewStyle(tint: .black))
                                 .font(.system(size:24))
@@ -89,11 +87,14 @@ struct HomeView: View {
                         }
                         
                     }
-                    .navigationDestination(isPresented: $isRegistered) {
-                        SetDefaultLanguageView()
+                    .navigationDestination(isPresented: $registerViewHandler.isRegistered) {
+                        DefaultLanguageView()
                     }
-                    .navigationDestination(isPresented: $isLoggedIn) {
-                        LoggedInHomeView()
+                    .navigationDestination(isPresented: $registerViewHandler.isLoggedIn) {
+                        HomeView()
+                    }
+                    .navigationDestination(isPresented: $registerViewHandler.isLoginClicked) {
+                        LoginView()
                     }
                     
                     Text("Already have an account?")
@@ -103,7 +104,24 @@ struct HomeView: View {
                         .foregroundColor(Color("textColor"))
                         .padding()
                         .cornerRadius(18)
+                    //Handle Login
+                    Button {
+                        registerViewHandler.isLoginClicked.toggle()
+                    } label: {
+                            Text("Login")
+                                .bold()
+                                .font(.system(size:18))
+                                .frame(width: 300, height: 20, alignment: .center)
+                                .foregroundColor(Color.black)
+                                .padding()
+                                .background {
+                                    Color("primaryColor")
+                                }
+                                .cornerRadius(18)
+                        }
+                        
                     
+                    /*
                     NavigationLink(destination: LoginView()) {
                         HStack{
                             Text("Go to Login")
@@ -119,6 +137,8 @@ struct HomeView: View {
                         }
                         .cornerRadius(18)
                     }
+                    */
+                    
                 }//Closing H-Stack
             }//Closing Z-Stack
             .navigationBarBackButtonHidden(true)
@@ -127,13 +147,8 @@ struct HomeView: View {
             switch newScenePhase {
             case .active:
                 print("App is active")
-                //handleAutomaticNavigation()
-                if Auth.auth().currentUser != nil {
-                    print("User is logged in already")
-                    self.isLoggedIn = true
-                }
-                
-                //IF NO SUBSCRIPTION PLAN IS SAVED INSIDE THE LOCAL STORAGE MAKE AN API CALL
+                registerViewHandler.isLoginClicked = false
+                handleAutomaticNavigation()
             case .inactive:
                 print("App is inactive")
             case .background:
@@ -142,27 +157,34 @@ struct HomeView: View {
                 print("Interesting: Unexpected new value.")
             }
         }
-    }//View
         
-    
-    
-    func register(){
-        self.isSignUpLoading = true
-        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-            if let e = error{
-                print(e.localizedDescription)
+        
+    }
+    func handleAutomaticNavigation(){
+        if Auth.auth().currentUser != nil {
+            let defaultLanguage = defaults.string(forKey: "defaultLanguage")
+            let defaultLanguageName = defaults.string(forKey: "defaultLanguageName")
+            let requests = defaults.string(forKey: "requests")
+            let subscriptionPlan = defaults.string(forKey: "subscriptionPlan")
+            
+            if defaultLanguage != nil, defaultLanguageName != nil, requests != nil, subscriptionPlan != nil{
+                appBrain.targetLanguage.language = defaultLanguage!
+                appBrain.targetLanguage.name = defaultLanguageName!
+                appBrain.handleTrial()
+                DispatchQueue.main.async {
+                    registerViewHandler.isLoggedIn.toggle()
+                }
             }else{
-                print("Registered")
-                //Navigate to setDefaultLanguage
-                self.isRegistered = true
+                //registerViewHandler.isRegistered = true
             }
         }
-        self.isSignUpLoading = false
+        
     }
 }
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        RegisterView()
     }
 }
+

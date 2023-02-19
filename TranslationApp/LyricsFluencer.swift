@@ -15,12 +15,10 @@ import FirebaseAuth
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         // This method is called when the app finishes launching.
-        //FirebaseApp.configure()
-        //let db = Firestore.firestore()
         print("Launched")
         return true
     }
-    
+    /*
     func applicationDidBecomeActive(_ application: UIApplication) {
         // This method is called when the app becomes active.
         print("App is active")
@@ -40,25 +38,26 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         // This method is called when the app is about to terminate.
         print("App is about to terminate")
     }
+     */
 }
 
 
 
 @main
-struct TranslationAppApp: App {
+struct LyricsFluencer: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
- 
+    @StateObject var appBrain = AppBrain()
     
     init() {
         print("My App is starting")
         FirebaseApp.configure()
     }
     
-    //@Environment(\.scenePhase) var scenePhase
     var body: some Scene {
         WindowGroup {
-            HomeView()
-            
+            RegisterView()
+                .environmentObject(appBrain)
+                
         }
     }
 }
