@@ -193,6 +193,7 @@ struct HomeView: View{
               
         }//NavigationStack
         .onAppear(perform: {
+            appBrain.handleTrial()
             appBrain.isLoggedOut = false
         })
     }//View
