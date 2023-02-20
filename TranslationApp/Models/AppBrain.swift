@@ -27,7 +27,7 @@ class AppBrain: ObservableObject{
     func handleQuickSearch(searchQuery: String, target: String) {
         self.isQuickSearchLoading = true
         let json: [String: String] = ["searchQuery": searchQuery, "target": target]
-        let urlString = "http://localhost:8000/api/quicksearch"
+        let urlString = "\(STATIC.API_ROOT)/api/quicksearch"
         
         if let url = URL(string: urlString){
             var request = URLRequest(url: url)
@@ -40,6 +40,7 @@ class AppBrain: ObservableObject{
                     print("Error while sending request: \(err)")
                     return
                 }
+                
                 guard let data = data, let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
                     print("Error while receiving response")
                     return
@@ -54,6 +55,7 @@ class AppBrain: ObservableObject{
                             
                             let isCombinedLyrics = await self.handleCombineLyrics(lyricsApiData)
                             if isCombinedLyrics{
+                                print("inside is combined lyrics")
                                 self.updateRequestCounter()
                                 self.isQuickSearchLoading = false
                                 DispatchQueue.main.async {

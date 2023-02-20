@@ -61,7 +61,7 @@ class LoginViewHandler: ObservableObject{
             }
     }
     func getLanguageName(_ languageCode: String) -> String?{
-        for language in Constants.languages {
+        for language in STATIC.languages {
             if language.language == languageCode {
                 return language.name
             }
