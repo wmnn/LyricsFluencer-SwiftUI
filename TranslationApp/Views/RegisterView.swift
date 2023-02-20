@@ -13,132 +13,116 @@ struct RegisterView: View {
     @Environment(\.scenePhase) var scenePhase
     @EnvironmentObject var appBrain: AppBrain
     @StateObject var registerViewHandler = RegisterViewHandler()
+    @State private var path = NavigationPath()
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
     
     var body: some View {
-        NavigationStack() {
-            ZStack{
-                Color("appColor")
-                    .ignoresSafeArea()
-                
-                VStack {
-                    Text("Learn languages with lyrics translations !")
-                        .padding()
+        VStack{
+            NavigationStack(path: $path){
+                ZStack{
+                    Color("appColor")
+                        .ignoresSafeArea()
+                    
+                    VStack {
+                        Text("Learn languages with lyrics translations !")
+                            .padding()
+                            .frame(width: 300, height: 20, alignment: .center)
+                            .bold()
+                            .font(.system(size:32))
+                            .foregroundColor(Color("textColor"))
+                            .padding()
+                            .cornerRadius(18)
+                        
+                        TextField(text: $registerViewHandler.email){
+                            Text("Email").foregroundColor(.gray)
+                        }
+                        .font(.system(size:18))
                         .frame(width: 300, height: 20, alignment: .center)
-                        .bold()
-                        .font(.system(size:32))
-                        .foregroundColor(Color("textColor"))
+                        .foregroundColor(Color.black)
                         .padding()
+                        .background {
+                            Color("inputColor")
+                        }
                         .cornerRadius(18)
-                    
-                    TextField(text: $registerViewHandler.email){
-                        Text("Email").foregroundColor(.gray)
-                    }
-                    .font(.system(size:18))
-                    .frame(width: 300, height: 20, alignment: .center)
-                    .foregroundColor(Color.black)
-                    .padding()
-                    .background {
-                        Color("inputColor")
-                    }
-                    .cornerRadius(18)
-                    
-                    
-                    SecureField(text: $registerViewHandler.password){
-                        Text("Password").foregroundColor(.gray)
-                    }
-                    
-                    .font(.system(size:18))
-                    .frame(width: 300, height: 20, alignment: .center)
-                    .foregroundColor(Color.black)
-                    .padding()
-                    .background {
-                        Color("inputColor")
-                    }
-                    .cornerRadius(18)
-                    
-                    Button {
-                        registerViewHandler.register()
-                    } label: {
-                        if registerViewHandler.isSignUpLoading {
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle(tint: .black))
-                                .font(.system(size:24))
-                                .bold()
-                                .frame(width: 300, height: 20, alignment: .center)
-                                .foregroundColor(Color.black)
-                                .padding()
-                                .background {
-                                    Color("primaryColor")
-                                }
-                                .cornerRadius(18)
-                        }else{
-                            Text("Sign Up")
-                                .bold()
-                                .font(.system(size:18))
-                                .frame(width: 300, height: 20, alignment: .center)
-                                .foregroundColor(Color.black)
-                                .padding()
-                                .background {
-                                    Color("primaryColor")
-                                }
-                                .cornerRadius(18)
+                        
+                        SecureField(text: $registerViewHandler.password){
+                            Text("Password").foregroundColor(.gray)
+                        }
+                        .font(.system(size:18))
+                        .frame(width: 300, height: 20, alignment: .center)
+                        .foregroundColor(Color.black)
+                        .padding()
+                        .background {
+                            Color("inputColor")
+                        }
+                        .cornerRadius(18)
+                        
+                        Button {
+                            self.register()
+                        } label: {
+                            if registerViewHandler.isSignUpLoading {
+                                ActivityIndicator()
+                            }else{
+                                Text("Sign Up")
+                                    .bold()
+                                    .font(.system(size:18))
+                                    .frame(width: 300, height: 20, alignment: .center)
+                                    .foregroundColor(Color.black)
+                                    .padding()
+                                    .background {
+                                        Color("primaryColor")
+                                    }
+                                    .cornerRadius(18)                                 
+                            }
+                            
                         }
                         
-                    }
-                    .navigationDestination(isPresented: $registerViewHandler.isRegistered) {
-                        DefaultLanguageView()
-                    }
-                    .navigationDestination(isPresented: $registerViewHandler.isLoggedIn) {
-                        HomeView()
-                    }
-                    .navigationDestination(isPresented: $registerViewHandler.isLoginClicked) {
-                        LoginView()
-                    }
-                    
-                    Text("Already have an account?")
-                        .padding()
-                        .bold()
-                        .font(.system(size:18))
-                        .foregroundColor(Color("textColor"))
-                        .padding()
-                        .cornerRadius(18)
-                    //Handle Login
-                    Button {
-                        registerViewHandler.isLoginClicked.toggle()
-                    } label: {
-                            HStack{
-                                Text("Go to Login")
-                                Image(systemName: "arrow.right")
-                            }
+                        Text("Already have an account?")
+                            .padding()
                             .bold()
                             .font(.system(size:18))
-                            .frame(width: 300, height: 20, alignment: .center)
-                            .foregroundColor(Color.black)
+                            .foregroundColor(Color("textColor"))
                             .padding()
-                            .background {
-                                Color("primaryColor")
-                            }
                             .cornerRadius(18)
+                        //Handle Login
+                        Navigator(value: "Login", text: "Login")
+                    }//Closing V-Stack
+                }//Closing Z-Stack
+                .navigationBarBackButtonHidden(true)
+                .navigationDestination(for: String.self){ stringVal in
+                    if stringVal == "Login"{
+                        LoginView(path: $path) //passed here
+                    }else if stringVal == "DefaultLanguage"{
+                        DefaultLanguageView(path: $path) //passed here
+                    }else if stringVal == "Home"{
+                        HomeView(path: $path) //passed here
+                    }else if stringVal == "Lyrics"{
+                        if let artist = appBrain.lyricsModel.artist, let song = appBrain.lyricsModel.song, let combinedLyrics = appBrain.lyricsModel.combinedLyrics{
+                            LyricsView(artist: artist, song: song, combinedLyrics: combinedLyrics, path: $path)
                         }
-                }//Closing H-Stack
-            }//Closing Z-Stack
-            .navigationBarBackButtonHidden(true)
-        }//closing NavigationStack
-        .onChange(of: scenePhase) { newScenePhase in
-            switch newScenePhase {
-            case .active:
-                print("App is active")
-                registerViewHandler.isLoginClicked = false
-                handleAutomaticNavigation()
-            case .inactive:
-                print("App is inactive")
-            case .background:
-                print("App is in background")
-            @unknown default:
-                print("Interesting: Unexpected new value.")
+                    }
+                }
+              
+            }//closing NavigationStack
+            .onChange(of: scenePhase) { newScenePhase in
+                switch newScenePhase {
+                case .active:
+                    print("App is active")
+                    handleAutomaticNavigation()
+                case .inactive:
+                    print("App is inactive")
+                case .background:
+                    print("App is in background")
+                @unknown default:
+                    print("Interesting: Unexpected new value.")
+                }
             }
+            /*VStack{
+                Text(String(path.count))
+                    .foregroundColor(Color("textColor"))
+                    .zIndex(2)
+            }*/
         }
     }
     func handleAutomaticNavigation(){
@@ -154,11 +138,24 @@ struct RegisterView: View {
                 appBrain.targetLanguage.name = defaultLanguageName!
                 registerViewHandler.isLoggedIn = true
             }else{
-                registerViewHandler.isRegistered = true
+                //append register
             }
         }else{
-            appBrain.handleDeleteLocalStorage()
+            self.appBrain.handleDeleteLocalStorage()
         }
+    }
+    func register(){
+        self.registerViewHandler.isSignUpLoading = true
+        Auth.auth().createUser(withEmail: self.registerViewHandler.email, password: self.registerViewHandler.password) { authResult, error in
+            if let e = error{
+                print(e.localizedDescription)
+            }else{
+                print("Registered")
+                //Navigate to setDefaultLanguage
+                self.path.append("DefaultLanguage")
+            }
+        }
+        self.registerViewHandler.isSignUpLoading = false
     }
 }
 
@@ -168,3 +165,37 @@ struct HomeView_Previews: PreviewProvider {
     }
 }
 
+
+struct ActivityIndicator: View{
+    var body: some View{
+        ProgressView()
+            .progressViewStyle(CircularProgressViewStyle(tint: .black))
+            .font(.system(size:24))
+            .bold()
+            .frame(width: 300, height: 20, alignment: .center)
+            .foregroundColor(Color.black)
+            .padding()
+            .background {
+                Color("primaryColor")
+            }
+            .cornerRadius(18)
+    }
+}
+struct Navigator: View{
+    var value: String
+    var text: String
+    var body: some View{
+        NavigationLink(value: value) {
+                Text(text)
+            }
+            .bold()
+            .font(.system(size:18))
+            .frame(width: 300, height: 20, alignment: .center)
+            .foregroundColor(Color.black)
+            .padding()
+            .background {
+                Color("primaryColor")
+            }
+            .cornerRadius(18)
+    }
+}

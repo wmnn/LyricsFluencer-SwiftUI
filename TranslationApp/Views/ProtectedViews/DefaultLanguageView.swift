@@ -12,8 +12,8 @@ import FirebaseFirestore
 struct DefaultLanguageView: View {
     let db = Firestore.firestore()
     @State var targetLanguage = LanguageModel(language: "None", name: "Undefined")
-    @State private var isDefaultLanguage = false
     @EnvironmentObject var appBrain: AppBrain
+    @Binding var path: NavigationPath
     
     var body: some View {
         ZStack{
@@ -63,9 +63,7 @@ struct DefaultLanguageView: View {
                 }
             }
         }
-        .navigationDestination(isPresented: $isDefaultLanguage) {
-            HomeView()
-        }
+        .navigationBarBackButtonHidden(true)
     }
     func handleDefaultLanguage(_ targetLanguage: LanguageModel){
         let uid = getCurrentUser()
@@ -73,12 +71,13 @@ struct DefaultLanguageView: View {
             createDocumentWithUI(uid, targetLanguage)
             
             let defaults = UserDefaults.standard
-            defaults.set(targetLanguage.language, forKey: "defaultLanguage") //Item like array
+            defaults.set(targetLanguage.language, forKey: "defaultLanguage")
+            defaults.set(0, forKey: "requests")
             defaults.set(targetLanguage.name, forKey: "defaultLanguageName")
             defaults.set("free", forKey: "subscriptionPlan")
             appBrain.targetLanguage.language = targetLanguage.language
             appBrain.targetLanguage.name = targetLanguage.name
-            isDefaultLanguage = true
+            path.append("Home")
         }
     }
     func getCurrentUser() -> String{
@@ -96,6 +95,6 @@ struct DefaultLanguageView: View {
 
 struct SetDefaultLanguageView_Previews: PreviewProvider {
     static var previews: some View {
-        DefaultLanguageView()
+        DefaultLanguageView(path: .constant(NavigationPath()))
     }
 }
