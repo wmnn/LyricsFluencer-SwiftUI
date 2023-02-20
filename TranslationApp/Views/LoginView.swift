@@ -9,13 +9,19 @@ import SwiftUI
 import FirebaseAuth
 import FirebaseFirestore
 
-struct LoginView: View {
-    @ObservedObject var loginViewHandler = LoginViewHandler()
+struct LoginView: View {  
+    @Binding var path: NavigationPath
     enum LoginField: Hashable {
         case email
         case password
     }
     @FocusState private var fieldInFocus: LoginField?
+    let defaults = UserDefaults.standard
+    let db = Firestore.firestore()
+    @State var email: String = ""
+    @State var password: String = ""
+    @State var isLoading = false
+    @EnvironmentObject var appBrain: AppBrain
     
     
     var body: some View {
@@ -32,7 +38,7 @@ struct LoginView: View {
                     .padding()
                     .cornerRadius(18)
                 
-                TextField(text: $loginViewHandler.email){
+                TextField(text: self.$email){
                     Text("Email").foregroundColor(.gray)
                 }
                     .font(.system(size:18))
@@ -51,7 +57,7 @@ struct LoginView: View {
                     .focused($fieldInFocus ,equals: .email)
                     
                 
-                SecureField(text: $loginViewHandler.password){
+                SecureField(text: self.$password){
                     Text("Password").foregroundColor(.gray)
                 }
                     .font(.system(size:18))
@@ -64,55 +70,93 @@ struct LoginView: View {
                     .cornerRadius(18)
                     .onSubmit {
                         fieldInFocus = nil
-                        loginViewHandler.login()
+                        login()
                     }
                     .submitLabel(SubmitLabel.done)
                     .focused($fieldInFocus ,equals: .password)
                 
                 Button {
                     self.fieldInFocus = nil
-                    loginViewHandler.login()
+                    login()
                 } label: {
-                    if loginViewHandler.isLoading{
-                        ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle(tint: .black))
-                            .font(.system(size:24))
-                            .bold()
-                            .frame(width: 300, height: 20, alignment: .center)
-                            .foregroundColor(Color.black)
-                            .padding()
-                            .background {
-                                Color("primaryColor")
-                            }
-                            .cornerRadius(18)
+                    if self.isLoading{
+                        ActivityIndicator()
                     }else{
-                        HStack{
-                            
-                            Text("Login")
-                            Image(systemName: "arrow.right")
-                            
-                        }
-                        .bold()
-                        .font(.system(size:18))
-                        .frame(width: 300, height: 20, alignment: .center)
-                        .foregroundColor(Color.black)
-                        .padding()
-                        .background {
-                            Color("primaryColor")
-                        }
-                        .cornerRadius(18)
+                        ButtonWithIcon(text: "Login", systemName: "arrow.right")
                     }
                     }
                 
                 .navigationTitle("Login")
-                
-                .navigationDestination(isPresented: $loginViewHandler.isLoggedIn) {
-                    HomeView()
+            }
+        }
+    }
+    func login(){
+        self.isLoading = true
+        Auth.auth().signIn(withEmail: self.email, password: self.password) { result, error in
+            guard let user = result?.user, error == nil else {
+                print(error?.localizedDescription ?? "Unknown error")
+                self.isLoading = false
+                return
+            }
+            loadUserData(user.uid)
+        }
+    }
+    func loadUserData(_ uid: String){
+            db.collection("users").document(uid).getDocument { (document, error) in
+                if let document = document, document.exists {
+                    
+                    let subscriptionPlan = document.get("subscriptionPlan") as? String ?? "none"
+                    self.defaults.set(subscriptionPlan, forKey: "subscriptionPlan")
+                    
+                    if let requests = document.get("requests") as? Int{
+                        self.defaults.set(requests, forKey: "requests")
+                        if Int(requests) > 20 {
+                            self.appBrain.isTrialExpired = true
+                        }
+                    }
+                    if let defaultLanguage = document.get("defaultLanguage") as? String{
+                        self.defaults.set(defaultLanguage, forKey: "defaultLanguage")
+                        self.appBrain.targetLanguage.language = defaultLanguage
+                        
+                        let defaultLanguageName = getLanguageName(defaultLanguage)
+                        self.defaults.set(defaultLanguageName, forKey: "defaultLanguageName")
+                        self.appBrain.targetLanguage.name = defaultLanguageName!
+                    }
+                } else {
+                    //print("Document does not exist")
+                    //Navigate to set defaultLanguage
                 }
-                .navigationDestination(isPresented: $loginViewHandler.isNotSetUp) {
-                    DefaultLanguageView()
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                    self.handleNavigation()
                 }
             }
+    }
+    func getLanguageName(_ languageCode: String) -> String?{
+        for language in STATIC.languages {
+            if language.language == languageCode {
+                return language.name
+            }
+        }
+        return nil
+    }
+    func getCurrentUser() -> String{
+        guard let uid = Auth.auth().currentUser?.uid else{
+            print("User not found")
+            return ""
+        }
+        return uid
+    }
+    func handleNavigation(){
+        let subscriptionPlan = defaults.string(forKey: "subscriptionPlan")
+        if subscriptionPlan != nil{
+            if(subscriptionPlan == "none"){
+                path.append("DefaultLanguage")
+            }else{
+                path.append("Home")
+            }
+        }else{
+                path.append("DefaultLanguage")
         }
     }
     
@@ -120,6 +164,6 @@ struct LoginView: View {
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView()
+        LoginView(path: .constant(NavigationPath()))
     }
 }

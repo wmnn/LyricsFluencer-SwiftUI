@@ -15,19 +15,4 @@ class RegisterViewHandler: ObservableObject{
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var isSignUpLoading = false
-    @Published var isLoginClicked = false
-    
-    func register(){
-        self.isSignUpLoading = true
-        Auth.auth().createUser(withEmail: self.email, password: self.password) { authResult, error in
-            if let e = error{
-                print(e.localizedDescription)
-            }else{
-                print("Registered")
-                //Navigate to setDefaultLanguage
-                self.isRegistered = true
-            }
-        }
-        self.isSignUpLoading = false
-    }
 }
