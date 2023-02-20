@@ -21,12 +21,12 @@ struct DefaultLanguageView: View {
                 .ignoresSafeArea()
             VStack{
                 Menu{
-                    ForEach(0..<Constants.languages.count, id: \.self) { index in
+                    ForEach(0..<STATIC.languages.count, id: \.self) { index in
                         Button {
-                            self.targetLanguage.language = Constants.languages[index].language
-                            self.targetLanguage.name = Constants.languages[index].name
+                            self.targetLanguage.language = STATIC.languages[index].language
+                            self.targetLanguage.name = STATIC.languages[index].name
                         } label: {
-                            Text(Constants.languages[index].name)
+                            Text(STATIC.languages[index].name)
                         }
                     }
                 } label: {

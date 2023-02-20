@@ -25,6 +25,7 @@
 		C4204541299945D2009699F7 /* LyricsApiData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4204540299945D2009699F7 /* LyricsApiData.swift */; };
 		C420454329995FF0009699F7 /* LanguageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C420454229995FF0009699F7 /* LanguageModel.swift */; };
 		C44C62D1299B8EE20091C401 /* DefaultLanguageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44C62D0299B8EE20091C401 /* DefaultLanguageView.swift */; };
+		C4B38AAA29A3602300EEFAF9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B38AA929A3602300EEFAF9 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		C4204540299945D2009699F7 /* LyricsApiData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsApiData.swift; sourceTree = "<group>"; };
 		C420454229995FF0009699F7 /* LanguageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageModel.swift; sourceTree = "<group>"; };
 		C44C62D0299B8EE20091C401 /* DefaultLanguageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLanguageView.swift; sourceTree = "<group>"; };
+		C4B38AA929A3602300EEFAF9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 				C42045072999057A009699F7 /* Views */,
 				C420450829990580009699F7 /* Models */,
 				C42044F929990571009699F7 /* LyricsFluencer.swift */,
+				C4B38AA929A3602300EEFAF9 /* Constants.swift */,
 				C42044FD29990574009699F7 /* Assets.xcassets */,
 				C420451429990DBD009699F7 /* GoogleService-Info.plist */,
 				C42044FF29990574009699F7 /* Preview Content */,
@@ -217,6 +220,7 @@
 				C406045729A2138900D56C0D /* AppBrain.swift in Sources */,
 				C420450A299905A2009699F7 /* LoginView.swift in Sources */,
 				C420454329995FF0009699F7 /* LanguageModel.swift in Sources */,
+				C4B38AAA29A3602300EEFAF9 /* Constants.swift in Sources */,
 				C42044FC29990571009699F7 /* RegisterView.swift in Sources */,
 				C406045D29A277C100D56C0D /* RegisterViewHandler.swift in Sources */,
 				C420450E299905EC009699F7 /* HomeView.swift in Sources */,

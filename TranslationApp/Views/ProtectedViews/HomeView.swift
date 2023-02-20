@@ -27,12 +27,12 @@ struct HomeView: View{
                     
                     //Handling target language
                     Menu{
-                        ForEach(0..<Constants.languages.count, id: \.self) { index in
+                        ForEach(0..<STATIC.languages.count, id: \.self) { index in
                             Button {
-                                appBrain.targetLanguage.language = Constants.languages[index].language
-                                appBrain.targetLanguage.name = Constants.languages[index].name
+                                appBrain.targetLanguage.language = STATIC.languages[index].language
+                                appBrain.targetLanguage.name = STATIC.languages[index].name
                             } label: {
-                                Text(Constants.languages[index].name)
+                                Text(STATIC.languages[index].name)
                             }
                         }
                     } label: {
@@ -195,8 +195,10 @@ struct HomeView: View{
         .onAppear(perform: {
             appBrain.handleTrial()
             appBrain.isLoggedOut = false
+            appBrain.isLyrics = false
         })
     }//View
+    
 }
 
 struct LoggedInHomeView_Previews: PreviewProvider {
