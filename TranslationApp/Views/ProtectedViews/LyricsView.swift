@@ -15,11 +15,6 @@ struct LyricsView: View {
     var combinedLyrics: [String]
     @State private var isBackButtonClicked = false
     
-    struct WordIndex: Equatable {
-        let line: Int
-        let word: Int
-    }
-    
     var body: some View {
         ZStack{
             Color("appColor")
@@ -33,18 +28,80 @@ struct LyricsView: View {
                         .bold()
                         .padding(.bottom)
                     ForEach(0..<self.combinedLyrics.count, id: \.self) { index in
-                        Text(self.combinedLyrics[index])
-                            .foregroundColor(index % 2 == 0 ? Color("textColor") : Color("primaryColor"))
-                            .font(.system(size: 24))
-                    }
-                }
-            }
-        }
+                        if index % 2 == 0 {
+                            let line = combinedLyrics[index]
+                            let separator = CharacterSet(charactersIn: " \n")
+                            let words = line.components(separatedBy: separator).map { word -> String in
+                                if word.hasSuffix("\n") {
+                                    return String(word.dropLast()) + "\n"
+                                } else {
+                                    return word
+                                }
+                            }
+                            WrappingHStack(alignment: .leading){
+                                ForEach(0..<words.count, id:\.self){ index in
+                                    Menu{
+                                        Button {
+                                            print("Pressed")
+                                        } label: {
+                                            Text("Add to deck")
+                                        }
+                                        Button {
+                                            print("Pressed")
+                                        } label: {
+                                            Text("Google Meaning")
+                                        }
+                                    } label: {
+                                        Text(String(words[index]))
+                                            .font(.system(size:18))
+                                            .bold()
+                                            .foregroundColor(Color("textColor"))
+                                    }
+                                }
+                            }
+                        }else{
+                            let line = combinedLyrics[index]
+                            //let words = line.components(separatedBy: [" ", "\n"])
+                            let separator = CharacterSet(charactersIn: " \n")
+                            let words = line.components(separatedBy: separator).map { word -> String in
+                                if word.hasSuffix("\n") {
+                                    return String(word.dropLast()) + "\n"
+                                } else {
+                                    return word
+                                }
+                            }
+                            WrappingHStack(alignment: .leading){
+                                ForEach(0..<words.count, id:\.self){ index in
+                                    Menu{
+                                        Button {
+                                            print("Pressed")
+                                        } label: {
+                                            Text("Add to deck")
+                                        }
+                                        Button {
+                                            print("Pressed")
+                                        } label: {
+                                            Text("Google Meaning")
+                                        }
+                                    } label: {
+                                        Text(String(words[index]))
+                                            .font(.system(size:18))
+                                            .bold()
+                                            .foregroundColor(Color("primaryColor"))
+                                    }
+                                    
+                                }
+                            }//Closing WrappingHStack
+                        }//Closing Else
+                    }//Closing ForEach
+                }//Closing VStack
+            }//Closing Scroll View
+        }//Closing ZStack
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
-                    self.isBackButtonClicked.toggle()
+                    self.isBackButtonClicked = true
                 } label: {
                     HStack{
                         Image(systemName: "arrow.left")
