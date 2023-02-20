@@ -11,7 +11,11 @@ import FirebaseFirestore
 
 struct LoginView: View {
     @ObservedObject var loginViewHandler = LoginViewHandler()
-    @FocusState private var focusedField: String?
+    enum LoginField: Hashable {
+        case email
+        case password
+    }
+    @FocusState private var fieldInFocus: LoginField?
     
     
     var body: some View {
@@ -41,10 +45,11 @@ struct LoginView: View {
                     .cornerRadius(18)
                     .cornerRadius(18)
                     .onSubmit {
-                        focusedField = "password"
+                        fieldInFocus = .password
                     }
                     .submitLabel(SubmitLabel.next)
-                    .focused($focusedField, equals: "email")
+                    .focused($fieldInFocus ,equals: .email)
+                    
                 
                 SecureField(text: $loginViewHandler.password){
                     Text("Password").foregroundColor(.gray)
@@ -58,14 +63,14 @@ struct LoginView: View {
                     }
                     .cornerRadius(18)
                     .onSubmit {
-                        focusedField = ""
+                        fieldInFocus = nil
                         loginViewHandler.login()
                     }
                     .submitLabel(SubmitLabel.done)
-                    .focused($focusedField, equals: "password")
+                    .focused($fieldInFocus ,equals: .password)
                 
                 Button {
-                    self.focusedField = nil
+                    self.fieldInFocus = nil
                     loginViewHandler.login()
                 } label: {
                     if loginViewHandler.isLoading{

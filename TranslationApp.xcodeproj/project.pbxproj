@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C4043A15299C665D0036C40F /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = C4043A14299C665D0036C40F /* WrappingHStack */; };
 		C406045729A2138900D56C0D /* AppBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C406045629A2138900D56C0D /* AppBrain.swift */; };
 		C406045929A21BEC00D56C0D /* LyricsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C406045829A21BEC00D56C0D /* LyricsModel.swift */; };
 		C406045D29A277C100D56C0D /* RegisterViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C406045C29A277C100D56C0D /* RegisterViewHandler.swift */; };
@@ -26,6 +25,7 @@
 		C420454329995FF0009699F7 /* LanguageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C420454229995FF0009699F7 /* LanguageModel.swift */; };
 		C44C62D1299B8EE20091C401 /* DefaultLanguageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44C62D0299B8EE20091C401 /* DefaultLanguageView.swift */; };
 		C4B38AAA29A3602300EEFAF9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B38AA929A3602300EEFAF9 /* Constants.swift */; };
+		C4B38AAD29A39B2500EEFAF9 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = C4B38AAC29A39B2500EEFAF9 /* WrappingHStack */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,7 +54,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C420451129990D60009699F7 /* FirebaseAuth in Frameworks */,
-				C4043A15299C665D0036C40F /* WrappingHStack in Frameworks */,
+				C4B38AAD29A39B2500EEFAF9 /* WrappingHStack in Frameworks */,
 				C420451329990D60009699F7 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -152,7 +152,7 @@
 			packageProductDependencies = (
 				C420451029990D60009699F7 /* FirebaseAuth */,
 				C420451229990D60009699F7 /* FirebaseFirestore */,
-				C4043A14299C665D0036C40F /* WrappingHStack */,
+				C4B38AAC29A39B2500EEFAF9 /* WrappingHStack */,
 			);
 			productName = TranslationApp;
 			productReference = C42044F629990571009699F7 /* TranslationApp.app */;
@@ -184,7 +184,7 @@
 			mainGroup = C42044ED29990571009699F7;
 			packageReferences = (
 				C420450F29990D60009699F7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				C4043A13299C665D0036C40F /* XCRemoteSwiftPackageReference "WrappingHStack" */,
+				C4B38AAB29A39B2500EEFAF9 /* XCRemoteSwiftPackageReference "WrappingHStack" */,
 			);
 			productRefGroup = C42044F729990571009699F7 /* Products */;
 			projectDirPath = "";
@@ -434,14 +434,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		C4043A13299C665D0036C40F /* XCRemoteSwiftPackageReference "WrappingHStack" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/dkk/WrappingHStack";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
-			};
-		};
 		C420450F29990D60009699F7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -450,14 +442,17 @@
 				minimumVersion = 9.0.0;
 			};
 		};
+		C4B38AAB29A39B2500EEFAF9 /* XCRemoteSwiftPackageReference "WrappingHStack" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ksemianov/WrappingHStack.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C4043A14299C665D0036C40F /* WrappingHStack */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C4043A13299C665D0036C40F /* XCRemoteSwiftPackageReference "WrappingHStack" */;
-			productName = WrappingHStack;
-		};
 		C420451029990D60009699F7 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C420450F29990D60009699F7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
@@ -467,6 +462,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C420450F29990D60009699F7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		C4B38AAC29A39B2500EEFAF9 /* WrappingHStack */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C4B38AAB29A39B2500EEFAF9 /* XCRemoteSwiftPackageReference "WrappingHStack" */;
+			productName = WrappingHStack;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

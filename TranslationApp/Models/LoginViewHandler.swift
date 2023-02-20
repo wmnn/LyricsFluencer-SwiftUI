@@ -52,7 +52,8 @@ class LoginViewHandler: ObservableObject{
                         self.apiManager.targetLanguage.name = defaultLanguageName!
                     }
                 } else {
-                    print("Document does not exist")
+                    //print("Document does not exist")
+                    //Navigate to set defaultLanguage
                 }
                 DispatchQueue.main.async {
                     self.isLoading = false

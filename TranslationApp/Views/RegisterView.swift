@@ -108,37 +108,20 @@ struct RegisterView: View {
                     Button {
                         registerViewHandler.isLoginClicked.toggle()
                     } label: {
-                            Text("Login")
-                                .bold()
-                                .font(.system(size:18))
-                                .frame(width: 300, height: 20, alignment: .center)
-                                .foregroundColor(Color.black)
-                                .padding()
-                                .background {
-                                    Color("primaryColor")
-                                }
-                                .cornerRadius(18)
+                            HStack{
+                                Text("Go to Login")
+                                Image(systemName: "arrow.right")
+                            }
+                            .bold()
+                            .font(.system(size:18))
+                            .frame(width: 300, height: 20, alignment: .center)
+                            .foregroundColor(Color.black)
+                            .padding()
+                            .background {
+                                Color("primaryColor")
+                            }
+                            .cornerRadius(18)
                         }
-                        
-                    
-                    /*
-                    NavigationLink(destination: LoginView()) {
-                        HStack{
-                            Text("Go to Login")
-                            Image(systemName: "arrow.right")
-                        }
-                        .bold()
-                        .font(.system(size:18))
-                        .frame(width: 300, height: 20, alignment: .center)
-                        .foregroundColor(Color.black)
-                        .padding()
-                        .background {
-                            Color("primaryColor")
-                        }
-                        .cornerRadius(18)
-                    }
-                    */
-                    
                 }//Closing H-Stack
             }//Closing Z-Stack
             .navigationBarBackButtonHidden(true)
@@ -147,6 +130,7 @@ struct RegisterView: View {
             switch newScenePhase {
             case .active:
                 print("App is active")
+                registerViewHandler.isLoginClicked = false
                 handleAutomaticNavigation()
             case .inactive:
                 print("App is inactive")
@@ -158,7 +142,6 @@ struct RegisterView: View {
         }
     }
     func handleAutomaticNavigation(){
-        registerViewHandler.isLoginClicked = false
         registerViewHandler.isLoggedIn = false
         if Auth.auth().currentUser != nil {
             let defaultLanguage = defaults.string(forKey: "defaultLanguage")
@@ -171,10 +154,11 @@ struct RegisterView: View {
                 appBrain.targetLanguage.name = defaultLanguageName!
                 registerViewHandler.isLoggedIn = true
             }else{
-                //registerViewHandler.isRegistered = true
+                registerViewHandler.isRegistered = true
             }
+        }else{
+            appBrain.handleDeleteLocalStorage()
         }
-        
     }
 }
 
