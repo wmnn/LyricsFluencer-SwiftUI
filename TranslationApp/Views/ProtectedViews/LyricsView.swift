@@ -240,12 +240,7 @@ struct AddWordView: View{
         }
         .frame(width: 350, height: 400)
         .cornerRadius(10)
-        
-        
-        
-    }
-    
-    
+    }    
 }
 struct PopUpWebView: View{
     @Binding var urlString: String

@@ -21,15 +21,9 @@ struct RegisterView: View {
                     Color("appColor")
                         .ignoresSafeArea()
                     VStack {
-                        Text("Learn languages with lyrics translations !")
-                            .padding()
-                            .frame(width: 300, height: 20, alignment: .center)
-                            .bold()
-                            .font(.system(size:32))
-                            .foregroundColor(Color("textColor"))
-                            .padding()
-                            .cornerRadius(18)
-                        
+                        SomeHeadline(text: "LyricsFluencer", fontSize: 36)
+                        SomeHeadline(text: "Learn languages with lyrics translations !", fontSize: 24)
+                     
                         TextField(text: $registerViewHandler.email){
                             Text("Email").foregroundColor(.gray)
                         }
@@ -54,55 +48,44 @@ struct RegisterView: View {
                         }
                         .cornerRadius(18)
                         
-                        Button {
+                        SomeButtonWithActivityIndicator(text: "Sign Up", buttonAction: {
                             self.registerViewHandler.register(appBrain: appBrain)
-                        } label: {
-                            if registerViewHandler.isSignUpLoading {
-                                ActivityIndicator()
-                            }else{
-                                TextWithIcon(text: "Sign Up", systemName: "")
-                            }
-                        }
+                        }, binding: $registerViewHandler.isSignUpLoading)
                         
-                        
-                        Text("Already have an account?")
-                            .padding()
-                            .bold()
-                            .font(.system(size:18))
-                            .foregroundColor(Color("textColor"))
-                            .padding()
-                            .cornerRadius(18)
+                        SomeHeadline(text: "Already have an account?", fontSize: 18)
                         //Handle Login
-                        Button {
+                        SomeButton(text: "Go to Login", buttonAction:{
                             self.appBrain.path.append("Login")
-                        } label: {
-                            TextWithIcon(text: "Go to Login", systemName: "")
-                        }
+                        }, systemName: "arrow")
+                        
                     }//Closing V-Stack
                 }//Closing Z-Stack
                 .navigationBarBackButtonHidden(true)
                 .navigationDestination(for: String.self){ stringVal in
-                    if stringVal == "Login"{
-                        LoginView() //passed here
-                    }else if stringVal == "DefaultLanguage"{
-                        DefaultLanguageView() //passed here
-                    }else if stringVal == "Home"{
-                        HomeView() //passed here
-                    }else if stringVal == "Lyrics"{
+                    switch stringVal {
+                    case "Login":
+                        LoginView()
+                    case "DefaultLanguage":
+                        DefaultLanguageView()
+                    case "Home":
+                        HomeView()
+                    case "Lyrics":
                         if let artist = appBrain.lyricsModel.artist, let song = appBrain.lyricsModel.song, let combinedLyrics = appBrain.lyricsModel.combinedLyrics{
                             LyricsView(artist: artist, song: song, combinedLyrics: combinedLyrics)
                         }
-                    }else if stringVal == "Flashcards"{
+                    case "Flashcards":
                         DecksView()
-                    }else if stringVal == "DeckSettingsView"{
+                    case "DeckSettingsView":
                         DeckSettingsView()
-                    }else if stringVal == "CardsView"{
+                    case "CardsView":
                         CardView()
-                    }else if stringVal == "EditCardsView"{
+                    case "EditCardsView":
                         EditCardsView()
+                    default:
+                        RegisterView()
                     }
                 }
-              
+                
             }//closing NavigationStack
             .onChange(of: scenePhase) { newScenePhase in
                 switch newScenePhase {
@@ -129,7 +112,21 @@ struct HomeView_Previews: PreviewProvider {
     }
 }
 
-
+struct SomeHeadline: View{
+    var text: String
+    var fontSize: CGFloat
+    var body: some View{
+        Text(text)
+            .lineLimit(nil)
+            //.fixedSize(horizontal: false, vertical: true)
+            .frame(width: 300, alignment: .center)
+            .bold()
+            .font(.system(size: fontSize))
+            .foregroundColor(Color("textColor"))
+            .padding()
+            .cornerRadius(18)
+    }
+}
 struct ActivityIndicator: View{
     var body: some View{
         ProgressView()
@@ -149,23 +146,40 @@ struct ActivityIndicator: View{
 struct SomeButton: View{
     var text: String
     let buttonAction: () -> Void
+    var systemName: String?
     
     var body: some View{
         Button {
             buttonAction()
         } label: {
-            Text(text)
-                .bold()
-                .font(.system(size:24))
-                .frame(width: 300, height: 20, alignment: .center)
-                .foregroundColor(Color("textColor"))
-                .padding()
-                .background {
-                    Color("primaryColor")
-                }
-                .cornerRadius(18)
+            if systemName == nil {
+                TextWithIcon(text: text, systemName: "")
+            }else{
+                TextWithIcon(text: text, systemName: systemName ?? "")
+            }
         }
-        
+    }
+}
+struct SomeButtonWithActivityIndicator: View{
+    var text: String
+    let buttonAction: () -> Void
+    var systemName: String?
+    @Binding var binding: Bool
+    
+    var body: some View{
+        Button {
+            buttonAction()
+        } label: {
+            if self.binding{
+                ActivityIndicator()
+            }else{
+                if systemName == nil {
+                    TextWithIcon(text: text, systemName: "")
+                }else{
+                    TextWithIcon(text: text, systemName: systemName!)
+                }
+            }
+        }
     }
 }
 struct TextWithIcon: View{
@@ -179,7 +193,7 @@ struct TextWithIcon: View{
         .bold()
         .font(.system(size:24))
         .frame(width: 300, height: 20, alignment: .center)
-        .foregroundColor(Color("textColor"))
+        .foregroundColor(Color.white)
         .padding()
         .background {
             Color("primaryColor")
