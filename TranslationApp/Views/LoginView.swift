@@ -13,7 +13,7 @@ struct LoginView: View {
         case password
         case none
     }
-    @FocusState private var fieldInFocus: LoginField?
+    @FocusState var fieldInFocus: LoginField?
     @EnvironmentObject var appBrain: AppBrain
     @StateObject var loginViewHandler = LoginViewHandler()
     
