@@ -23,7 +23,7 @@ struct HomeView: View{
                     SomeHeadline(text: "Your free trial has expired, unfortunately you can't subscribe inside the app.", fontSize: 24)
                     TrialExpiredButton(text: "Recognize Song")
                     //handling Quicksearch Input
-                    Input(placeholderText: "Search", binding: $homeViewHandler.searchQuery)
+                    HomeViewSearchInput(homeViewHandler: homeViewHandler)
                     TrialExpiredButton(text: "Quick Search")
                 }else{
                     //Handling target language
@@ -34,9 +34,9 @@ struct HomeView: View{
                         homeViewHandler.isShazamLoading.toggle()
                         appBrain.updateRequestCounter()
                     }, systemName: "shazam.logo.fill", binding: $homeViewHandler.isShazamLoading)
-                     
+                    
                     //handling Quicksearch Input
-                    Input(placeholderText: "Search", binding: $homeViewHandler.searchQuery)
+                    HomeViewSearchInput(homeViewHandler: homeViewHandler)
                     
                     SomeButtonWithActivityIndicator(text: "Quick Search", buttonAction: {
                         homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.targetLanguage.language, appBrain: appBrain)
@@ -75,7 +75,7 @@ struct LoggedInHomeView_Previews: PreviewProvider {
     
     static var previews: some View {
         HomeView()
-        .environmentObject(appBrain)
+            .environmentObject(appBrain)
     }
 }
 
@@ -130,14 +130,14 @@ struct LanguagesMenu: View{
         
     }
 }
-struct Input: View{
+
+struct HomeViewSearchInput: View{
     @EnvironmentObject var appBrain: AppBrain
-    var placeholderText: String
-    @Binding var binding: String
+    @StateObject var homeViewHandler: HomeViewHandler
     
     var body: some View{
-        TextField(text: self.$binding){
-            Text(placeholderText).foregroundColor(Color.gray)
+        TextField(text: $homeViewHandler.searchQuery){
+            Text("Search").foregroundColor(Color.gray)
         }
         .font(.system(size:24))
         .frame(width: 300, height: 20, alignment: .center)
@@ -149,5 +149,9 @@ struct Input: View{
         .cornerRadius(18)
         .autocapitalization(.none)
         .autocorrectionDisabled(true)
+        .onSubmit {
+            homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.targetLanguage.language, appBrain: appBrain)
+        }
+        .submitLabel(SubmitLabel.done)
     }
 }

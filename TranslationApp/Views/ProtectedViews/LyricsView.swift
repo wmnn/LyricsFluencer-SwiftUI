@@ -15,15 +15,8 @@ struct LyricsView: View {
     var artist: String
     var song: String
     var combinedLyrics: [String]
-    @State private var isBackButtonClicked = false
-    @State private var isWebViewShown = false
-    @State private var isAddToDeckViewShown = false
-    
-    @State private var urlString: String = "https://www.google.com"
-    @State private var selectedWord: String = ""
     @EnvironmentObject var appBrain: AppBrain
-    //@Binding var path: NavigationPath
-    
+    @StateObject var lyricsViewHandler = LyricsViewHandler()
     
     var body: some View {
         ZStack{
@@ -36,31 +29,25 @@ struct LyricsView: View {
                     ForEach(0..<self.combinedLyrics.count, id: \.self) { index in
                         if index % 2 == 0 {
                             let line = combinedLyrics[index]
-                            let words = handleSplittingLine(line: line)
+                            let words = lyricsViewHandler.handleSplittingLine(line: line)
                             WrappingHStack(alignment: .leading){
                                 ForEach(0..<words.count, id:\.self){ index in
                                     MenuSubView(
                                         word: String(words[index]),
-                                        selectedWord: $selectedWord,
-                                        urlString: $urlString,
-                                        isWebViewShown: $isWebViewShown,
                                         color: "textColor",
-                                        isAddToDeckViewShown: $isAddToDeckViewShown
+                                        lyricsViewHandler: lyricsViewHandler
                                     )
                                 }
                             }
                         }else{
                             let line = combinedLyrics[index]
-                            let words = handleSplittingLine(line: line)
+                            let words = lyricsViewHandler.handleSplittingLine(line: line)
                             WrappingHStack(alignment: .leading){
                                 ForEach(0..<words.count, id:\.self){ index in
                                     MenuSubView(
                                         word: String(words[index]),
-                                        selectedWord: $selectedWord,
-                                        urlString: $urlString,
-                                        isWebViewShown: $isWebViewShown,
                                         color: "secondaryColor",
-                                        isAddToDeckViewShown: $isAddToDeckViewShown
+                                        lyricsViewHandler: lyricsViewHandler
                                     )
                                 }
                             }//Closing WrappingHStack
@@ -69,11 +56,11 @@ struct LyricsView: View {
                 }//Closing VStack
             }//Closing Scroll View
             
-            if isAddToDeckViewShown{
-                AddWordView(isAddToDeckViewShown: $isAddToDeckViewShown, isWebViewShown: $isWebViewShown, back: selectedWord, selectedWord: $selectedWord)
+            if lyricsViewHandler.isAddToDeckViewShown{
+                AddWordView(lyricsViewHandler: lyricsViewHandler)
             }
-            if isWebViewShown {
-                PopUpWebView(urlString: $urlString, isWebViewShown: $isWebViewShown)
+            if lyricsViewHandler.isWebViewShown {
+                PopUpWebView(lyricsViewHandler: lyricsViewHandler)
             }
             
             
@@ -81,11 +68,9 @@ struct LyricsView: View {
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                if !isWebViewShown{
+                if !lyricsViewHandler.isWebViewShown{
                     Button {
-                        //self.appBrain.lyricsModel.combinedLyrics = []
-                        self.isWebViewShown = false
-                        //self.isBackButtonClicked = true
+                        self.lyricsViewHandler.isWebViewShown = false
                         appBrain.path.removeLast()
                     } label: {
                         HStack{
@@ -98,17 +83,6 @@ struct LyricsView: View {
             }
         }//toolbar
     }//View
-    func handleSplittingLine(line:String) -> [String]{
-        let separator = CharacterSet(charactersIn: " \n")
-        let words = line.components(separatedBy: separator).map { word -> String in
-            if word.hasSuffix("\n") {
-                return String(word.dropLast()) + "\n"
-            } else {
-                return word
-            }
-        }
-        return words
-    }
 }//struct
 
 struct LyricsView_Previews: PreviewProvider {
@@ -116,14 +90,42 @@ struct LyricsView_Previews: PreviewProvider {
         LyricsView(artist: "Apache", song: "Roller", combinedLyrics: ["Hey now, you're an all star bleyblade day date\n", "Get your game on, go play\n", "c", "d"])
     }
 }
+struct MenuSubView: View {
+    var word : String
+    var color : String
+    @StateObject var lyricsViewHandler: LyricsViewHandler
+    
+    var body: some View {
+        Menu{
+            Button {
+                lyricsViewHandler.selectedWord = word
+                lyricsViewHandler.back = word
+                lyricsViewHandler.urlString = "https://www.google.com/search?q=\(word)+meaning"
+                lyricsViewHandler.isAddToDeckViewShown.toggle()
+            } label: {
+                Text("Add to deck")
+            }
+            Button {
+                lyricsViewHandler.selectedWord = word
+                lyricsViewHandler.urlString = "https://www.google.com/search?q=\(word)+meaning"
+                lyricsViewHandler.isWebViewShown.toggle()
+            } label: {
+                Text("Google Meaning")
+            }
+        } label: {
+            Text(word)
+                .font(.system(size:18))
+                .bold()
+                .foregroundColor(Color(color))
+                .padding(.trailing, 2)
+        }
+    }
+}
+
 struct AddWordView: View{
     let db = Firestore.firestore()
-    @Binding var isAddToDeckViewShown: Bool
-    @Binding var isWebViewShown: Bool
-    @State private var front: String = ""
-    @State var back: String
-    @Binding var selectedWord: String
     @EnvironmentObject var appBrain: AppBrain
+    @StateObject var lyricsViewHandler: LyricsViewHandler
     
     var body: some View{
         ZStack{
@@ -157,84 +159,23 @@ struct AddWordView: View{
                 }
                 
                 //Front
-                TextField(text: self.$front){
-                    Text("Front").foregroundColor(.gray)
-                }
-                .font(.system(size:18))
-                .frame(width: 300, height: 20, alignment: .center)
-                .foregroundColor(Color.black)
-                .padding()
-                .background {
-                    Color("inputColor")
-                }
-                .cornerRadius(18)
-                .disableAutocorrection(true)
-                .autocapitalization(.none)
-                
+                SomeTextField(binding: $lyricsViewHandler.front, placeholder: "Front")
                 //Back
-                TextField(text: self.$back){
-                    Text("Back").foregroundColor(.gray)
-                }
-                .font(.system(size:18))
-                .frame(width: 300, height: 20, alignment: .center)
-                .foregroundColor(Color.black)
-                .padding()
-                .background {
-                    Color("inputColor")
-                }
-                .cornerRadius(18)
-                .disableAutocorrection(true)
-                .autocapitalization(.none)
+                SomeTextField(binding: $lyricsViewHandler.back, placeholder: "Back")
                 //Google
-                Button {
-                    isWebViewShown.toggle()
-                } label: {
-                    Text("Google Meaning")
-                        .font(.system(size:24))
-                        .bold()
-                        .frame(width: 300, height: 20, alignment: .center)
-                        .foregroundColor(Color("textColor"))
-                        .padding()
-                        .background {
-                            Color("primaryColor")
-                        }
-                        .cornerRadius(18)
-                    
-                    
+                SomeButton(text: "Google Meaning") {
+                    lyricsViewHandler.isWebViewShown.toggle()
                 }
                 //Add or cancel
                 HStack{
-                    Button {
-                        isAddToDeckViewShown.toggle()
-                    } label: {
-                        Text("Cancel")
-                            .font(.system(size:24))
-                            .bold()
-                            .frame(width: 120, height: 20, alignment: .center)
-                            .foregroundColor(Color.red)
-                            .padding()
-                            .background {
-                                Color("primaryColor")
-                            }
-                            .cornerRadius(18)
-                        
-                        
-                    }
-                    Button {
-                        var _ = appBrain.handleAddToDeck(front: self.front, back: self.back)
-                        isAddToDeckViewShown.toggle()
-                    } label: {
-                        Text("Add")
-                            .font(.system(size:24))
-                            .bold()
-                            .frame(width: 120, height: 20, alignment: .center)
-                            .foregroundColor(Color.green)
-                            .padding()
-                            .background {
-                                Color("primaryColor")
-                            }
-                            .cornerRadius(18)
-                    }
+                    SomeSmallButton(text: "Cancel", buttonAction: {
+                        lyricsViewHandler.isAddToDeckViewShown.toggle()
+                    }, textColor: Color.red)
+                    
+                    SomeSmallButton(text: "Add", buttonAction: {
+                        var _ = appBrain.handleAddToDeck(front: self.lyricsViewHandler.front, back: self.lyricsViewHandler.back)
+                        lyricsViewHandler.isAddToDeckViewShown.toggle()
+                    }, textColor: Color.green)
                 }
             }
         }
@@ -243,25 +184,23 @@ struct AddWordView: View{
     }    
 }
 struct PopUpWebView: View{
-    @Binding var urlString: String
-    @Binding var isWebViewShown: Bool
+    @StateObject var lyricsViewHandler: LyricsViewHandler
+    
     var body: some View{
         ZStack {
             Color.black.opacity(0.4)
                 .ignoresSafeArea()
             
             VStack {
-                WebView(url: URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!)!)
-                //.frame(height: 500.0)
+                WebView(url: URL(string: lyricsViewHandler.urlString.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!)!)
                     .cornerRadius(10)
                     .shadow(color: .black.opacity(0.3), radius: 20.0, x: 5, y: 5)
                 
                 Button("Close") {
-                    self.isWebViewShown = false
+                    self.lyricsViewHandler.isWebViewShown = false
                 }
                 .padding()
             }
-            //.padding()
             .background(Color.white)
             .cornerRadius(10)
             .shadow(radius: 20)
@@ -285,39 +224,5 @@ struct Title: View {
         Text(text)
             .font(.system(size: 24))
             .bold()
-    }
-}
-
-struct MenuSubView: View {
-    var word : String
-    @Binding var selectedWord: String
-    @Binding var urlString: String
-    @Binding var isWebViewShown: Bool
-    var color : String
-    @Binding var isAddToDeckViewShown: Bool
-    
-    var body: some View {
-        Menu{
-            Button {
-                selectedWord = word
-                urlString = "https://www.google.com/search?q=\(selectedWord)+meaning"
-                isAddToDeckViewShown.toggle()
-            } label: {
-                Text("Add to deck")
-            }
-            Button {
-                selectedWord = word
-                urlString = "https://www.google.com/search?q=\(selectedWord)+meaning"
-                isWebViewShown.toggle()
-            } label: {
-                Text("Google Meaning")
-            }
-        } label: {
-            Text(word)
-                .font(.system(size:18))
-                .bold()
-                .foregroundColor(Color(color))
-                .padding(.trailing, 2)
-        }
     }
 }

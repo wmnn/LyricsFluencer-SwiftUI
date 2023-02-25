@@ -202,3 +202,45 @@ struct TextWithIcon: View{
         
     }
 }
+struct SomeTextField: View{
+    @Binding var binding: String
+    var placeholder: String
+    
+    var body: some View{
+        TextField(text: $binding){
+            Text(placeholder).foregroundColor(.gray)
+        }
+        .font(.system(size:18))
+        .frame(width: 300, height: 20, alignment: .center)
+        .foregroundColor(Color.black)
+        .padding()
+        .background {
+            Color("inputColor")
+        }
+        .cornerRadius(18)
+        .disableAutocorrection(true)
+        .autocapitalization(.none)
+    }
+}
+struct SomeSmallButton: View{
+    var text: String
+    let buttonAction: () -> Void
+    var textColor: Color
+    var body: some View{
+        Button {
+            buttonAction()
+        } label: {
+            Text(text)
+                .font(.system(size:24))
+                .bold()
+                .frame(width: 120, height: 20, alignment: .center)
+                .foregroundColor(textColor)
+                .padding()
+                .background {
+                    Color("primaryColor")
+                }
+                .cornerRadius(18)
+
+        }
+    }
+}
