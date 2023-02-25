@@ -13,17 +13,13 @@ struct RegisterView: View {
     @Environment(\.scenePhase) var scenePhase
     @EnvironmentObject var appBrain: AppBrain
     @StateObject var registerViewHandler = RegisterViewHandler()
-    @State private var path = NavigationPath()
-    let db = Firestore.firestore()
-    let defaults = UserDefaults.standard
     
     var body: some View {
         VStack{
-            NavigationStack(path: $path){
+            NavigationStack(path: $appBrain.path){
                 ZStack{
                     Color("appColor")
                         .ignoresSafeArea()
-                    
                     VStack {
                         Text("Learn languages with lyrics translations !")
                             .padding()
@@ -59,24 +55,15 @@ struct RegisterView: View {
                         .cornerRadius(18)
                         
                         Button {
-                            self.register()
+                            self.registerViewHandler.register(appBrain: appBrain)
                         } label: {
                             if registerViewHandler.isSignUpLoading {
                                 ActivityIndicator()
                             }else{
-                                Text("Sign Up")
-                                    .bold()
-                                    .font(.system(size:18))
-                                    .frame(width: 300, height: 20, alignment: .center)
-                                    .foregroundColor(Color.black)
-                                    .padding()
-                                    .background {
-                                        Color("primaryColor")
-                                    }
-                                    .cornerRadius(18)                                 
+                                TextWithIcon(text: "Sign Up", systemName: "")
                             }
-                            
                         }
+                        
                         
                         Text("Already have an account?")
                             .padding()
@@ -86,21 +73,33 @@ struct RegisterView: View {
                             .padding()
                             .cornerRadius(18)
                         //Handle Login
-                        Navigator(value: "Login", text: "Login")
+                        Button {
+                            self.appBrain.path.append("Login")
+                        } label: {
+                            TextWithIcon(text: "Go to Login", systemName: "")
+                        }
                     }//Closing V-Stack
                 }//Closing Z-Stack
                 .navigationBarBackButtonHidden(true)
                 .navigationDestination(for: String.self){ stringVal in
                     if stringVal == "Login"{
-                        LoginView(path: $path) //passed here
+                        LoginView() //passed here
                     }else if stringVal == "DefaultLanguage"{
-                        DefaultLanguageView(path: $path) //passed here
+                        DefaultLanguageView() //passed here
                     }else if stringVal == "Home"{
-                        HomeView(path: $path) //passed here
+                        HomeView() //passed here
                     }else if stringVal == "Lyrics"{
                         if let artist = appBrain.lyricsModel.artist, let song = appBrain.lyricsModel.song, let combinedLyrics = appBrain.lyricsModel.combinedLyrics{
-                            LyricsView(artist: artist, song: song, combinedLyrics: combinedLyrics, path: $path)
+                            LyricsView(artist: artist, song: song, combinedLyrics: combinedLyrics)
                         }
+                    }else if stringVal == "Flashcards"{
+                        DecksView()
+                    }else if stringVal == "DeckSettingsView"{
+                        DeckSettingsView()
+                    }else if stringVal == "CardsView"{
+                        CardView()
+                    }else if stringVal == "EditCardsView"{
+                        EditCardsView()
                     }
                 }
               
@@ -109,7 +108,7 @@ struct RegisterView: View {
                 switch newScenePhase {
                 case .active:
                     print("App is active")
-                    handleAutomaticNavigation()
+                    self.registerViewHandler.handleAutomaticNavigation(appBrain: appBrain)
                 case .inactive:
                     print("App is inactive")
                 case .background:
@@ -118,50 +117,15 @@ struct RegisterView: View {
                     print("Interesting: Unexpected new value.")
                 }
             }
-            /*VStack{
-                Text(String(path.count))
-                    .foregroundColor(Color("textColor"))
-                    .zIndex(2)
-            }*/
         }
-    }
-    func handleAutomaticNavigation(){
-        registerViewHandler.isLoggedIn = false
-        if Auth.auth().currentUser != nil {
-            let defaultLanguage = defaults.string(forKey: "defaultLanguage")
-            let defaultLanguageName = defaults.string(forKey: "defaultLanguageName")
-            let requests = defaults.string(forKey: "requests")
-            let subscriptionPlan = defaults.string(forKey: "subscriptionPlan")
-            
-            if defaultLanguage != nil, defaultLanguageName != nil, requests != nil, subscriptionPlan != nil{
-                appBrain.targetLanguage.language = defaultLanguage!
-                appBrain.targetLanguage.name = defaultLanguageName!
-                registerViewHandler.isLoggedIn = true
-            }else{
-                //append register
-            }
-        }else{
-            self.appBrain.handleDeleteLocalStorage()
-        }
-    }
-    func register(){
-        self.registerViewHandler.isSignUpLoading = true
-        Auth.auth().createUser(withEmail: self.registerViewHandler.email, password: self.registerViewHandler.password) { authResult, error in
-            if let e = error{
-                print(e.localizedDescription)
-            }else{
-                print("Registered")
-                //Navigate to setDefaultLanguage
-                self.path.append("DefaultLanguage")
-            }
-        }
-        self.registerViewHandler.isSignUpLoading = false
     }
 }
 
 struct HomeView_Previews: PreviewProvider {
+    static let appBrain = AppBrain()
     static var previews: some View {
         RegisterView()
+            .environmentObject(appBrain)
     }
 }
 
@@ -169,11 +133,11 @@ struct HomeView_Previews: PreviewProvider {
 struct ActivityIndicator: View{
     var body: some View{
         ProgressView()
-            .progressViewStyle(CircularProgressViewStyle(tint: .black))
+            .progressViewStyle(CircularProgressViewStyle(tint: .white))
             .font(.system(size:24))
             .bold()
             .frame(width: 300, height: 20, alignment: .center)
-            .foregroundColor(Color.black)
+            .foregroundColor(Color("textColor"))
             .padding()
             .background {
                 Color("primaryColor")
@@ -181,21 +145,46 @@ struct ActivityIndicator: View{
             .cornerRadius(18)
     }
 }
-struct Navigator: View{
-    var value: String
+
+struct SomeButton: View{
     var text: String
+    let buttonAction: () -> Void
+    
     var body: some View{
-        NavigationLink(value: value) {
-                Text(text)
-            }
-            .bold()
-            .font(.system(size:18))
-            .frame(width: 300, height: 20, alignment: .center)
-            .foregroundColor(Color.black)
-            .padding()
-            .background {
-                Color("primaryColor")
-            }
-            .cornerRadius(18)
+        Button {
+            buttonAction()
+        } label: {
+            Text(text)
+                .bold()
+                .font(.system(size:24))
+                .frame(width: 300, height: 20, alignment: .center)
+                .foregroundColor(Color("textColor"))
+                .padding()
+                .background {
+                    Color("primaryColor")
+                }
+                .cornerRadius(18)
+        }
+        
+    }
+}
+struct TextWithIcon: View{
+    var text: String
+    var systemName: String
+    var body: some View{
+        HStack{
+            Text(text)
+            Image(systemName: systemName)
+        }
+        .bold()
+        .font(.system(size:24))
+        .frame(width: 300, height: 20, alignment: .center)
+        .foregroundColor(Color("textColor"))
+        .padding()
+        .background {
+            Color("primaryColor")
+        }
+        .cornerRadius(18)
+        
     }
 }
