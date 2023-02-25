@@ -13,7 +13,7 @@ struct DefaultLanguageView: View {
     let db = Firestore.firestore()
     @State var targetLanguage = LanguageModel(language: "None", name: "Undefined")
     @EnvironmentObject var appBrain: AppBrain
-    @Binding var path: NavigationPath
+    //@Binding var path: NavigationPath
     
     var body: some View {
         ZStack{
@@ -48,7 +48,7 @@ struct DefaultLanguageView: View {
                 }
                 
                 Button {
-                    handleDefaultLanguage(targetLanguage)
+                    handleData(targetLanguage)
                 } label: {
                     Text("Save choosen language")
                     .font(.system(size:24))
@@ -65,7 +65,7 @@ struct DefaultLanguageView: View {
         }
         .navigationBarBackButtonHidden(true)
     }
-    func handleDefaultLanguage(_ targetLanguage: LanguageModel){
+    func handleData(_ targetLanguage: LanguageModel){
         let uid = getCurrentUser()
         if uid != ""{
             createDocumentWithUI(uid, targetLanguage)
@@ -77,7 +77,7 @@ struct DefaultLanguageView: View {
             defaults.set("free", forKey: "subscriptionPlan")
             appBrain.targetLanguage.language = targetLanguage.language
             appBrain.targetLanguage.name = targetLanguage.name
-            path.append("Home")
+            appBrain.path.append("Home")
         }
     }
     func getCurrentUser() -> String{
@@ -95,6 +95,6 @@ struct DefaultLanguageView: View {
 
 struct SetDefaultLanguageView_Previews: PreviewProvider {
     static var previews: some View {
-        DefaultLanguageView(path: .constant(NavigationPath()))
+        DefaultLanguageView()
     }
 }

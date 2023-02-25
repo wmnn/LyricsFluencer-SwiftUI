@@ -9,6 +9,7 @@ import SwiftUI
 import Foundation
 import WrappingHStack
 import WebKit
+import FirebaseFirestore
 
 struct LyricsView: View {
     var artist: String
@@ -16,56 +17,66 @@ struct LyricsView: View {
     var combinedLyrics: [String]
     @State private var isBackButtonClicked = false
     @State private var isWebViewShown = false
+    @State private var isAddToDeckViewShown = false
+    
     @State private var urlString: String = "https://www.google.com"
     @State private var selectedWord: String = ""
     @EnvironmentObject var appBrain: AppBrain
-    @Binding var path: NavigationPath
+    //@Binding var path: NavigationPath
+    
     
     var body: some View {
         ZStack{
             Color("appColor")
-                ScrollView{
-                    VStack(alignment: .leading){
-                        Title(text: "Artist: \(artist)")
-                        Title(text: "Song: \(song)")
-                            .padding(.bottom)
-                        ForEach(0..<self.combinedLyrics.count, id: \.self) { index in
-                            if index % 2 == 0 {
-                                let line = combinedLyrics[index]
-                                let words = handleSplittingLine(line: line)
-                                WrappingHStack(alignment: .leading){
-                                    ForEach(0..<words.count, id:\.self){ index in
-                                        MenuSubView(
-                                            word: String(words[index]),
-                                            selectedWord: $selectedWord,
-                                            urlString: $urlString,
-                                            isWebViewShown: $isWebViewShown,
-                                            color: "textColor"
-                                        )
-                                    }
+            ScrollView{
+                VStack(alignment: .leading){
+                    Title(text: "Artist: \(artist)")
+                    Title(text: "Song: \(song)")
+                        .padding(.bottom)
+                    ForEach(0..<self.combinedLyrics.count, id: \.self) { index in
+                        if index % 2 == 0 {
+                            let line = combinedLyrics[index]
+                            let words = handleSplittingLine(line: line)
+                            WrappingHStack(alignment: .leading){
+                                ForEach(0..<words.count, id:\.self){ index in
+                                    MenuSubView(
+                                        word: String(words[index]),
+                                        selectedWord: $selectedWord,
+                                        urlString: $urlString,
+                                        isWebViewShown: $isWebViewShown,
+                                        color: "textColor",
+                                        isAddToDeckViewShown: $isAddToDeckViewShown
+                                    )
                                 }
-                            }else{
-                                let line = combinedLyrics[index]
-                                let words = handleSplittingLine(line: line)
-                                WrappingHStack(alignment: .leading){
-                                    ForEach(0..<words.count, id:\.self){ index in
-                                        MenuSubView(
-                                            word: String(words[index]),
-                                            selectedWord: $selectedWord,
-                                            urlString: $urlString,
-                                            isWebViewShown: $isWebViewShown,
-                                            color: "primaryColor"
-                                        )
-                                    }
-                                }//Closing WrappingHStack
-                            }//Closing Else
-                        }//Closing ForEach Line
-                    }//Closing VStack
-                }//Closing Scroll View
+                            }
+                        }else{
+                            let line = combinedLyrics[index]
+                            let words = handleSplittingLine(line: line)
+                            WrappingHStack(alignment: .leading){
+                                ForEach(0..<words.count, id:\.self){ index in
+                                    MenuSubView(
+                                        word: String(words[index]),
+                                        selectedWord: $selectedWord,
+                                        urlString: $urlString,
+                                        isWebViewShown: $isWebViewShown,
+                                        color: "secondaryColor",
+                                        isAddToDeckViewShown: $isAddToDeckViewShown
+                                    )
+                                }
+                            }//Closing WrappingHStack
+                        }//Closing Else
+                    }//Closing ForEach Line
+                }//Closing VStack
+            }//Closing Scroll View
             
+            if isAddToDeckViewShown{
+                AddWordView(isAddToDeckViewShown: $isAddToDeckViewShown, isWebViewShown: $isWebViewShown, back: selectedWord, selectedWord: $selectedWord)
+            }
             if isWebViewShown {
                 PopUpWebView(urlString: $urlString, isWebViewShown: $isWebViewShown)
             }
+            
+            
         }//Closing ZStack
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -75,7 +86,7 @@ struct LyricsView: View {
                         //self.appBrain.lyricsModel.combinedLyrics = []
                         self.isWebViewShown = false
                         //self.isBackButtonClicked = true
-                        path.removeLast()
+                        appBrain.path.removeLast()
                     } label: {
                         HStack{
                             Image(systemName: "arrow.left")
@@ -102,8 +113,139 @@ struct LyricsView: View {
 
 struct LyricsView_Previews: PreviewProvider {
     static var previews: some View {
-        LyricsView(artist: "Apache", song: "Roller", combinedLyrics: ["Hey now, you're an all star bleyblade day date\n", "Get your game on, go play\n", "c", "d"], path: .constant(NavigationPath()))
+        LyricsView(artist: "Apache", song: "Roller", combinedLyrics: ["Hey now, you're an all star bleyblade day date\n", "Get your game on, go play\n", "c", "d"])
     }
+}
+struct AddWordView: View{
+    let db = Firestore.firestore()
+    @Binding var isAddToDeckViewShown: Bool
+    @Binding var isWebViewShown: Bool
+    @State private var front: String = ""
+    @State var back: String
+    @Binding var selectedWord: String
+    @EnvironmentObject var appBrain: AppBrain
+    
+    var body: some View{
+        ZStack{
+            Color("secondaryColor")
+            VStack{
+                //Menu
+                Menu{
+                    ForEach(appBrain.decks, id: \.self) { deck in
+                        Button {
+                            appBrain.selectedDeck.deckName = deck.deckName
+                            //appBrain.selectedDeck.cards = deck.cards
+                        } label: {
+                            Text(deck.deckName)
+                        }
+                    }
+                } label: {
+                    Label(
+                        title: {Text("Selected Deck: \(appBrain.selectedDeck.deckName)")
+                                .font(.system(size:24))
+                                .bold()
+                                .frame(width: 300, height: 20, alignment: .center)
+                                .foregroundColor(Color("textColor"))
+                                .padding()
+                                .background {
+                                    Color("primaryColor")
+                                }
+                                .cornerRadius(18)
+                        },
+                        icon: { Image(systemName: "")}
+                    )
+                }
+                
+                //Front
+                TextField(text: self.$front){
+                    Text("Front").foregroundColor(.gray)
+                }
+                .font(.system(size:18))
+                .frame(width: 300, height: 20, alignment: .center)
+                .foregroundColor(Color.black)
+                .padding()
+                .background {
+                    Color("inputColor")
+                }
+                .cornerRadius(18)
+                .disableAutocorrection(true)
+                .autocapitalization(.none)
+                
+                //Back
+                TextField(text: self.$back){
+                    Text("Back").foregroundColor(.gray)
+                }
+                .font(.system(size:18))
+                .frame(width: 300, height: 20, alignment: .center)
+                .foregroundColor(Color.black)
+                .padding()
+                .background {
+                    Color("inputColor")
+                }
+                .cornerRadius(18)
+                .disableAutocorrection(true)
+                .autocapitalization(.none)
+                //Google
+                Button {
+                    isWebViewShown.toggle()
+                } label: {
+                    Text("Google Meaning")
+                        .font(.system(size:24))
+                        .bold()
+                        .frame(width: 300, height: 20, alignment: .center)
+                        .foregroundColor(Color("textColor"))
+                        .padding()
+                        .background {
+                            Color("primaryColor")
+                        }
+                        .cornerRadius(18)
+                    
+                    
+                }
+                //Add or cancel
+                HStack{
+                    Button {
+                        isAddToDeckViewShown.toggle()
+                    } label: {
+                        Text("Cancel")
+                            .font(.system(size:24))
+                            .bold()
+                            .frame(width: 120, height: 20, alignment: .center)
+                            .foregroundColor(Color.red)
+                            .padding()
+                            .background {
+                                Color("primaryColor")
+                            }
+                            .cornerRadius(18)
+                        
+                        
+                    }
+                    Button {
+                        var _ = appBrain.handleAddToDeck(front: self.front, back: self.back)
+                        isAddToDeckViewShown.toggle()
+                    } label: {
+                        Text("Add")
+                            .font(.system(size:24))
+                            .bold()
+                            .frame(width: 120, height: 20, alignment: .center)
+                            .foregroundColor(Color.green)
+                            .padding()
+                            .background {
+                                Color("primaryColor")
+                            }
+                            .cornerRadius(18)
+                    }
+                }
+            }
+        }
+        .frame(width: 350, height: 400)
+        .cornerRadius(10)
+        
+        
+        
+    }
+    
+    
 }
 struct PopUpWebView: View{
     @Binding var urlString: String
@@ -115,7 +257,7 @@ struct PopUpWebView: View{
             
             VStack {
                 WebView(url: URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!)!)
-                    //.frame(height: 500.0)
+                //.frame(height: 500.0)
                     .cornerRadius(10)
                     .shadow(color: .black.opacity(0.3), radius: 20.0, x: 5, y: 5)
                 
@@ -157,11 +299,14 @@ struct MenuSubView: View {
     @Binding var urlString: String
     @Binding var isWebViewShown: Bool
     var color : String
+    @Binding var isAddToDeckViewShown: Bool
     
     var body: some View {
         Menu{
             Button {
-                print("Pressed")
+                selectedWord = word
+                urlString = "https://www.google.com/search?q=\(selectedWord)+meaning"
+                isAddToDeckViewShown.toggle()
             } label: {
                 Text("Add to deck")
             }

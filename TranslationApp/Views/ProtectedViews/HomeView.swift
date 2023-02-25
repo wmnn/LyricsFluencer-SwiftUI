@@ -11,13 +11,12 @@ import FirebaseFirestore
 
 struct HomeView: View{
     @EnvironmentObject var appBrain: AppBrain
-    @Binding var path: NavigationPath
+    //@Binding var path: NavigationPath
     @State private var homePath = NavigationPath()
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
     
     var body: some View {
-        //NavigationStack(path: $homePath){
         ZStack{
             Color("appColor")
                 .ignoresSafeArea()
@@ -35,14 +34,14 @@ struct HomeView: View{
                     TrialExpiredButton(text: "Recognize Song")
                 }else{
                     Button {
-                        handleShazam()
+                        appBrain.handleShazam()
                         appBrain.isShazamLoading.toggle()
-                        updateRequestCounter()
+                        appBrain.updateRequestCounter()
                     } label: {
                         if appBrain.isShazamLoading {
-                            ActivityIndicatorButton()
+                            ActivityIndicator()
                         }else{
-                            ButtonWithIcon(text: "Recognize Song ", systemName: "shazam.logo.fill")
+                            TextWithIcon(text: "Recognize Song ", systemName: "shazam.logo.fill")
                         }
                     }
                 }
@@ -56,12 +55,16 @@ struct HomeView: View{
                         handleQuickSearch(searchQuery: appBrain.searchQuery, target: appBrain.targetLanguage.language)
                     } label: {
                         if appBrain.isQuickSearchLoading {
-                            ActivityIndicatorButton()
+                            ActivityIndicator()
                         } else{
-                            ButtonWithIcon(text: "Quick Search", systemName: "magnifyingglass")
+                            TextWithIcon(text: "Quick Search", systemName: "magnifyingglass")
                         }
                     }
                 }//else
+                //Flashcard
+                SomeButton(text: "Your Flashcards") {
+                    self.appBrain.path.append("Flashcards")
+                }
             }//Closing VStack
         }//Closing ZStack
         .navigationBarBackButtonHidden(true)
@@ -72,11 +75,11 @@ struct HomeView: View{
                         //print("Settings tapped")
                     }
                     Button("Logout") {
-                        logout()
+                        appBrain.logout()
                     }
                 }label: {
                     Image(systemName: "gearshape")
-                        .foregroundColor(Color("primaryColor"))
+                        .foregroundColor(Color("textColor"))
                 }
             }
         }
@@ -84,9 +87,7 @@ struct HomeView: View{
             appBrain.handleTrial()
         })
     }
-    func handleShazam(){
-        
-    }
+
     func handleQuickSearch(searchQuery: String, target: String) {
         self.appBrain.isQuickSearchLoading = true
         let json: [String: String] = ["searchQuery": searchQuery, "target": target]
@@ -119,10 +120,10 @@ struct HomeView: View{
                             let isCombinedLyrics = await self.handleCombineLyrics(lyricsApiData)
                             if isCombinedLyrics{
                                 print("inside is combined lyrics")
-                                self.updateRequestCounter()
+                                self.appBrain.updateRequestCounter()
                                 self.appBrain.isQuickSearchLoading = false
                                 DispatchQueue.main.async {
-                                    path.append("Lyrics")
+                                    appBrain.path.append("Lyrics")
                                 }
                             }else{
                                 
@@ -171,49 +172,14 @@ struct HomeView: View{
             return nil
         }
     }
-    func updateRequestCounter(){
-        let uid = getCurrentUser()
-        let userRef = db.collection("users").document(uid)
-        userRef.updateData(["requests": FieldValue.increment(Int64(1))]) { (error) in
-            if error == nil {
-                print("Updated request counter")
-            }else{
-                print("not updated")
-            }
-        }
-        if let requests = defaults.string(forKey: "requests"){
-            defaults.set((Int(requests) ?? 99) + 1 , forKey: "requests")
-            DispatchQueue.main.async {
-                self.appBrain.handleTrial()
-            }
-        }
-    }
-    func getCurrentUser() -> String{
-        guard let uid = Auth.auth().currentUser?.uid else{
-            print("User not found")
-            return ""
-        }
-        return uid
-    }
-    func logout(){
-        let firebaseAuth = Auth.auth()
-        do {
-            try firebaseAuth.signOut()
-            self.appBrain.handleDeleteLocalStorage()
-            self.path = NavigationPath()
-        } catch let signOutError as NSError {
-            print("Error signing out: %@", signOutError)
-        }
-    }
 }
 
 struct LoggedInHomeView_Previews: PreviewProvider {
     static let appBrain = AppBrain()
-    @State private var homePath = NavigationPath()
+    //@State private var homePath = NavigationPath()
     
     static var previews: some View {
-        HomeView(path: .constant(NavigationPath())
-        )
+        HomeView()
         .environmentObject(appBrain)
     }
 }
@@ -236,42 +202,7 @@ struct TrialExpiredButton: View{
         .cornerRadius(18)
     }
 }
-struct ActivityIndicatorButton: View{
-    var body: some View{
-        ProgressView()
-            .progressViewStyle(CircularProgressViewStyle(tint: .black))
-            .font(.system(size:24))
-            .bold()
-            .frame(width: 300, height: 20, alignment: .center)
-            .foregroundColor(Color.black)
-            .padding()
-            .background {
-                Color("primaryColor")
-            }
-            .cornerRadius(18)
-        
-    }
-}
-struct ButtonWithIcon: View{
-    var text: String
-    var systemName: String
-    var body: some View{
-        HStack{
-            Text(text)
-            Image(systemName: systemName)
-        }
-        .bold()
-        .font(.system(size:24))
-        .frame(width: 300, height: 20, alignment: .center)
-        .foregroundColor(Color.black)
-        .padding()
-        .background {
-            Color("primaryColor")
-        }
-        .cornerRadius(18)
-        
-    }
-}
+
 struct LanguagesMenu: View{
     @EnvironmentObject var appBrain: AppBrain
     
@@ -291,7 +222,7 @@ struct LanguagesMenu: View{
                         .font(.system(size:24))
                         .bold()
                         .frame(width: 300, height: 20, alignment: .center)
-                        .foregroundColor(Color.black)
+                        .foregroundColor(Color("textColor"))
                         .padding()
                         .background {
                             Color("primaryColor")
@@ -320,5 +251,7 @@ struct Input: View{
             Color("inputColor")
         }
         .cornerRadius(18)
+        .autocapitalization(.none)
+        .autocorrectionDisabled(true)
     }
 }
