@@ -11,13 +11,9 @@ import FirebaseFirestore
 
 class AppBrain: ObservableObject{
     @Published var path: NavigationPath = NavigationPath()
-    @Published var isShazamLoading = false
     @Published var targetLanguage = LanguageModel(language: "None", name: "Undefined")
-    @Published var isQuickSearchLoading = false
     @Published var lyricsModel = LyricsModel()
     @Published var isTrialExpired = false
-    @Published var searchQuery: String = ""
-    @Published var isLoggedOut = false
     @Published var isLyrics = false
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
@@ -71,9 +67,7 @@ class AppBrain: ObservableObject{
             print("Error signing out: %@", signOutError)
         }
     }
-    func handleShazam(){
-        
-    }
+    
     func updateRequestCounter(){
         let uid = self.getCurrentUser()
         let userRef = db.collection("users").document(uid)

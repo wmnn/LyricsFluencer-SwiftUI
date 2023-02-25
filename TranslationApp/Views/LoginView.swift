@@ -6,8 +6,6 @@
 //
 
 import SwiftUI
-import FirebaseAuth
-import FirebaseFirestore
 
 struct LoginView: View {  
     enum LoginField: Hashable {
@@ -16,13 +14,8 @@ struct LoginView: View {
         case none
     }
     @FocusState private var fieldInFocus: LoginField?
-    let defaults = UserDefaults.standard
-    let db = Firestore.firestore()
-    @State var email: String = ""
-    @State var password: String = ""
     @EnvironmentObject var appBrain: AppBrain
-    @State var isLoginLoading = false
-    
+    @StateObject var loginViewHandler = LoginViewHandler()
     
     var body: some View {
         ZStack{
@@ -30,15 +23,9 @@ struct LoginView: View {
                 .ignoresSafeArea()
             
             VStack{
-                Text("Login")
-                    .padding()
-                    .bold()
-                    .font(.system(size:32))
-                    .foregroundColor(Color("textColor"))
-                    .padding()
-                    .cornerRadius(18)
+                SomeHeadline(text: "Login", fontSize: 32)
                 
-                TextField(text: self.$email){
+                TextField(text: self.$loginViewHandler.email){
                     Text("Email").foregroundColor(.gray)
                 }
                     .font(.system(size:18))
@@ -57,7 +44,7 @@ struct LoginView: View {
                     .focused($fieldInFocus ,equals: .email)
                     
                 
-                SecureField(text: self.$password){
+                SecureField(text: self.$loginViewHandler.password){
                     Text("Password").foregroundColor(.gray)
                 }
                     .font(.system(size:18))
@@ -70,82 +57,20 @@ struct LoginView: View {
                     .cornerRadius(18)
                     .onSubmit {
                         fieldInFocus = nil
-                        login(email: email, password: password)
+                        loginViewHandler.login(email: loginViewHandler.email, password: loginViewHandler.password, appBrain: appBrain)
                     }
                     .submitLabel(SubmitLabel.done)
                     .focused($fieldInFocus ,equals: .password)
                 
-                Button {
+                SomeButtonWithActivityIndicator(text: "Login", buttonAction: {
                     self.fieldInFocus = LoginField.none
-                    login(email: email, password: password)
-                } label: {
-                    if self.isLoginLoading{
-                        ActivityIndicator()
-                    }else{
-                        TextWithIcon(text: "Login", systemName: "arrow.right")
-                    }
-                }
+                    self.loginViewHandler.login(email: loginViewHandler.email, password: loginViewHandler.password, appBrain: appBrain)
+                }, systemName: "arrow.right", binding: $loginViewHandler.isLoginLoading)
+                
                 .navigationTitle("Login")
             }
         }
-    }
-    func login(email: String, password: String){
-        self.isLoginLoading = true
-        Auth.auth().signIn(withEmail: email, password: password) { result, error in
-            guard let user = result?.user, error == nil else {
-                print(error?.localizedDescription ?? "Unknown error")
-                self.isLoginLoading = false
-                return
-            }
-            self.fetchingUserData(user.uid)
-        }
-    }
-    func fetchingUserData(_ uid: String){
-            db.collection("users").document(uid).getDocument { (document, error) in
-                if let document = document, document.exists {
-                    let subscriptionPlan = document.get("subscriptionPlan") as? String ?? "none"
-                    self.defaults.set(subscriptionPlan, forKey: "subscriptionPlan")
-                    
-                    if let requests = document.get("requests") as? Int{
-                        self.defaults.set(requests, forKey: "requests")
-                        self.appBrain.handleTrial()
-                    }
-                    if let defaultLanguage = document.get("defaultLanguage") as? String{
-                        self.defaults.set(defaultLanguage, forKey: "defaultLanguage")
-                        self.appBrain.targetLanguage.language = defaultLanguage
-                        
-                        let defaultLanguageName = self.appBrain.getLanguageName(defaultLanguage)
-                        self.defaults.set(defaultLanguageName, forKey: "defaultLanguageName")
-                        self.appBrain.targetLanguage.name = defaultLanguageName!
-                    }
-                    
-                    DispatchQueue.main.async {
-                        self.appBrain.fetchingDecks()
-                        self.isLoginLoading = false
-                        self.handleLoginNavigation()
-                    }
-                } else {
-                    //print("Document does not exist")
-                    //Navigate to set defaultLanguage
-                }
-            }
-    }
-    
-
-    
-    func handleLoginNavigation(){
-        let subscriptionPlan = defaults.string(forKey: "subscriptionPlan")
-        if subscriptionPlan != nil{
-            if(subscriptionPlan == "none"){
-                appBrain.path.append("DefaultLanguage")
-            }else{
-                appBrain.path.append("Home")
-            }
-        }else{
-                appBrain.path.append("DefaultLanguage")
-        }
-    }
-    
+    }    
 }
 
 struct LoginView_Previews: PreviewProvider {
