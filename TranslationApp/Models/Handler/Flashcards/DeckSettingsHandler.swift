@@ -45,7 +45,7 @@ class DeckSettingsHandler: ObservableObject{
                     if let err = err{
                         print("Error while deleting deck \(err)")
                     }else{
-                        var newDecks = appBrain.decks.filter { deck in
+                        let newDecks = appBrain.decks.filter { deck in
                             return deck.deckName != appBrain.selectedDeck.deckName
                         }
                         appBrain.decks = newDecks

@@ -16,9 +16,9 @@ class CardViewHandler: ObservableObject{
     @Published var index : Int = 0
     
     func handleGood(appBrain: AppBrain){
-        var documentID = filteredDeck[index].id
-        var documentFront = filteredDeck[index].front
-        var documentBack = filteredDeck[index].back
+        let documentID = filteredDeck[index].id
+        let documentFront = filteredDeck[index].front
+        let documentBack = filteredDeck[index].back
         let uid = appBrain.getCurrentUser()
         var interval = filteredDeck[index].interval
         if interval == 0{

@@ -22,7 +22,13 @@ class RegisterViewHandler: ObservableObject{
             if let e = error{
                 print(e.localizedDescription)
             }else{
-               //User is registered redirecting him to DefaultLanguage
+                //Adding User to db
+                let uid = appBrain.getCurrentUser()
+                let data: [String: Any] = ["subscriptionPlan": "free"]
+                self.db.collection("users").document(uid).setData(data, merge: true)
+                //Saving locally subscriotionPlan
+                self.defaults.set("free", forKey: "subscriptionPlan")
+                //Redirecting
                 appBrain.path.append("DefaultLanguage")
             }
         }

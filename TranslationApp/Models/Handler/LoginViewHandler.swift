@@ -60,12 +60,9 @@ class LoginViewHandler: ObservableObject{
     
     func handleLoginNavigation(appBrain: AppBrain){
         let subscriptionPlan = defaults.string(forKey: "subscriptionPlan")
-        if subscriptionPlan != nil{
-            if(subscriptionPlan == "none"){
-                appBrain.path.append("DefaultLanguage")
-            }else{
-                appBrain.path.append("Home")
-            }
+        let defaultLanguage = defaults.string(forKey: "defaultLanguage")
+        if subscriptionPlan != nil && defaultLanguage != nil{
+            appBrain.path.append("Home")
         }else{
                 appBrain.path.append("DefaultLanguage")
         }
