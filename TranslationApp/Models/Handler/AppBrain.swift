@@ -15,6 +15,7 @@ class AppBrain: ObservableObject{
     @Published var lyricsModel = LyricsModel()
     @Published var isTrialExpired = false
     @Published var isLyrics = false
+    @Published var isSubscriptionPlanChecked = false
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
     
@@ -44,10 +45,12 @@ class AppBrain: ObservableObject{
     }
     func handleDeleteLocalStorage(){
         defaults.removeObject(forKey: "subscriptionPlan")
+        defaults.removeObject(forKey: "subscriptionStatus")
         defaults.removeObject(forKey: "defaultLanguage")
         defaults.removeObject(forKey: "defaultLanguageName")
         defaults.removeObject(forKey: "requests")
         defaults.removeObject(forKey: "decks")
+        self.isSubscriptionPlanChecked = false
     }
     func getLanguageName(_ languageCode: String) -> String?{
         for language in STATIC.languages {
@@ -169,6 +172,69 @@ class AppBrain: ObservableObject{
                         }
                     }
                 }
+        }
+    }
+   
+    
+    func checkSubscriptionPlan(){
+        if !self.isSubscriptionPlanChecked{
+            let currentUser = Auth.auth().currentUser
+            currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
+                if let error = error {
+                    // Handle error
+                    print(error)
+                    return;
+                }
+                let urlString = "http://localhost:8080/payment/plan?token=\(idToken ?? "")"
+                if let url = URL(string: urlString){
+                    
+                    var request = URLRequest(url: url)
+                    request.httpMethod = "GET"
+                    print(url)
+                    
+                    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                        if let err = error {
+                            print("Error while sending request: \(err)")
+                            return
+                        }
+                        
+                        guard let data = data, let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
+                            print("Error while receiving response")
+                            return
+                        }
+                        print("Success: \(data)")
+                        if let planApiData: PlanApiData = self.parsePlanApiJSON(data){
+                            DispatchQueue.main.async {
+                                Task {
+                                    print(planApiData)
+                                    self.isSubscriptionPlanChecked = true
+                                    self.defaults.set(planApiData.subscriptionPlan, forKey: "subscriptionPlan")
+                                    self.defaults.set(planApiData.subscriptionStatus ?? "", forKey: "subscriptionStatus")
+                                    if planApiData.subscriptionStatus == "EXPIRED" {
+                                        self.isTrialExpired = true
+                                    }else if planApiData.subscriptionStatus == "ACTIVE" {
+                                        self.isTrialExpired = false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    task.resume()
+                }
+                
+            }
+        }
+        
+        
+    }
+    func parsePlanApiJSON(_ planApiData: Data) -> PlanApiData? {
+        let decoder = JSONDecoder()
+        do{
+            let decodedData = try decoder.decode(PlanApiData.self, from: planApiData)
+            return decodedData
+        }catch {
+            print(error)
+            return nil
         }
     }
 }

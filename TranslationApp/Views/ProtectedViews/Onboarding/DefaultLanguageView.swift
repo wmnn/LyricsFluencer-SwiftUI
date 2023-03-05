@@ -13,7 +13,6 @@ struct DefaultLanguageView: View {
     let db = Firestore.firestore()
     @State var targetLanguage = LanguageModel(language: "None", name: "Undefined")
     @EnvironmentObject var appBrain: AppBrain
-    //@Binding var path: NavigationPath
     
     var body: some View {
         ZStack{
@@ -35,7 +34,7 @@ struct DefaultLanguageView: View {
                                 .font(.system(size:24))
                                 .bold()
                                 .frame(width: 300, height: 20, alignment: .center)
-                                .foregroundColor(Color.black)
+                                .foregroundColor(Color.white)
                                 .padding()
                                 .background {
                                     Color("primaryColor")
@@ -54,7 +53,7 @@ struct DefaultLanguageView: View {
                     .font(.system(size:24))
                     .bold()
                     .frame(width: 300, height: 20, alignment: .center)
-                    .foregroundColor(Color.black)
+                    .foregroundColor(Color.white)
                     .padding()
                     .background {
                         Color("primaryColor")
@@ -66,30 +65,20 @@ struct DefaultLanguageView: View {
         .navigationBarBackButtonHidden(true)
     }
     func handleData(_ targetLanguage: LanguageModel){
-        let uid = getCurrentUser()
+        let uid = appBrain.getCurrentUser()
         if uid != ""{
-            createDocumentWithUI(uid, targetLanguage)
-            
+            //Adding data to db
+            let data: [String: Any] = ["defaultLanguage": targetLanguage.language, "requests": 0]
+            db.collection("users").document(uid).setData(data, merge: true)
+            //Saving data locally
             let defaults = UserDefaults.standard
             defaults.set(targetLanguage.language, forKey: "defaultLanguage")
             defaults.set(0, forKey: "requests")
             defaults.set(targetLanguage.name, forKey: "defaultLanguageName")
-            defaults.set("free", forKey: "subscriptionPlan")
             appBrain.targetLanguage.language = targetLanguage.language
             appBrain.targetLanguage.name = targetLanguage.name
             appBrain.path.append("Home")
         }
-    }
-    func getCurrentUser() -> String{
-        guard let uid = Auth.auth().currentUser?.uid else{
-            print("User not found")
-            return ""
-        }
-        return uid
-    }
-    func createDocumentWithUI(_ uid: String, _ targetLanguage: LanguageModel){
-        let data: [String: Any] = ["defaultLanguage": targetLanguage.language, "requests": 0, "subscriptionPlan": "free"]
-        db.collection("users").document(uid).setData(data)
     }
 }
 
