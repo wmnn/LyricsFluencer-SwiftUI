@@ -55,7 +55,14 @@ struct LyricsView: View {
                     }//Closing ForEach Line
                 }//Closing VStack
             }//Closing Scroll View
-            
+          
+            if lyricsViewHandler.isAddToDeckViewShown || lyricsViewHandler.isWebViewShown{
+                ZStack{
+                    VisualEffectView(effect: UIBlurEffect(style: .dark))
+                    Color.black.opacity(0.4).ignoresSafeArea(.all)
+                }
+                .edgesIgnoringSafeArea(.all)
+            }
             if lyricsViewHandler.isAddToDeckViewShown{
                 AddWordView(lyricsViewHandler: lyricsViewHandler)
             }
@@ -68,7 +75,7 @@ struct LyricsView: View {
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                if !lyricsViewHandler.isWebViewShown{
+                if !lyricsViewHandler.isWebViewShown && !lyricsViewHandler.isAddToDeckViewShown{
                     Button {
                         self.lyricsViewHandler.isWebViewShown = false
                         appBrain.path.removeLast()
@@ -129,21 +136,21 @@ struct AddWordView: View{
     
     var body: some View{
         ZStack{
-            Color("secondaryColor")
+            //Color("secondaryColor")
             VStack{
                 //Menu
                 Menu{
                     ForEach(appBrain.decks, id: \.self) { deck in
                         Button {
                             appBrain.selectedDeck.deckName = deck.deckName
-                            //appBrain.selectedDeck.cards = deck.cards
                         } label: {
                             Text(deck.deckName)
                         }
                     }
                 } label: {
                     Label(
-                        title: {Text("Selected Deck: \(appBrain.selectedDeck.deckName)")
+                        title: {
+                            Text("Selected Deck: \(appBrain.selectedDeck.deckName)")
                                 .font(.system(size:24))
                                 .bold()
                                 .frame(width: 300, height: 20, alignment: .center)
@@ -153,6 +160,7 @@ struct AddWordView: View{
                                     Color("primaryColor")
                                 }
                                 .cornerRadius(18)
+                            
                         },
                         icon: { Image(systemName: "")}
                     )
@@ -163,9 +171,9 @@ struct AddWordView: View{
                 //Back
                 SomeTextField(binding: $lyricsViewHandler.back, placeholder: "Back")
                 //Google
-                SomeButton(text: "Google Meaning") {
+                SomeButton(text: "Google Meaning", buttonAction:{
                     lyricsViewHandler.isWebViewShown.toggle()
-                }
+                }, systemName: "magnifyingglass")
                 //Add or cancel
                 HStack{
                     SomeSmallButton(text: "Cancel", buttonAction: {
@@ -176,11 +184,17 @@ struct AddWordView: View{
                         var _ = appBrain.handleAddToDeck(front: self.lyricsViewHandler.front, back: self.lyricsViewHandler.back)
                         lyricsViewHandler.isAddToDeckViewShown.toggle()
                     }, textColor: Color.green)
+                    
                 }
             }
         }
         .frame(width: 350, height: 400)
         .cornerRadius(10)
+        .onAppear{
+            if appBrain.selectedDeck.deckName == ""&&appBrain.decks.count > 0{
+                appBrain.selectedDeck.deckName = appBrain.decks[0].deckName
+            }
+        }
     }    
 }
 struct PopUpWebView: View{
@@ -225,4 +239,10 @@ struct Title: View {
             .font(.system(size: 24))
             .bold()
     }
+}
+
+struct VisualEffectView: UIViewRepresentable {
+    var effect: UIVisualEffect?
+    func makeUIView(context: UIViewRepresentableContext<Self>) -> UIVisualEffectView { UIVisualEffectView() }
+    func updateUIView(_ uiView: UIVisualEffectView, context: UIViewRepresentableContext<Self>) { uiView.effect = effect }
 }
