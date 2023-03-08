@@ -12,9 +12,6 @@ import WebKit
 import FirebaseFirestore
 
 struct LyricsView: View {
-    var artist: String
-    var song: String
-    var combinedLyrics: [String]
     @EnvironmentObject var appBrain: AppBrain
     @StateObject var lyricsViewHandler = LyricsViewHandler()
     
@@ -23,12 +20,25 @@ struct LyricsView: View {
             Color.background
             ScrollView{
                 VStack(alignment: .leading){
-                    Title(text: "Artist: \(artist)")
-                    Title(text: "Song: \(song)")
+                    Title(text: "Artist: \(appBrain.lyricsModel.artist ?? " ")")
+                    Title(text: "Song: \(appBrain.lyricsModel.song ?? " ")")
                         .padding(.bottom)
-                    ForEach(0..<self.combinedLyrics.count, id: \.self) { index in
+                    if appBrain.lyricsModel.albumArtURL != nil{
+                        AsyncImage(url: appBrain.lyricsModel.albumArtURL){ image in
+                            image
+                                .resizable()
+                                .scaledToFit()
+                                .opacity(1)
+                                .frame(width: 200, height: 200)
+                        } placeholder: {
+                            EmptyView()
+                        }
+                    }
+                   
+                    
+                    ForEach(0..<self.appBrain.lyricsModel.combinedLyrics!.count, id: \.self) { index in
                         if index % 2 == 0 {
-                            let line = combinedLyrics[index]
+                            let line = appBrain.lyricsModel.combinedLyrics![index]
                             let words = lyricsViewHandler.handleSplittingLine(line: line)
                             WrappingHStack(alignment: .leading){
                                 ForEach(0..<words.count, id:\.self){ index in
@@ -40,7 +50,7 @@ struct LyricsView: View {
                                 }
                             }
                         }else{
-                            let line = combinedLyrics[index]
+                            let line = appBrain.lyricsModel.combinedLyrics![index]
                             let words = lyricsViewHandler.handleSplittingLine(line: line)
                             WrappingHStack(alignment: .leading){
                                 ForEach(0..<words.count, id:\.self){ index in
@@ -55,7 +65,7 @@ struct LyricsView: View {
                     }//Closing ForEach Line
                 }//Closing VStack
             }//Closing Scroll View
-          
+            
             if lyricsViewHandler.isAddToDeckViewShown || lyricsViewHandler.isWebViewShown{
                 ZStack{
                     VisualEffectView(effect: UIBlurEffect(style: .dark))
@@ -78,6 +88,7 @@ struct LyricsView: View {
                 if !lyricsViewHandler.isWebViewShown && !lyricsViewHandler.isAddToDeckViewShown{
                     Button {
                         self.lyricsViewHandler.isWebViewShown = false
+                        appBrain.lyricsModel.albumArtURL = nil
                         appBrain.path.removeLast()
                     } label: {
                         HStack{
@@ -94,7 +105,7 @@ struct LyricsView: View {
 
 struct LyricsView_Previews: PreviewProvider {
     static var previews: some View {
-        LyricsView(artist: "Apache", song: "Roller", combinedLyrics: ["Hey now, you're an all star bleyblade day date\n", "Get your game on, go play\n", "c", "d"])
+        LyricsView(/*artist: "Apache", song: "Roller", combinedLyrics: ["Hey now, you're an all star bleyblade day date\n", "Get your game on, go play\n", "c", "d"]*/)
     }
 }
 struct MenuSubView: View {
@@ -148,11 +159,11 @@ struct AddWordView: View{
                         }
                     }
                     //if appBrain.decks.count == 0 {
-                        Button {
-                            self.lyricsViewHandler.showCreateDeckAlert = true
-                        } label: {
-                            Text("Create a new deck")
-                        }
+                    Button {
+                        self.lyricsViewHandler.showCreateDeckAlert = true
+                    } label: {
+                        Text("Create a new deck")
+                    }
                     //}
                 } label: {
                     Label(
@@ -218,7 +229,7 @@ struct AddWordView: View{
         }, message: {
             Text("Provide a deckname.")
         })
-    }    
+    }
 }
 struct PopUpWebView: View{
     @StateObject var lyricsViewHandler: LyricsViewHandler
