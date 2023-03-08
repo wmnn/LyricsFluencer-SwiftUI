@@ -18,12 +18,29 @@ struct RegisterView: View {
         VStack{
             NavigationStack(path: $appBrain.path){
                 ZStack{
-                    Color("appColor")
+                    Color.background
                         .ignoresSafeArea()
                     VStack {
-                        SomeHeadline(text: "LyricsFluencer", fontSize: 36)
-                        SomeHeadline(text: "Learn languages with lyrics translations !", fontSize: 24)
-                     
+                        Text("LyricsFluencer")
+                            .lineLimit(nil)
+                            //.fixedSize(horizontal: false, vertical: true)
+                            .frame(width: 300, alignment: .center)
+                            .bold()
+                            .font(.system(size: 36))
+                            .foregroundColor(Color.text)
+                            .cornerRadius(18)
+                        Text("Learn languages with lyrics !")
+                            .lineLimit(nil)
+                            //.fixedSize(horizontal: false, vertical: true)
+                            .frame(width: 350, alignment: .center)
+                            .bold()
+                            .font(.system(size: 24))
+                            .foregroundColor(Color("textColor"))
+                            .padding()
+                            .cornerRadius(18)
+                            
+                        
+                        
                         TextField(text: $registerViewHandler.email){
                             Text("Email").foregroundColor(.gray)
                         }
@@ -81,23 +98,36 @@ struct RegisterView: View {
                         CardView()
                     case "EditCardsView":
                         EditCardsView()
+                    case "Settings":
+                        SettingsView()
                     default:
                         RegisterView()
                     }
                 }
                 
             }//closing NavigationStack
+            .onAppear{
+                print("App is active")
+                //self.registerViewHandler.handleAutoLogin(appBrain: appBrain)
+                //If we do auto login here, we got some wierd bugs
+            }
             .onChange(of: scenePhase) { newScenePhase in
                 switch newScenePhase {
                 case .active:
                     print("App is active")
-                    self.registerViewHandler.handleAutomaticNavigation(appBrain: appBrain)
+                    self.registerViewHandler.handleAutoLogin(appBrain: appBrain)
                 case .inactive:
                     print("App is inactive")
                 case .background:
                     print("App is in background")
                 @unknown default:
                     print("Interesting: Unexpected new value.")
+                }
+            }
+            ZStack{ //For testing
+                VStack{
+                    Text("\(appBrain.path.count)")
+                        .foregroundColor(Color.black)
                 }
             }
         }

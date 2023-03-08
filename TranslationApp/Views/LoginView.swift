@@ -7,19 +7,19 @@
 
 import SwiftUI
 
-struct LoginView: View {  
+struct LoginView: View {
+    @EnvironmentObject var appBrain: AppBrain
+    @StateObject var loginViewHandler = LoginViewHandler()
     enum LoginField: Hashable {
         case email
         case password
         case none
     }
     @FocusState var fieldInFocus: LoginField?
-    @EnvironmentObject var appBrain: AppBrain
-    @StateObject var loginViewHandler = LoginViewHandler()
     
     var body: some View {
         ZStack{
-            Color("appColor")
+            Color.background
                 .ignoresSafeArea()
             
             VStack{

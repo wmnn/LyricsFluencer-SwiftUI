@@ -11,12 +11,13 @@ import FirebaseFirestore
 
 struct DefaultLanguageView: View {
     let db = Firestore.firestore()
+    let defaults = UserDefaults.standard
     @State var targetLanguage = LanguageModel(language: "None", name: "Undefined")
     @EnvironmentObject var appBrain: AppBrain
     
     var body: some View {
         ZStack{
-            Color("appColor")
+            Color.background
                 .ignoresSafeArea()
             VStack{
                 Menu{
@@ -45,20 +46,8 @@ struct DefaultLanguageView: View {
                     )
                     
                 }
-                
-                Button {
+                SomeButton(text: "Save choosen language") {
                     handleData(targetLanguage)
-                } label: {
-                    Text("Save choosen language")
-                    .font(.system(size:24))
-                    .bold()
-                    .frame(width: 300, height: 20, alignment: .center)
-                    .foregroundColor(Color.white)
-                    .padding()
-                    .background {
-                        Color("primaryColor")
-                    }
-                    .cornerRadius(18)
                 }
             }
         }
@@ -70,8 +59,7 @@ struct DefaultLanguageView: View {
             //Adding data to db
             let data: [String: Any] = ["defaultLanguage": targetLanguage.language, "requests": 0]
             db.collection("users").document(uid).setData(data, merge: true)
-            //Saving data locally
-            let defaults = UserDefaults.standard
+            //Saving data locall
             defaults.set(targetLanguage.language, forKey: "defaultLanguage")
             defaults.set(0, forKey: "requests")
             defaults.set(targetLanguage.name, forKey: "defaultLanguageName")

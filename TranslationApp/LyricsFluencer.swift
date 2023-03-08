@@ -18,7 +18,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         print("Launched")
         return true
     }
-    /*
+    
     func applicationDidBecomeActive(_ application: UIApplication) {
         // This method is called when the app becomes active.
         print("App is active")
@@ -38,7 +38,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         // This method is called when the app is about to terminate.
         print("App is about to terminate")
     }
-     */
+     
 }
 
 

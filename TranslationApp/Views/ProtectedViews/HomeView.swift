@@ -8,15 +8,18 @@
 import SwiftUI
 import FirebaseAuth
 import FirebaseFirestore
+import ReplayKit
 
 struct HomeView: View{
     @EnvironmentObject var appBrain: AppBrain
-    @State private var homePath = NavigationPath()
+    //@State private var homePath = NavigationPath()
     @StateObject var homeViewHandler = HomeViewHandler()
+    /*@State var isRecording: Bool = false
+    @State var url: URL?*/
     
     var body: some View {
         ZStack{
-            Color("appColor")
+            Color.background
                 .ignoresSafeArea()
             VStack{
                 if appBrain.isTrialExpired {
@@ -26,13 +29,25 @@ struct HomeView: View{
                     HomeViewSearchInput(homeViewHandler: homeViewHandler)
                     TrialExpiredButton(text: "Quick Search")
                 }else{
+                    /*Text(homeViewHandler.shazamMedia.title ?? "")
+                    AsyncImage(url: homeViewHandler.shazamMedia.albumArtURL){
+                        image in
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            //.blur(radius:10, opaque: true)
+                            .opacity(0.5)
+                            .frame(width: 200, height: 200)
+                    } placeholder: {
+                        EmptyView()
+                    }*/
                     //Handling target language
                     LanguagesMenu()
                     //handling Shazam
                     SomeButtonWithActivityIndicator(text: "Recognize Song ", buttonAction: {
                         homeViewHandler.handleShazam()
-                        homeViewHandler.isShazamLoading.toggle()
-                        appBrain.updateRequestCounter()
+                        homeViewHandler.isShazamLoading = true
+                        /*homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.shazamMedia.title ?? "", target: appBrain.targetLanguage.language, appBrain: appBrain)*/
                     }, systemName: "shazam.logo.fill", binding: $homeViewHandler.isShazamLoading)
                     
                     //handling Quicksearch Input
@@ -40,6 +55,7 @@ struct HomeView: View{
                     
                     SomeButtonWithActivityIndicator(text: "Quick Search", buttonAction: {
                         homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.targetLanguage.language, appBrain: appBrain)
+                        self.homeViewHandler.isQuickSearchLoading = true
                     }, systemName: "magnifyingglass",binding: $homeViewHandler.isQuickSearchLoading)
                 }
                 //Flashcard
@@ -53,21 +69,33 @@ struct HomeView: View{
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu{
                     Button("Settings") {
-                        //print("Settings tapped")
+                        self.appBrain.path.append("Settings")
                     }
                     Button("Logout") {
                         appBrain.logout()
                     }
                 }label: {
                     Image(systemName: "gearshape")
-                        .foregroundColor(Color("textColor"))
+                        .foregroundColor(Color.text)
                 }
             }
         }
         .onAppear(perform: {
             appBrain.handleTrial()
             appBrain.checkSubscriptionPlan()
+            //self.homeViewHandler.setup(self.appBrain)
         })
+        .onChange(of: homeViewHandler.didShazamRecognizeSong) { newVal in
+            DispatchQueue.main.async {
+                if newVal{
+                    print(newVal)
+                    homeViewHandler.handleQuickSearch(searchQuery: (homeViewHandler.shazamMedia.title ?? "") + " " + (homeViewHandler.shazamMedia.artistName ?? ""), target: self.appBrain.targetLanguage.language, appBrain: self.appBrain)
+                }else{
+                    print("Not true")
+                }
+                
+            }
+        }
     }
 }
 

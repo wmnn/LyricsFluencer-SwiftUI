@@ -16,6 +16,8 @@ class LyricsViewHandler: ObservableObject{
     //For creating a new card
     @Published var front: String = ""
     @Published var back: String = ""
+    @Published var showCreateDeckAlert = false
+    @Published var createDeckName = ""
     
     func handleSplittingLine(line:String) -> [String]{
         let separator = CharacterSet(charactersIn: " \n")

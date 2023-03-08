@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>193160037681-tlukl15ksrequrgji8jgi8obm3mf2onc.apps.googleusercontent.com</string>
+	<string>193160037681-o9rv1g9qi4rp66qrrh5uqrgc6edaj0md.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.193160037681-tlukl15ksrequrgji8jgi8obm3mf2onc</string>
+	<string>com.googleusercontent.apps.193160037681-o9rv1g9qi4rp66qrrh5uqrgc6edaj0md</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCJBcU8oLBwuflP2jUzM9uHZkgLJJ9W90Y</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>co.wuerdemann.TranslationApp</string>
+	<string>co.wuerdemann.LyricsFluencer</string>
 	<key>PROJECT_ID</key>
 	<string>translationapp-6b7d2</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:193160037681:ios:dc03ee3574c5e386bd9c10</string>
+	<string>1:193160037681:ios:42d3b484e8562aa2bd9c10</string>
 </dict>
 </plist>

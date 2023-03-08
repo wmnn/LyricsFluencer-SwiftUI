@@ -20,7 +20,7 @@ struct LyricsView: View {
     
     var body: some View {
         ZStack{
-            Color("appColor")
+            Color.background
             ScrollView{
                 VStack(alignment: .leading){
                     Title(text: "Artist: \(artist)")
@@ -147,6 +147,13 @@ struct AddWordView: View{
                             Text(deck.deckName)
                         }
                     }
+                    //if appBrain.decks.count == 0 {
+                        Button {
+                            self.lyricsViewHandler.showCreateDeckAlert = true
+                        } label: {
+                            Text("Create a new deck")
+                        }
+                    //}
                 } label: {
                     Label(
                         title: {
@@ -154,10 +161,10 @@ struct AddWordView: View{
                                 .font(.system(size:24))
                                 .bold()
                                 .frame(width: 300, height: 20, alignment: .center)
-                                .foregroundColor(Color("textColor"))
+                                .foregroundColor(Color.white)
                                 .padding()
                                 .background {
-                                    Color("primaryColor")
+                                    Color.primary
                                 }
                                 .cornerRadius(18)
                             
@@ -195,6 +202,22 @@ struct AddWordView: View{
                 appBrain.selectedDeck.deckName = appBrain.decks[0].deckName
             }
         }
+        .alert("Create deck", isPresented: $lyricsViewHandler.showCreateDeckAlert, actions: {
+            TextField("Deckname", text: $lyricsViewHandler.createDeckName)
+            Button("Create Deck", action: {
+                appBrain.createDeck(deckName: self.lyricsViewHandler.createDeckName)
+                DispatchQueue.main.async {
+                    self.lyricsViewHandler.createDeckName = ""
+                    self.lyricsViewHandler.showCreateDeckAlert = false
+                }
+            })
+            Button("Cancel", role: .cancel, action: {
+                self.lyricsViewHandler.showCreateDeckAlert = false
+            })
+            
+        }, message: {
+            Text("Provide a deckname.")
+        })
     }    
 }
 struct PopUpWebView: View{
