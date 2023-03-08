@@ -87,9 +87,7 @@ struct RegisterView: View {
                     case "Home":
                         HomeView()
                     case "Lyrics":
-                        if let artist = appBrain.lyricsModel.artist, let song = appBrain.lyricsModel.song, let combinedLyrics = appBrain.lyricsModel.combinedLyrics{
-                            LyricsView(artist: artist, song: song, combinedLyrics: combinedLyrics)
-                        }
+                        LyricsView()
                     case "Flashcards":
                         DecksView()
                     case "DeckSettingsView":

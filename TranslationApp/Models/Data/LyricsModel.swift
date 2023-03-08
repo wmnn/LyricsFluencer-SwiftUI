@@ -12,4 +12,5 @@ struct LyricsModel: Codable{
     var song: String?
     var lyrics: String?
     var combinedLyrics: [String]? = []
+    var albumArtURL: URL?
 }
