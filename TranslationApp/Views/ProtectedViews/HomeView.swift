@@ -12,11 +12,7 @@ import ReplayKit
 
 struct HomeView: View{
     @EnvironmentObject var appBrain: AppBrain
-    //@State private var homePath = NavigationPath()
     @StateObject var homeViewHandler = HomeViewHandler()
-    /*@State var isRecording: Bool = false
-    @State var url: URL?*/
-    
     var body: some View {
         ZStack{
             Color.background
@@ -29,32 +25,19 @@ struct HomeView: View{
                     HomeViewSearchInput(homeViewHandler: homeViewHandler)
                     TrialExpiredButton(text: "Quick Search")
                 }else{
-                    /*Text(homeViewHandler.shazamMedia.title ?? "")
-                    AsyncImage(url: homeViewHandler.shazamMedia.albumArtURL){
-                        image in
-                        image
-                            .resizable()
-                            .scaledToFit()
-                            //.blur(radius:10, opaque: true)
-                            .opacity(0.5)
-                            .frame(width: 200, height: 200)
-                    } placeholder: {
-                        EmptyView()
-                    }*/
                     //Handling target language
                     LanguagesMenu()
                     //handling Shazam
                     SomeButtonWithActivityIndicator(text: "Recognize Song ", buttonAction: {
                         homeViewHandler.handleShazam()
                         homeViewHandler.isShazamLoading = true
-                        /*homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.shazamMedia.title ?? "", target: appBrain.targetLanguage.language, appBrain: appBrain)*/
                     }, systemName: "shazam.logo.fill", binding: $homeViewHandler.isShazamLoading)
                     
                     //handling Quicksearch Input
                     HomeViewSearchInput(homeViewHandler: homeViewHandler)
                     
                     SomeButtonWithActivityIndicator(text: "Quick Search", buttonAction: {
-                        homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.targetLanguage.language, appBrain: appBrain)
+                        homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.targetLanguage.language)
                         self.homeViewHandler.isQuickSearchLoading = true
                     }, systemName: "magnifyingglass",binding: $homeViewHandler.isQuickSearchLoading)
                 }
@@ -80,21 +63,10 @@ struct HomeView: View{
                 }
             }
         }
-        .onAppear(perform: {
+        .onAppear{
             appBrain.handleTrial()
             appBrain.checkSubscriptionPlan()
-            //self.homeViewHandler.setup(self.appBrain)
-        })
-        .onChange(of: homeViewHandler.didShazamRecognizeSong) { newVal in
-            DispatchQueue.main.async {
-                if newVal{
-                    print(newVal)
-                    homeViewHandler.handleQuickSearch(searchQuery: (homeViewHandler.shazamMedia.title ?? "") + " " + (homeViewHandler.shazamMedia.artistName ?? ""), target: self.appBrain.targetLanguage.language, appBrain: self.appBrain)
-                }else{
-                    print("Not true")
-                }
-                
-            }
+            self.homeViewHandler.setup(self.appBrain)
         }
     }
 }
@@ -179,7 +151,7 @@ struct HomeViewSearchInput: View{
         .autocapitalization(.none)
         .autocorrectionDisabled(true)
         .onSubmit {
-            homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.targetLanguage.language, appBrain: appBrain)
+            homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.targetLanguage.language)
         }
         .submitLabel(SubmitLabel.done)
     }

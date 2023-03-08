@@ -24,8 +24,7 @@ class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need i
         albumArtURL: URL(string: "https://google.com"),
         genres: ["Pop"])
     @Published var isRecording = false
-    @Published var didShazamRecognizeSong = false
-    //var appBrain: AppBrain?
+    var appBrain: AppBrain?
     private let audioEngine = AVAudioEngine() //To get microphone input
     private let session = SHSession() //Shazam request
     private let signatureGenerator = SHSignatureGenerator() //Shazam only accepts shsignature files
@@ -33,10 +32,10 @@ class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need i
         super.init()
         session.delegate = self
     }
-    /*func setup(_ appBrain: AppBrain) {
+    func setup(_ appBrain: AppBrain) {
         self.appBrain = appBrain
-    }*/
-    func handleQuickSearch(searchQuery: String, target: String, appBrain: AppBrain) {
+    }
+    func handleQuickSearch(searchQuery: String, target: String) {
         let json: [String: String] = ["searchQuery": searchQuery, "target": target]
         let urlString = "\(STATIC.API_ROOT)/api/quicksearch"
         
@@ -60,13 +59,14 @@ class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need i
                 if let lyricsApiData: LyricsApiData = self.parseJSON(data){
                     DispatchQueue.main.async {
                         Task {
-                            appBrain.lyricsModel.lyrics = lyricsApiData.lyrics
-                            appBrain.lyricsModel.artist = lyricsApiData.artist
-                            appBrain.lyricsModel.song = lyricsApiData.song
-                            print(appBrain.lyricsModel.song)
-                            let isCombinedLyrics = await self.handleCombineLyrics(lyricsApiData, appBrain: appBrain)
+                            self.appBrain!.lyricsModel.lyrics = lyricsApiData.lyrics
+                            print(lyricsApiData.lyrics)
+                            self.appBrain!.lyricsModel.artist = lyricsApiData.artist
+                            self.appBrain!.lyricsModel.song = lyricsApiData.song
+                            print(self.appBrain!.lyricsModel.song!)
+                            let isCombinedLyrics = await self.handleCombineLyrics(lyricsApiData)
                             if isCombinedLyrics{
-                                print(appBrain.lyricsModel.combinedLyrics)
+                                print(self.appBrain!.lyricsModel.combinedLyrics!)
                                 print("inside is combined lyrics")
                                 //appBrain.updateRequestCounter()
                                 DispatchQueue.main.async {
@@ -76,10 +76,9 @@ class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need i
                                     if self.isQuickSearchLoading{
                                         self.isQuickSearchLoading = false
                                     }
-                                    if self.didShazamRecognizeSong{
-                                        self.didShazamRecognizeSong = false
-                                    }
-                                    appBrain.path.append("Lyrics")
+                                
+                                    self.appBrain!.path.append("Lyrics")
+                                    
                                 }
                             }
                         }
@@ -91,23 +90,26 @@ class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need i
         }
         
     }
-    func handleCombineLyrics(_ lyricsApiData: LyricsApiData, appBrain: AppBrain) async -> Bool{
-            appBrain.lyricsModel.combinedLyrics = []
-            
+    func handleCombineLyrics(_ lyricsApiData: LyricsApiData) async -> Bool{
+        DispatchQueue.main.async {
+            self.appBrain!.lyricsModel.combinedLyrics = []
+        }
             if let translatedLyrics = lyricsApiData.translatedLyrics{
-                if let lyrics = appBrain.lyricsModel.lyrics{
+                if let lyrics = self.appBrain!.lyricsModel.lyrics{
                     let lyricsArr = lyrics.components(separatedBy: "\n")
                     let translatedLyricsArr = translatedLyrics.components(separatedBy: "\n")
-                    DispatchQueue.main.async {
                         for i in 0..<max(lyricsArr.count, translatedLyricsArr.count) {
                             if i < lyricsArr.count {
-                                appBrain.lyricsModel.combinedLyrics?.append(lyricsArr[i])
+                                DispatchQueue.main.async {
+                                    self.appBrain!.lyricsModel.combinedLyrics?.append(lyricsArr[i])
+                                }
                             }
                             if i < translatedLyricsArr.count {
-                                appBrain.lyricsModel.combinedLyrics?.append(translatedLyricsArr[i])
+                                DispatchQueue.main.async {
+                                    self.appBrain!.lyricsModel.combinedLyrics?.append(translatedLyricsArr[i])
+                                }
                             }
                         }
-                    }
                 }else{
                     return false
                 }
@@ -179,9 +181,11 @@ extension HomeViewHandler: SHSessionDelegate{
         let mediaItems = match.mediaItems
         if let firstItem = mediaItems.first{ //it can contain multiple, therefore only the first item
             let _shazamMedia = ShazamMedia(title: firstItem.title, subtitle: firstItem.subtitle, artistName: firstItem.artist, albumArtURL: firstItem.artworkURL, genres: firstItem.genres)
-            DispatchQueue.main.sync {
+            DispatchQueue.main.async {
+                self.audioEngine.stop()
+                self.audioEngine.inputNode.removeTap(onBus: 0)
                 self.shazamMedia = _shazamMedia
-                self.didShazamRecognizeSong = true
+                self.handleQuickSearch(searchQuery: (firstItem.title ?? "") + " " + (firstItem.artist ?? ""), target: self.appBrain!.targetLanguage.language)
             }
         }
     }
