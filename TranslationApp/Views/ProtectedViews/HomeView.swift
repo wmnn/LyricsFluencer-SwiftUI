@@ -66,7 +66,7 @@ struct HomeView: View{
         .onAppear{
             appBrain.handleTrial()
             appBrain.checkSubscriptionPlan()
-            self.homeViewHandler.setup(self.appBrain)
+            self.homeViewHandler.appBrain = self.appBrain
         }
     }
 }

@@ -19,14 +19,6 @@ struct CardView: View {
             VStack{
                 if cardViewHandler.filteredDeck.count != 0 && cardViewHandler.index < cardViewHandler.filteredDeck.count{
                     Text(cardViewHandler.filteredDeck[cardViewHandler.index].front)
-                    //Show all Cards
-                    /*
-                    ForEach(appBrain.decks.filter { $0.deckName == appBrain.selectedDeck.deckName }.first?.cards ?? []) { card in
-                        Text(card.front)
-                            .foregroundColor(Color.white)
-                        Text("\(card.due)")
-                            .foregroundColor(Color.white)
-                    }*/
                     if cardViewHandler.isFrontClicked{
                         Text(cardViewHandler.filteredDeck[cardViewHandler.index].back)
                     }
@@ -37,7 +29,8 @@ struct CardView: View {
             self.cardViewHandler.isFrontClicked.toggle()
         }
         .onAppear{
-            cardViewHandler.handleFilteringForDueCards(appBrain: appBrain)
+            self.cardViewHandler.appBrain = self.appBrain
+            cardViewHandler.handleFilteringForDueCards()
         }
         if cardViewHandler.isFrontClicked && cardViewHandler.index < cardViewHandler.filteredDeck.count{
             ZStack{
@@ -57,7 +50,7 @@ struct CardView: View {
                             .cornerRadius(18)
                     }
                     Button {
-                        self.cardViewHandler.handleGood(appBrain: appBrain)
+                        self.cardViewHandler.handleGood()
                     } label: {
                         Text("Good")
                             .font(.system(size:24))
@@ -74,9 +67,9 @@ struct CardView: View {
                 }
                 
             }
-        }
-        
+        }        
     }
+    
 }
 
 struct CardView_Previews: PreviewProvider {

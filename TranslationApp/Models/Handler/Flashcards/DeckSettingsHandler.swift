@@ -12,6 +12,7 @@ import FirebaseFirestore
 class DeckSettingsHandler: ObservableObject{
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
+    var appBrain: AppBrain?
     @Published var front = ""
     @Published var back = ""
     @Published var showCreateCardAlert = false
@@ -22,18 +23,18 @@ class DeckSettingsHandler: ObservableObject{
         self.back = ""
         self.showCreateCardAlert = false
     }
-    func handleCreateCard(appBrain: AppBrain){
-        var _ = appBrain.handleAddToDeck(front: self.front, back: self.back)
+    func handleCreateCard(){
+        var _ = self.appBrain!.handleAddToDeck(front: self.front, back: self.back)
         DispatchQueue.main.async {
             self.front = ""
             self.back = ""
             self.showCreateCardAlert = false
         }
     }
-    func handleDeleteDeck(appBrain: AppBrain){
-        let uid = appBrain.getCurrentUser()
+    func handleDeleteDeck(){
+        let uid = self.appBrain!.getCurrentUser()
         
-        let subcollectionRef = db.collection("flashcards").document(uid).collection("decks").document(appBrain.selectedDeck.deckName).collection("cards")
+        let subcollectionRef = db.collection("flashcards").document(uid).collection("decks").document(self.appBrain!.selectedDeck.deckName).collection("cards")
         subcollectionRef.getDocuments { (querySnapshot, error) in
             if let error = error {
                 print("Error getting documents: \(error)")
@@ -41,15 +42,15 @@ class DeckSettingsHandler: ObservableObject{
                 for document in querySnapshot!.documents {
                     document.reference.delete()
                 }
-                self.db.collection("flashcards").document(uid).collection("decks").document(appBrain.selectedDeck.deckName).delete(){ err in
+                self.db.collection("flashcards").document(uid).collection("decks").document(self.appBrain!.selectedDeck.deckName).delete(){ err in
                     if let err = err{
                         print("Error while deleting deck \(err)")
                     }else{
-                        let newDecks = appBrain.decks.filter { deck in
-                            return deck.deckName != appBrain.selectedDeck.deckName
+                        let newDecks = self.appBrain!.decks.filter { deck in
+                            return deck.deckName != self.appBrain!.selectedDeck.deckName
                         }
-                        appBrain.decks = newDecks
-                        appBrain.path.removeLast()
+                        self.appBrain!.decks = newDecks
+                        self.appBrain!.path.removeLast()
                     }
                 }
             }

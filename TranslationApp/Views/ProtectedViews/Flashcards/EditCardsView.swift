@@ -45,13 +45,16 @@ struct EditCardsView: View {
             }
         }
         .navigationTitle(appBrain.selectedDeck.deckName)
+        .onAppear{
+            self.editCardViewHandler.appBrain = self.appBrain
+        }
         .alert("Edit Card", isPresented: $editCardViewHandler.isEditCardAlertShown, actions: {
             TextField("Front", text: self.$editCardViewHandler.front)
                 .autocorrectionDisabled(true)
             TextField("Back", text: self.$editCardViewHandler.back)
                 .autocorrectionDisabled(true)
             Button("Save Changes", action: {
-                editCardViewHandler.handleEditCard(appBrain: appBrain)
+                editCardViewHandler.handleEditCard()
             })
             Button("Cancel", role: .cancel, action: {
                 editCardViewHandler.handleCancel()
@@ -61,7 +64,7 @@ struct EditCardsView: View {
         })
         .alert("Do you want to delete this card?", isPresented: $editCardViewHandler.isDeleteCardAlertShown, actions: {
             Button("Yes, delete", action: {
-                editCardViewHandler.handleDeleteCard(appBrain: appBrain)
+                editCardViewHandler.handleDeleteCard()
             })
             Button("Cancel", role: .cancel, action: {
                 editCardViewHandler.handleCancel()

@@ -57,17 +57,20 @@ struct LoginView: View {
                     .cornerRadius(18)
                     .onSubmit {
                         fieldInFocus = nil
-                        loginViewHandler.login(email: loginViewHandler.email, password: loginViewHandler.password, appBrain: appBrain)
+                        loginViewHandler.login(email: loginViewHandler.email, password: loginViewHandler.password)
                     }
                     .submitLabel(SubmitLabel.done)
                     .focused($fieldInFocus ,equals: .password)
                 
                 SomeButtonWithActivityIndicator(text: "Login", buttonAction: {
                     self.fieldInFocus = LoginField.none
-                    self.loginViewHandler.login(email: loginViewHandler.email, password: loginViewHandler.password, appBrain: appBrain)
+                    self.loginViewHandler.login(email: loginViewHandler.email, password: loginViewHandler.password)
                 }, systemName: "arrow.right", binding: $loginViewHandler.isLoginLoading)
                 
                 .navigationTitle("Login")
+                .onAppear{
+                    self.loginViewHandler.appBrain = self.appBrain
+                }
             }
         }
     }    
