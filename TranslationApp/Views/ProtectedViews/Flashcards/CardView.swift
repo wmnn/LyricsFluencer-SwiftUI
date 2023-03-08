@@ -14,7 +14,7 @@ struct CardView: View {
     
     var body: some View {
         ZStack{
-            Color("appColor")
+            Color.background
                 .ignoresSafeArea()
             VStack{
                 if cardViewHandler.filteredDeck.count != 0 && cardViewHandler.index < cardViewHandler.filteredDeck.count{

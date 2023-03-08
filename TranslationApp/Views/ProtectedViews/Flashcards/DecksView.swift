@@ -17,7 +17,7 @@ struct DecksView: View {
         //NavigationStack(path: $decksPath){
         //Instead Navigating Thorugh a new navigation path, navigation through a constant navigation path and passing the data to the view through a environment object, the cards arr gives headache converting it to a hashable and equatable property
         ZStack{
-            Color("appColor")
+            Color.background
                 .ignoresSafeArea()
             VStack{
                 ForEach(appBrain.decks) { deck in

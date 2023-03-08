@@ -15,6 +15,7 @@ class AppBrain: ObservableObject{
     @Published var lyricsModel = LyricsModel()
     @Published var isTrialExpired = false
     @Published var isLyrics = false
+    @Published var isAutoLogin = false
     @Published var isSubscriptionPlanChecked = false
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard

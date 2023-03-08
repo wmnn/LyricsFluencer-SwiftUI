@@ -35,7 +35,7 @@ class RegisterViewHandler: ObservableObject{
         self.isSignUpLoading = false
     }
     
-    func handleAutomaticNavigation(appBrain: AppBrain){
+    func handleAutoLogin(appBrain: AppBrain){
         if Auth.auth().currentUser != nil {
             let defaultLanguage = defaults.string(forKey: "defaultLanguage")
             let defaultLanguageName = defaults.string(forKey: "defaultLanguageName")
@@ -46,10 +46,13 @@ class RegisterViewHandler: ObservableObject{
                 appBrain.targetLanguage.language = defaultLanguage!
                 appBrain.targetLanguage.name = defaultLanguageName!
                 //appBrain.decks = decks!
-                DispatchQueue.main.async {
-                    appBrain.fetchingDecks()
+                if !appBrain.isAutoLogin{
+                    DispatchQueue.main.async {
+                        appBrain.fetchingDecks()
+                    }
+                    appBrain.path.append("Home")
+                    appBrain.isAutoLogin = true
                 }
-                appBrain.path.append("Home")
             }else{
                 appBrain.path.append("DefaultLanguage")
             }

@@ -13,7 +13,7 @@ struct DeckSettingsView: View {
     
     var body: some View {
         ZStack{
-            Color("appColor")
+            Color.background
                 .ignoresSafeArea()
             VStack{
                 Button {
