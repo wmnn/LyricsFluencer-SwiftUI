@@ -66,7 +66,7 @@ struct RegisterView: View {
                         .cornerRadius(18)
                         
                         SomeButtonWithActivityIndicator(text: "Sign Up", buttonAction: {
-                            self.registerViewHandler.register(appBrain: appBrain)
+                            self.registerViewHandler.register()
                         }, binding: $registerViewHandler.isSignUpLoading)
                         
                         SomeHeadline(text: "Already have an account?", fontSize: 18)
@@ -113,7 +113,8 @@ struct RegisterView: View {
                 switch newScenePhase {
                 case .active:
                     print("App is active")
-                    self.registerViewHandler.handleAutoLogin(appBrain: appBrain)
+                    self.registerViewHandler.appBrain = self.appBrain
+                    self.registerViewHandler.handleAutoLogin()
                 case .inactive:
                     print("App is inactive")
                 case .background:

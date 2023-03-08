@@ -11,15 +11,16 @@ import FirebaseFirestore
 class CardViewHandler: ObservableObject{
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
+    var appBrain: AppBrain?
     @Published var isFrontClicked = false
     @Published var filteredDeck: [Card] = []
     @Published var index : Int = 0
     
-    func handleGood(appBrain: AppBrain){
+    func handleGood(){
         let documentID = filteredDeck[index].id
         let documentFront = filteredDeck[index].front
         let documentBack = filteredDeck[index].back
-        let uid = appBrain.getCurrentUser()
+        let uid = self.appBrain!.getCurrentUser()
         var interval = filteredDeck[index].interval
         if interval == 0{
             interval = 1
@@ -32,20 +33,20 @@ class CardViewHandler: ObservableObject{
         dateComponent.day = interval
         let nextDue = Calendar.current.date(byAdding: dateComponent, to: currentDate)
         
-        db.collection("flashcards").document(uid).collection("decks").document(appBrain.selectedDeck.deckName).collection("cards").document(documentID).setData([
+        db.collection("flashcards").document(uid).collection("decks").document(self.appBrain!.selectedDeck.deckName).collection("cards").document(documentID).setData([
             "interval": interval,
             "due": nextDue!
         ], merge: true)
-        if let deckIndex = appBrain.decks.firstIndex(where: { $0.deckName == appBrain.selectedDeck.deckName }),
-           let cardIndex = appBrain.decks[deckIndex].cards?.firstIndex(where: { $0.id == documentID }) {
+        if let deckIndex = self.appBrain!.decks.firstIndex(where: { $0.deckName == self.appBrain!.selectedDeck.deckName }),
+           let cardIndex = self.appBrain!.decks[deckIndex].cards?.firstIndex(where: { $0.id == documentID }) {
             // Create the updated card instance
             let updatedCard = Card(front: documentFront, back: documentBack, interval: interval, due: nextDue!, id: documentID)
             // Replace the old card instance with the updated one
-            appBrain.decks[deckIndex].cards?[cardIndex] = updatedCard
+            self.appBrain!.decks[deckIndex].cards?[cardIndex] = updatedCard
         }
         self.index += 1
         if index == self.filteredDeck.count{
-            appBrain.path.removeLast()
+            self.appBrain!.path.removeLast()
         }
         self.isFrontClicked.toggle()
     }
@@ -58,9 +59,9 @@ class CardViewHandler: ObservableObject{
             self.isFrontClicked.toggle()
         }
     }
-    func handleFilteringForDueCards(appBrain: AppBrain){
+    func handleFilteringForDueCards(){
         let today = Date()
-        let filteredCards = appBrain.selectedDeck.cards?.filter { card in
+        let filteredCards = self.appBrain!.selectedDeck.cards?.filter { card in
             return card.due < today
         }
         self.filteredDeck = filteredCards ?? []

@@ -13,6 +13,7 @@ import AVKit //for using the microphone
 class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need it to,  conform to shazams delegates
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
+    var appBrain: AppBrain?
     @Published var isShazamLoading = false
     @Published var isQuickSearchLoading = false
     @Published var searchQuery: String = ""
@@ -24,7 +25,6 @@ class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need i
         albumArtURL: URL(string: "https://google.com"),
         genres: ["Pop"])
     @Published var isRecording = false
-    var appBrain: AppBrain?
     private let audioEngine = AVAudioEngine() //To get microphone input
     private let session = SHSession() //Shazam request
     private let signatureGenerator = SHSignatureGenerator() //Shazam only accepts shsignature files
@@ -32,9 +32,7 @@ class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need i
         super.init()
         session.delegate = self
     }
-    func setup(_ appBrain: AppBrain) {
-        self.appBrain = appBrain
-    }
+
     func handleQuickSearch(searchQuery: String, target: String) {
         let json: [String: String] = ["searchQuery": searchQuery, "target": target]
         let urlString = "\(STATIC.API_ROOT)/api/quicksearch"

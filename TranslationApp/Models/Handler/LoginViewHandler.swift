@@ -12,11 +12,12 @@ import FirebaseFirestore
 class LoginViewHandler: ObservableObject{
     let defaults = UserDefaults.standard
     let db = Firestore.firestore()
+    var appBrain: AppBrain?
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var isLoginLoading = false
     
-    func login(email: String, password: String, appBrain: AppBrain){
+    func login(email: String, password: String){
         self.isLoginLoading = true
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             guard let user = result?.user, error == nil else {
@@ -24,10 +25,10 @@ class LoginViewHandler: ObservableObject{
                 self.isLoginLoading = false
                 return
             }
-            self.fetchingUserData(user.uid, appBrain: appBrain)
+            self.fetchingUserData(user.uid)
         }
     }
-    func fetchingUserData(_ uid: String, appBrain: AppBrain){
+    func fetchingUserData(_ uid: String){
             db.collection("users").document(uid).getDocument { (document, error) in
                 if let document = document, document.exists {
                     let subscriptionPlan = document.get("subscriptionPlan") as? String ?? "none"
@@ -35,21 +36,21 @@ class LoginViewHandler: ObservableObject{
                     
                     if let requests = document.get("requests") as? Int{
                         self.defaults.set(requests, forKey: "requests")
-                        appBrain.handleTrial()
+                        self.appBrain!.handleTrial()
                     }
                     if let defaultLanguage = document.get("defaultLanguage") as? String{
                         self.defaults.set(defaultLanguage, forKey: "defaultLanguage")
-                        appBrain.targetLanguage.language = defaultLanguage
+                        self.appBrain!.targetLanguage.language = defaultLanguage
                         
-                        let defaultLanguageName = appBrain.getLanguageName(defaultLanguage)
+                        let defaultLanguageName = self.appBrain!.getLanguageName(defaultLanguage)
                         self.defaults.set(defaultLanguageName, forKey: "defaultLanguageName")
-                        appBrain.targetLanguage.name = defaultLanguageName!
+                        self.appBrain!.targetLanguage.name = defaultLanguageName!
                     }
                     
                     DispatchQueue.main.async {
-                        appBrain.fetchingDecks()
+                        self.appBrain!.fetchingDecks()
                         self.isLoginLoading = false
-                        self.handleLoginNavigation(appBrain: appBrain)
+                        self.handleLoginNavigation()
                     }
                 } else {
                     //print("Document does not exist")
@@ -58,13 +59,13 @@ class LoginViewHandler: ObservableObject{
             }
     }
     
-    func handleLoginNavigation(appBrain: AppBrain){
+    func handleLoginNavigation(){
         let subscriptionPlan = defaults.string(forKey: "subscriptionPlan")
         let defaultLanguage = defaults.string(forKey: "defaultLanguage")
         if subscriptionPlan != nil && defaultLanguage != nil{
-            appBrain.path.append("Home")
+            self.appBrain!.path.append("Home")
         }else{
-                appBrain.path.append("DefaultLanguage")
+            self.appBrain!.path.append("DefaultLanguage")
         }
     }
     

@@ -28,7 +28,7 @@ struct DecksView: View {
                             let countDueCards = decksViewHandler.handleCountDueCards(cards: deck.cards ?? [])
                             if countDueCards > 0{
                                 Button {
-                                    decksViewHandler.handleSelectedADeck(appBrain: appBrain, deckName: deck.deckName, cards: deck.cards ?? [])
+                                    decksViewHandler.handleSelectedADeck(deckName: deck.deckName, cards: deck.cards ?? [])
                                 } label: {
                                     Spacer()
                                     Text(deck.deckName)
@@ -75,6 +75,9 @@ struct DecksView: View {
                     self.decksViewHandler.showCreateDeckAlert.toggle()
                 } label: {
                     TextWithIcon(text: "Add Deck", systemName: "plus")
+                }
+                .onAppear{
+                    self.decksViewHandler.appBrain = self.appBrain
                 }
                 //Create a new deck alert
                 .alert("Create deck", isPresented: $decksViewHandler.showCreateDeckAlert, actions: {

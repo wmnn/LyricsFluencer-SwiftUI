@@ -34,6 +34,9 @@ struct DeckSettingsView: View {
             }
         }
         .navigationTitle(appBrain.selectedDeck.deckName)
+        .onAppear{
+            self.deckSettingsHandler.appBrain = self.appBrain
+        }
         .alert("Create card", isPresented: $deckSettingsHandler.showCreateCardAlert, actions: {
             TextField("Front", text: self.$deckSettingsHandler.front)
                 .autocapitalization(.none)
@@ -42,7 +45,7 @@ struct DeckSettingsView: View {
                 .autocapitalization(.none)
                 .autocorrectionDisabled(true)
             Button("Create Card", action: {
-                deckSettingsHandler.handleCreateCard(appBrain: appBrain)
+                deckSettingsHandler.handleCreateCard()
             })
             Button("Cancel", role: .cancel, action: {
                 deckSettingsHandler.handleCancel()
@@ -52,7 +55,7 @@ struct DeckSettingsView: View {
         })
         .alert("Do you want to delete this deck?", isPresented: $deckSettingsHandler.showDeleteDeckAlert, actions: {
             Button("Yes, delete", action: {
-                deckSettingsHandler.handleDeleteDeck(appBrain: appBrain)
+                deckSettingsHandler.handleDeleteDeck()
             })
             Button("Cancel", role: .cancel, action: {
                 deckSettingsHandler.showDeleteDeckAlert.toggle()
