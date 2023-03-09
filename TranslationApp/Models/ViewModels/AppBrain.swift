@@ -25,18 +25,18 @@ class AppBrain: ObservableObject{
     }
     
     func handleTrial(){
-        if let subscriptionPlan = defaults.string(forKey: "subscriptionPlan"){
-            let subscriptionStatus = defaults.string(forKey: "subscriptionStatus")
-            if subscriptionPlan == "free" || subscriptionStatus == "EXPIRED" {
-                if let requests = defaults.string(forKey: "requests"){
-                    if Int(requests) ?? 99 > 80 {
-                        self.user.isTrialExpired = true
-                        print("isTrialExpired? \(String(self.user.isTrialExpired))")
-                    }else{
-                        self.user.isTrialExpired = false
-                    }
-                }
+        let subscriptionPlan = defaults.string(forKey: "subscriptionPlan")
+        let subscriptionStatus = defaults.string(forKey: "subscriptionStatus")
+      
+        if subscriptionPlan == "free" || subscriptionStatus == "EXPIRED" {
+            let requests = defaults.string(forKey: "requests")
+            if Int(requests ?? "") ?? 99 > 25 {
+                self.user.isTrialExpired = true
+            }else{
+                self.user.isTrialExpired = false
             }
+        }else{
+            self.user.isTrialExpired = false
         }
     }
     func handleDeleteLocalStorage(){

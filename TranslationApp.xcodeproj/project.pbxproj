@@ -158,8 +158,8 @@
 				C44F2D2D29AA8BA3004A28AA /* Onboarding */,
 				C420450D299905EC009699F7 /* HomeView.swift */,
 				C420453929992A78009699F7 /* LyricsView.swift */,
-				C443138229AA3942007D7CA9 /* Flashcards */,
 				C4BE116229B7ECC60064D8FC /* SettingsView.swift */,
+				C443138229AA3942007D7CA9 /* Flashcards */,
 			);
 			path = ProtectedViews;
 			sourceTree = "<group>";
@@ -201,11 +201,11 @@
 		C44F2D2C29AA8B83004A28AA /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				C406045629A2138900D56C0D /* AppBrain.swift */,
 				C406045C29A277C100D56C0D /* RegisterViewHandler.swift */,
 				C44F2D2E29AA8BBC004A28AA /* LoginViewHandler.swift */,
 				C44F2D3029AA986B004A28AA /* HomeViewHandler.swift */,
 				C44F2D3229AAA06D004A28AA /* LyricsViewHandler.swift */,
-				C406045629A2138900D56C0D /* AppBrain.swift */,
 				C443138329AA3960007D7CA9 /* Flashcards */,
 			);
 			path = ViewModels;
