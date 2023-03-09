@@ -12,7 +12,7 @@ struct SettingsView: View {
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
     @EnvironmentObject var appBrain: AppBrain
-    @State var targetLanguage = LanguageModel(language: "None", name: "Undefined")
+    @State var targetLanguage = LanguageModel(language: "None"/*, name: "Undefined"*/)
     
     var body: some View {
         ZStack{
@@ -23,11 +23,10 @@ struct SettingsView: View {
                     ForEach(0..<STATIC.languages.count, id: \.self) { index in
                         SomeButton(text: STATIC.languages[index].name) {
                             self.targetLanguage.language = STATIC.languages[index].language
-                            self.targetLanguage.name = STATIC.languages[index].name
                         }
                     }
                 } label: {
-                    SomeButton(text: "Default language: \(targetLanguage.name)") {
+                    SomeButton(text: "Default language: \(self.appBrain.getLanguageName(targetLanguage.language) ?? "")") {
                         
                     }
                 }
@@ -43,11 +42,9 @@ struct SettingsView: View {
         }
     }
     func fetchLocaleStorage(){
-        let dln = defaults.string(forKey: "defaultLanguageName")
         let dl = defaults.string(forKey: "defaultLanguage")
-        if dln != nil && dl != nil{
+        if dl != nil{
             self.targetLanguage.language = dl!
-            self.targetLanguage.name = dln!
         }
     }
     func saveDefaultLanguage(){
@@ -55,9 +52,7 @@ struct SettingsView: View {
         let data: [String: Any] = ["defaultLanguage": self.targetLanguage.language]
         db.collection("users").document(uid).setData(data, merge: true)
         defaults.set(self.targetLanguage.language, forKey: "defaultLanguage")
-        defaults.set(self.targetLanguage.name, forKey: "defaultLanguageName")
-        self.appBrain.targetLanguage.language = self.targetLanguage.language
-        self.appBrain.targetLanguage.name = self.targetLanguage.name
+        self.appBrain.user.targetLanguage.language = self.targetLanguage.language
         self.appBrain.path.removeLast()
     }
 }

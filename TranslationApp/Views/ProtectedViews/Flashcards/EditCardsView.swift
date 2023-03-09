@@ -14,7 +14,7 @@ struct EditCardsView: View {
     var body: some View {
         ScrollView{
             VStack{
-                ForEach(appBrain.selectedDeck.cards ?? []) { card in
+                ForEach(appBrain.user.selectedDeck.cards ?? []) { card in
                     HStack{
                         VStack(alignment: .leading){
                             Text(card.front)
@@ -44,7 +44,7 @@ struct EditCardsView: View {
                 }
             }
         }
-        .navigationTitle(appBrain.selectedDeck.deckName)
+        .navigationTitle(appBrain.user.selectedDeck.deckName)
         .onAppear{
             self.editCardViewHandler.appBrain = self.appBrain
         }

@@ -20,7 +20,7 @@ struct DecksView: View {
             Color.background
                 .ignoresSafeArea()
             VStack{
-                ForEach(appBrain.decks) { deck in
+                ForEach(appBrain.user.decks) { deck in
                     Button {
                         
                     } label: {
@@ -52,8 +52,8 @@ struct DecksView: View {
                             
                     
                             Button {
-                                appBrain.selectedDeck.deckName = deck.deckName
-                                appBrain.selectedDeck.cards = deck.cards ?? []
+                                appBrain.user.selectedDeck.deckName = deck.deckName
+                                appBrain.user.selectedDeck.cards = deck.cards ?? []
                                 appBrain.path.append("DeckSettingsView")
                             } label: {
                                 Image(systemName: "gearshape")

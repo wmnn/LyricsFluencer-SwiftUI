@@ -15,8 +15,8 @@ class DecksViewHandler: ObservableObject{
     
     func handleSelectedADeck(deckName: String, cards: [Card]){
         //Selected a deck
-        self.appBrain!.selectedDeck.deckName = deckName
-        self.appBrain!.selectedDeck.cards = cards
+        self.appBrain!.user.selectedDeck.deckName = deckName
+        self.appBrain!.user.selectedDeck.cards = cards
         self.appBrain!.path.append("CardsView")
     }
     func handleCountDueCards(cards: [Card]) -> Int{

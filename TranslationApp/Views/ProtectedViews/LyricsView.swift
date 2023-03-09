@@ -151,9 +151,9 @@ struct AddWordView: View{
             VStack{
                 //Menu
                 Menu{
-                    ForEach(appBrain.decks, id: \.self) { deck in
+                    ForEach(appBrain.user.decks, id: \.self) { deck in
                         Button {
-                            appBrain.selectedDeck.deckName = deck.deckName
+                            appBrain.user.selectedDeck.deckName = deck.deckName
                         } label: {
                             Text(deck.deckName)
                         }
@@ -168,7 +168,7 @@ struct AddWordView: View{
                 } label: {
                     Label(
                         title: {
-                            Text("Selected Deck: \(appBrain.selectedDeck.deckName)")
+                            Text("Selected Deck: \(appBrain.user.selectedDeck.deckName)")
                                 .font(.system(size:24))
                                 .bold()
                                 .frame(width: 300, height: 20, alignment: .center)
@@ -209,8 +209,8 @@ struct AddWordView: View{
         .frame(width: 350, height: 400)
         .cornerRadius(10)
         .onAppear{
-            if appBrain.selectedDeck.deckName == ""&&appBrain.decks.count > 0{
-                appBrain.selectedDeck.deckName = appBrain.decks[0].deckName
+            if appBrain.user.selectedDeck.deckName == ""&&appBrain.user.decks.count > 0{
+                appBrain.user.selectedDeck.deckName = appBrain.user.decks[0].deckName
             }
         }
         .alert("Create deck", isPresented: $lyricsViewHandler.showCreateDeckAlert, actions: {

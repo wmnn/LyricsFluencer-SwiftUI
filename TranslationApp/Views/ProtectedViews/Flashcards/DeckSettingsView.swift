@@ -33,7 +33,7 @@ struct DeckSettingsView: View {
                 }
             }
         }
-        .navigationTitle(appBrain.selectedDeck.deckName)
+        .navigationTitle(appBrain.user.selectedDeck.deckName)
         .onAppear{
             self.deckSettingsHandler.appBrain = self.appBrain
         }

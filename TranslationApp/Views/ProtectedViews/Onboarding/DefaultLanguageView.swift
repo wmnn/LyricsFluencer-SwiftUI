@@ -12,7 +12,7 @@ import FirebaseFirestore
 struct DefaultLanguageView: View {
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
-    @State var targetLanguage = LanguageModel(language: "None", name: "Undefined")
+    @State var targetLanguage = LanguageModel(language: "None")
     @EnvironmentObject var appBrain: AppBrain
     
     var body: some View {
@@ -24,14 +24,13 @@ struct DefaultLanguageView: View {
                     ForEach(0..<STATIC.languages.count, id: \.self) { index in
                         Button {
                             self.targetLanguage.language = STATIC.languages[index].language
-                            self.targetLanguage.name = STATIC.languages[index].name
                         } label: {
                             Text(STATIC.languages[index].name)
                         }
                     }
                 } label: {
                     Label(
-                        title: {Text("Target language: \(targetLanguage.name)")
+                        title: {Text("Target language: \(self.appBrain.getLanguageName(targetLanguage.language) ?? "")")
                                 .font(.system(size:24))
                                 .bold()
                                 .frame(width: 300, height: 20, alignment: .center)
@@ -59,12 +58,12 @@ struct DefaultLanguageView: View {
             //Adding data to db
             let data: [String: Any] = ["defaultLanguage": targetLanguage.language, "requests": 0]
             db.collection("users").document(uid).setData(data, merge: true)
-            //Saving data locall
+            //Saving data locally
             defaults.set(targetLanguage.language, forKey: "defaultLanguage")
             defaults.set(0, forKey: "requests")
-            defaults.set(targetLanguage.name, forKey: "defaultLanguageName")
-            appBrain.targetLanguage.language = targetLanguage.language
-            appBrain.targetLanguage.name = targetLanguage.name
+            self.appBrain.user.targetLanguage.language = targetLanguage.language
+            self.appBrain.user.requests = 0
+            //Redirect
             appBrain.path.append("Home")
         }
     }
