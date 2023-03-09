@@ -18,7 +18,7 @@ struct HomeView: View{
             Color.background
                 .ignoresSafeArea()
             VStack{
-                if appBrain.isTrialExpired {
+                if appBrain.user.isTrialExpired{
                     SomeHeadline(text: "Your free trial has expired, unfortunately you can't subscribe inside the app.", fontSize: 24)
                     TrialExpiredButton(text: "Recognize Song")
                     //handling Quicksearch Input
@@ -37,7 +37,7 @@ struct HomeView: View{
                     HomeViewSearchInput(homeViewHandler: homeViewHandler)
                     
                     SomeButtonWithActivityIndicator(text: "Quick Search", buttonAction: {
-                        homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.targetLanguage.language)
+                        homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.user.targetLanguage.language)
                         self.homeViewHandler.isQuickSearchLoading = true
                     }, systemName: "magnifyingglass",binding: $homeViewHandler.isQuickSearchLoading)
                 }
@@ -73,7 +73,6 @@ struct HomeView: View{
 
 struct LoggedInHomeView_Previews: PreviewProvider {
     static let appBrain = AppBrain()
-    
     static var previews: some View {
         HomeView()
             .environmentObject(appBrain)
@@ -106,15 +105,15 @@ struct LanguagesMenu: View{
         Menu{
             ForEach(0..<STATIC.languages.count, id: \.self) { index in
                 Button {
-                    appBrain.targetLanguage.language = STATIC.languages[index].language
-                    appBrain.targetLanguage.name = STATIC.languages[index].name
+                    appBrain.user.targetLanguage.language = STATIC.languages[index].language
+                    //appBrain.targetLanguage.name = STATIC.languages[index].name
                 } label: {
                     Text(STATIC.languages[index].name)
                 }
             }
         } label: {
             Label(
-                title: {Text("Target language: \(appBrain.targetLanguage.name)")
+                title: {Text("Target language: \(self.appBrain.getLanguageName(self.appBrain.user.targetLanguage.language) ?? "")")
                         .font(.system(size:24))
                         .bold()
                         .frame(width: 300, height: 20, alignment: .center)
@@ -151,7 +150,7 @@ struct HomeViewSearchInput: View{
         .autocapitalization(.none)
         .autocorrectionDisabled(true)
         .onSubmit {
-            homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.targetLanguage.language)
+            homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.user.targetLanguage.language)
         }
         .submitLabel(SubmitLabel.done)
     }

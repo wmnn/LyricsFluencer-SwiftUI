@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct LyricsModel: Codable{
+struct Lyrics: Codable{
     var artist: String?
     var song: String?
     var lyrics: String?

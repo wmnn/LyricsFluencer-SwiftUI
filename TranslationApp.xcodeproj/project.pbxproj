@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C406045729A2138900D56C0D /* AppBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C406045629A2138900D56C0D /* AppBrain.swift */; };
-		C406045929A21BEC00D56C0D /* LyricsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C406045829A21BEC00D56C0D /* LyricsModel.swift */; };
+		C406045929A21BEC00D56C0D /* Lyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = C406045829A21BEC00D56C0D /* Lyrics.swift */; };
 		C406045D29A277C100D56C0D /* RegisterViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C406045C29A277C100D56C0D /* RegisterViewHandler.swift */; };
 		C42044FA29990571009699F7 /* LyricsFluencer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42044F929990571009699F7 /* LyricsFluencer.swift */; };
 		C42044FC29990571009699F7 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42044FB29990571009699F7 /* RegisterView.swift */; };
@@ -31,6 +31,7 @@
 		C44F2D2F29AA8BBC004A28AA /* LoginViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F2D2E29AA8BBC004A28AA /* LoginViewHandler.swift */; };
 		C44F2D3129AA986B004A28AA /* HomeViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F2D3029AA986B004A28AA /* HomeViewHandler.swift */; };
 		C44F2D3329AAA06D004A28AA /* LyricsViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F2D3229AAA06D004A28AA /* LyricsViewHandler.swift */; };
+		C492FA3429BA52CD003A07E9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C492FA3329BA52CD003A07E9 /* User.swift */; };
 		C4B0824F29B4FEA800640349 /* PlanApiData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B0824E29B4FEA800640349 /* PlanApiData.swift */; };
 		C4B38AAA29A3602300EEFAF9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B38AA929A3602300EEFAF9 /* Constants.swift */; };
 		C4B38AAD29A39B2500EEFAF9 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = C4B38AAC29A39B2500EEFAF9 /* WrappingHStack */; };
@@ -44,7 +45,7 @@
 
 /* Begin PBXFileReference section */
 		C406045629A2138900D56C0D /* AppBrain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBrain.swift; sourceTree = "<group>"; };
-		C406045829A21BEC00D56C0D /* LyricsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsModel.swift; sourceTree = "<group>"; };
+		C406045829A21BEC00D56C0D /* Lyrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lyrics.swift; sourceTree = "<group>"; };
 		C406045C29A277C100D56C0D /* RegisterViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewHandler.swift; sourceTree = "<group>"; };
 		C42044F629990571009699F7 /* TranslationApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TranslationApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C42044F929990571009699F7 /* LyricsFluencer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsFluencer.swift; sourceTree = "<group>"; };
@@ -66,6 +67,7 @@
 		C44F2D2E29AA8BBC004A28AA /* LoginViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewHandler.swift; sourceTree = "<group>"; };
 		C44F2D3029AA986B004A28AA /* HomeViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewHandler.swift; sourceTree = "<group>"; };
 		C44F2D3229AAA06D004A28AA /* LyricsViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsViewHandler.swift; sourceTree = "<group>"; };
+		C492FA3329BA52CD003A07E9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C4B0824E29B4FEA800640349 /* PlanApiData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanApiData.swift; sourceTree = "<group>"; };
 		C4B38AA929A3602300EEFAF9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C4BE115E29B7EAB20064D8FC /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -144,7 +146,7 @@
 		C420450829990580009699F7 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				C44F2D2C29AA8B83004A28AA /* Handler */,
+				C44F2D2C29AA8B83004A28AA /* ViewModels */,
 				C44F2D2B29AA8B7B004A28AA /* Data */,
 			);
 			path = Models;
@@ -188,15 +190,15 @@
 		C44F2D2B29AA8B7B004A28AA /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				C4204540299945D2009699F7 /* LyricsApiData.swift */,
+				C492FA3529BA6430003A07E9 /* Api */,
 				C420454229995FF0009699F7 /* LanguageModel.swift */,
-				C406045829A21BEC00D56C0D /* LyricsModel.swift */,
-				C4B0824E29B4FEA800640349 /* PlanApiData.swift */,
+				C406045829A21BEC00D56C0D /* Lyrics.swift */,
+				C492FA3329BA52CD003A07E9 /* User.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
 		};
-		C44F2D2C29AA8B83004A28AA /* Handler */ = {
+		C44F2D2C29AA8B83004A28AA /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
 				C406045C29A277C100D56C0D /* RegisterViewHandler.swift */,
@@ -206,7 +208,7 @@
 				C406045629A2138900D56C0D /* AppBrain.swift */,
 				C443138329AA3960007D7CA9 /* Flashcards */,
 			);
-			path = Handler;
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		C44F2D2D29AA8BA3004A28AA /* Onboarding */ = {
@@ -215,6 +217,15 @@
 				C44C62D0299B8EE20091C401 /* DefaultLanguageView.swift */,
 			);
 			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		C492FA3529BA6430003A07E9 /* Api */ = {
+			isa = PBXGroup;
+			children = (
+				C4204540299945D2009699F7 /* LyricsApiData.swift */,
+				C4B0824E29B4FEA800640349 /* PlanApiData.swift */,
+			);
+			path = Api;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -300,7 +311,7 @@
 				C4204541299945D2009699F7 /* LyricsApiData.swift in Sources */,
 				C4B0824F29B4FEA800640349 /* PlanApiData.swift in Sources */,
 				C420453A29992A78009699F7 /* LyricsView.swift in Sources */,
-				C406045929A21BEC00D56C0D /* LyricsModel.swift in Sources */,
+				C406045929A21BEC00D56C0D /* Lyrics.swift in Sources */,
 				C443137F29AA2BE3007D7CA9 /* DeckSettingsHandler.swift in Sources */,
 				C406045729A2138900D56C0D /* AppBrain.swift in Sources */,
 				C420450A299905A2009699F7 /* LoginView.swift in Sources */,
@@ -317,6 +328,7 @@
 				C406045D29A277C100D56C0D /* RegisterViewHandler.swift in Sources */,
 				C420450E299905EC009699F7 /* HomeView.swift in Sources */,
 				C4C58F4829A823D8009120C8 /* DecksView.swift in Sources */,
+				C492FA3429BA52CD003A07E9 /* User.swift in Sources */,
 				C44C62D1299B8EE20091C401 /* DefaultLanguageView.swift in Sources */,
 				C4BE116329B7ECC60064D8FC /* SettingsView.swift in Sources */,
 				C4BE115F29B7EAB20064D8FC /* Extensions.swift in Sources */,

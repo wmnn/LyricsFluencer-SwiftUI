@@ -33,16 +33,16 @@ class CardViewHandler: ObservableObject{
         dateComponent.day = interval
         let nextDue = Calendar.current.date(byAdding: dateComponent, to: currentDate)
         
-        db.collection("flashcards").document(uid).collection("decks").document(self.appBrain!.selectedDeck.deckName).collection("cards").document(documentID).setData([
+        db.collection("flashcards").document(uid).collection("decks").document(self.appBrain!.user.selectedDeck.deckName).collection("cards").document(documentID).setData([
             "interval": interval,
             "due": nextDue!
         ], merge: true)
-        if let deckIndex = self.appBrain!.decks.firstIndex(where: { $0.deckName == self.appBrain!.selectedDeck.deckName }),
-           let cardIndex = self.appBrain!.decks[deckIndex].cards?.firstIndex(where: { $0.id == documentID }) {
+        if let deckIndex = self.appBrain!.user.decks.firstIndex(where: { $0.deckName == self.appBrain!.user.selectedDeck.deckName }),
+           let cardIndex = self.appBrain!.user.decks[deckIndex].cards?.firstIndex(where: { $0.id == documentID }) {
             // Create the updated card instance
             let updatedCard = Card(front: documentFront, back: documentBack, interval: interval, due: nextDue!, id: documentID)
             // Replace the old card instance with the updated one
-            self.appBrain!.decks[deckIndex].cards?[cardIndex] = updatedCard
+            self.appBrain!.user.decks[deckIndex].cards?[cardIndex] = updatedCard
         }
         self.index += 1
         if index == self.filteredDeck.count{
@@ -61,7 +61,7 @@ class CardViewHandler: ObservableObject{
     }
     func handleFilteringForDueCards(){
         let today = Date()
-        let filteredCards = self.appBrain!.selectedDeck.cards?.filter { card in
+        let filteredCards = self.appBrain!.user.selectedDeck.cards?.filter { card in
             return card.due < today
         }
         self.filteredDeck = filteredCards ?? []

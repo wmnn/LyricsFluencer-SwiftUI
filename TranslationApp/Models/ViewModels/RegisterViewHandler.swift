@@ -27,9 +27,9 @@ class RegisterViewHandler: ObservableObject{
                 let uid = self.appBrain!.getCurrentUser()
                 let data: [String: Any] = ["subscriptionPlan": "free"]
                 self.db.collection("users").document(uid).setData(data, merge: true)
-                //Saving locally subscriotionPlan
-                self.defaults.set("free", forKey: "subscriptionPlan")
                 //Redirecting
+                self.defaults.set("free", forKey: "subscriptionPlan") //This is set here because also premium user can be on the DefaultLanguageView
+                self.appBrain!.user.subscriptionPlan = "free"
                 self.appBrain!.path.append("DefaultLanguage")
             }
         }
@@ -39,20 +39,20 @@ class RegisterViewHandler: ObservableObject{
     func handleAutoLogin(){
         if Auth.auth().currentUser != nil {
             let defaultLanguage = defaults.string(forKey: "defaultLanguage")
-            let defaultLanguageName = defaults.string(forKey: "defaultLanguageName")
             let requests = defaults.string(forKey: "requests")
             let subscriptionPlan = defaults.string(forKey: "subscriptionPlan")
             
-            if defaultLanguage != nil, defaultLanguageName != nil, requests != nil, subscriptionPlan != nil/*, decks != nil*/{
-                self.appBrain!.targetLanguage.language = defaultLanguage!
-                self.appBrain!.targetLanguage.name = defaultLanguageName!
-                //appBrain.decks = decks!
-                if !self.appBrain!.isAutoLogin{
+            if defaultLanguage != nil, requests != nil, subscriptionPlan != nil/*, decks != nil*/{
+                self.appBrain!.user.targetLanguage.language = defaultLanguage!
+                self.appBrain!.user.requests = Int(requests!)
+                //self.appBrain!.user.targetLanguage.name = appBrain!.getLanguageName(defaultLanguage!) ?? ""
+    
+                if !self.appBrain!.user.isAutoLogin{
                     DispatchQueue.main.async {
                         self.appBrain!.fetchingDecks()
                     }
                     self.appBrain!.path.append("Home")
-                    self.appBrain!.isAutoLogin = true
+                    self.appBrain!.user.isAutoLogin = true
                 }
             }else{
                 self.appBrain!.path.append("DefaultLanguage")

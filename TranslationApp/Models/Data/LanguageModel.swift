@@ -9,7 +9,6 @@ import SwiftUI
 
 struct LanguageModel: Codable{
     var language: String = "None"
-    var name: String = "None"
     var id: String {
         language
     }

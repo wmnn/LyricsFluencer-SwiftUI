@@ -10,20 +10,12 @@ import FirebaseAuth
 import FirebaseFirestore
 
 class AppBrain: ObservableObject{
-    @Published var path: NavigationPath = NavigationPath()
-    @Published var targetLanguage = LanguageModel(language: "None", name: "Undefined")
-    @Published var lyricsModel = LyricsModel()
-    @Published var isTrialExpired = false
-    @Published var isLyrics = false
-    @Published var isAutoLogin = false
-    @Published var isSubscriptionPlanChecked = false
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
-    
-    //For Flashcards and DeckView
-    @Published var decks: [Deck] = []
-    @Published var selectedDeck = Deck(deckName: "", cards: [])
-    
+    @Published var path: NavigationPath = NavigationPath()
+    @Published var user = User()
+    @Published var lyricsModel = Lyrics()
+
     func getCurrentUser() -> String{
         guard let uid = Auth.auth().currentUser?.uid else{
             print("User not found")
@@ -34,11 +26,14 @@ class AppBrain: ObservableObject{
     
     func handleTrial(){
         if let subscriptionPlan = defaults.string(forKey: "subscriptionPlan"){
-            if subscriptionPlan == "free" {
+            let subscriptionStatus = defaults.string(forKey: "subscriptionStatus")
+            if subscriptionPlan == "free" || subscriptionStatus == "EXPIRED" {
                 if let requests = defaults.string(forKey: "requests"){
                     if Int(requests) ?? 99 > 80 {
-                        self.isTrialExpired = true
-                        print("isTrialExpired? \(String(isTrialExpired))")
+                        self.user.isTrialExpired = true
+                        print("isTrialExpired? \(String(self.user.isTrialExpired))")
+                    }else{
+                        self.user.isTrialExpired = false
                     }
                 }
             }
@@ -48,10 +43,8 @@ class AppBrain: ObservableObject{
         defaults.removeObject(forKey: "subscriptionPlan")
         defaults.removeObject(forKey: "subscriptionStatus")
         defaults.removeObject(forKey: "defaultLanguage")
-        defaults.removeObject(forKey: "defaultLanguageName")
         defaults.removeObject(forKey: "requests")
-        defaults.removeObject(forKey: "decks")
-        self.isSubscriptionPlanChecked = false
+        self.user.isSubscriptionPlanChecked = false
     }
     func getLanguageName(_ languageCode: String) -> String?{
         for language in STATIC.languages {
@@ -83,7 +76,8 @@ class AppBrain: ObservableObject{
             }
         }
         if let requests = defaults.string(forKey: "requests"){
-            defaults.set((Int(requests) ?? 99) + 1 , forKey: "requests")
+            defaults.set((Int(requests)! + 1), forKey: "requests")
+            self.user.requests = Int(requests)! + 1
             DispatchQueue.main.async {
                 self.handleTrial()
             }
@@ -92,10 +86,10 @@ class AppBrain: ObservableObject{
 
     func handleAddToDeck(front: String, back: String) -> String{
         var documentID: String = ""
-        if self.selectedDeck.deckName != "" {
+        if self.user.selectedDeck.deckName != "" {
             let uid = self.getCurrentUser()
             var ref: DocumentReference? = nil
-            ref = db.collection("flashcards").document(uid).collection("decks").document(self.selectedDeck.deckName).collection("cards").addDocument(data: [
+            ref = db.collection("flashcards").document(uid).collection("decks").document(self.user.selectedDeck.deckName).collection("cards").addDocument(data: [
                 "front": front,
                 "back": back,
                 "interval": 0,
@@ -107,10 +101,10 @@ class AppBrain: ObservableObject{
                     documentID = ref!.documentID
                     print("Document added with ID: \(documentID)")
                     let newCard = Card(front: front, back: back, createdAt: Date(), interval: 0, due: Date(), id: documentID)
-                    self.selectedDeck.cards?.append(newCard)
+                    self.user.selectedDeck.cards?.append(newCard)
                     
-                    if let deckIndex = self.decks.firstIndex(where: { $0.deckName == self.selectedDeck.deckName }){
-                       self.decks[deckIndex].cards?.append(newCard)
+                    if let deckIndex = self.user.decks.firstIndex(where: { $0.deckName == self.user.selectedDeck.deckName }){
+                        self.user.decks[deckIndex].cards?.append(newCard)
                     }
                 }
             }
@@ -133,10 +127,10 @@ class AppBrain: ObservableObject{
             }
         }
         let deck = Deck(deckName: deckName, cards: [])
-        self.decks.append(deck)
+        self.user.decks.append(deck)
     }
     func fetchingDecks(){
-        self.decks = []
+        self.user.decks = []
         let uid = self.getCurrentUser()
             db.collection("flashcards").document(uid).collection("decks").getDocuments() { (querySnapshot, error) in
                 if let error = error {
@@ -168,7 +162,7 @@ class AppBrain: ObservableObject{
                                     cards.append(card)
                                 }
                                 let deck = Deck(deckName: deckDocument.documentID, cards: cards)
-                                self.decks.append(deck)
+                                self.user.decks.append(deck)
                             }
                         }
                     }
@@ -178,7 +172,7 @@ class AppBrain: ObservableObject{
    
     
     func checkSubscriptionPlan(){
-        if !self.isSubscriptionPlanChecked{
+        if !self.user.isSubscriptionPlanChecked{
             let currentUser = Auth.auth().currentUser
             currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
                 if let error = error {
@@ -208,14 +202,15 @@ class AppBrain: ObservableObject{
                             DispatchQueue.main.async {
                                 Task {
                                     print(planApiData)
-                                    self.isSubscriptionPlanChecked = true
+                                    self.user.isSubscriptionPlanChecked = true
                                     self.defaults.set(planApiData.subscriptionPlan, forKey: "subscriptionPlan")
                                     self.defaults.set(planApiData.subscriptionStatus ?? "", forKey: "subscriptionStatus")
-                                    if planApiData.subscriptionStatus == "EXPIRED" {
+                                    self.handleTrial()
+                                    /*if planApiData.subscriptionStatus == "EXPIRED" {
                                         self.isTrialExpired = true
                                     }else if planApiData.subscriptionStatus == "ACTIVE" {
                                         self.isTrialExpired = false
-                                    }
+                                    }*/
                                 }
                             }
                         }
