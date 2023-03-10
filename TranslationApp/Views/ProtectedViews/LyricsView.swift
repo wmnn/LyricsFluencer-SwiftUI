@@ -254,7 +254,7 @@ struct PopUpWebView: View{
             .shadow(radius: 20)
         }
     }
-}
+}/*
 struct WebView: UIViewRepresentable{
     var url: URL
     func makeUIView(context: Context) -> WKWebView{
@@ -262,6 +262,45 @@ struct WebView: UIViewRepresentable{
     }
     func updateUIView(_ uiView: WKWebView, context: Context){
         let request = URLRequest(url:url)
+        uiView.load(request)
+    }
+}*/
+class WebViewDelegate: NSObject, WKNavigationDelegate {
+    let allowedHosts: [String] = ["https://www.google.com/*", "www.google.com"]
+    
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let url = navigationAction.request.url else {
+            decisionHandler(.cancel)
+            return
+        }
+        
+        if allowedHosts.contains(url.host ?? "") {
+            decisionHandler(.allow)
+        } else {
+            /*print(url.host)
+            print(allowedHosts)*/
+            decisionHandler(.cancel)
+        }
+    }
+}
+
+struct WebView: UIViewRepresentable {
+    var url: URL
+    let delegate: WebViewDelegate
+    
+    init(url: URL) {
+        self.url = url
+        self.delegate = WebViewDelegate()
+    }
+    
+    func makeUIView(context: Context) -> WKWebView {
+        let webView = WKWebView()
+        webView.navigationDelegate = delegate
+        return webView
+    }
+    
+    func updateUIView(_ uiView: WKWebView, context: Context) {
+        let request = URLRequest(url: url)
         uiView.load(request)
     }
 }
