@@ -53,7 +53,7 @@ class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need i
                     print("Error while receiving response")
                     return
                 }
-                print("Success: \(data)")
+                //print("Success: \(data)")
                 if let lyricsApiData: LyricsApiData = self.parseJSON(data){
                     DispatchQueue.main.async {
                         Task {
@@ -62,21 +62,18 @@ class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need i
                             self.appBrain!.lyricsModel.artist = lyricsApiData.artist
                             self.appBrain!.lyricsModel.song = lyricsApiData.song
                             print(self.appBrain!.lyricsModel.song!)
-                            let isCombinedLyrics = await self.handleCombineLyrics(lyricsApiData)
+                            let isCombinedLyrics = await self.handleCombineLyrics(lyricsApiData) //the function returns a boolean value
                             if isCombinedLyrics{
-                                print(self.appBrain!.lyricsModel.combinedLyrics!)
-                                print("inside is combined lyrics")
-                                //appBrain.updateRequestCounter()
                                 DispatchQueue.main.async {
+                                    //print(self.appBrain!.lyricsModel.combinedLyrics!) //here is the combinedLyrics if you want to print it
                                     if self.isShazamLoading {
                                         self.isShazamLoading = false
                                     }
                                     if self.isQuickSearchLoading{
                                         self.isQuickSearchLoading = false
                                     }
-                                
+                                    self.appBrain!.updateRequestCounter()
                                     self.appBrain!.path.append("Lyrics")
-                                    
                                 }
                             }
                         }

@@ -99,7 +99,7 @@ class AppBrain: ObservableObject{
                     print("Error adding document: \(err)")
                 } else {
                     documentID = ref!.documentID
-                    print("Document added with ID: \(documentID)")
+                    //print("Document added with ID: \(documentID)")
                     let newCard = Card(front: front, back: back, createdAt: Date(), interval: 0, due: Date(), id: documentID)
                     self.user.selectedDeck.cards?.append(newCard)
                     
@@ -180,12 +180,11 @@ class AppBrain: ObservableObject{
                     print(error)
                     return;
                 }
-                let urlString = "http://localhost:8080/payment/plan?token=\(idToken ?? "")"
+                let urlString = "\(STATIC.API_ROOT)/payment/plan?token=\(idToken ?? "")"
                 if let url = URL(string: urlString){
                     
                     var request = URLRequest(url: url)
                     request.httpMethod = "GET"
-                    print(url)
                     
                     let task = URLSession.shared.dataTask(with: request) { data, response, error in
                         if let err = error {
@@ -197,20 +196,15 @@ class AppBrain: ObservableObject{
                             print("Error while receiving response")
                             return
                         }
-                        print("Success: \(data)")
+                        //print("Success: \(data)")
                         if let planApiData: PlanApiData = self.parsePlanApiJSON(data){
                             DispatchQueue.main.async {
                                 Task {
-                                    print(planApiData)
+                                    //print(planApiData)
                                     self.user.isSubscriptionPlanChecked = true
                                     self.defaults.set(planApiData.subscriptionPlan, forKey: "subscriptionPlan")
                                     self.defaults.set(planApiData.subscriptionStatus ?? "", forKey: "subscriptionStatus")
                                     self.handleTrial()
-                                    /*if planApiData.subscriptionStatus == "EXPIRED" {
-                                        self.isTrialExpired = true
-                                    }else if planApiData.subscriptionStatus == "ACTIVE" {
-                                        self.isTrialExpired = false
-                                    }*/
                                 }
                             }
                         }
