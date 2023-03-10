@@ -123,12 +123,12 @@ struct RegisterView: View {
                     print("Interesting: Unexpected new value.")
                 }
             }
-            ZStack{ //For testing
+            /*ZStack{ //For testing
                 VStack{
                     Text("\(appBrain.path.count)")
                         .foregroundColor(Color.black)
                 }
-            }
+            }*/
         }
     }
 }

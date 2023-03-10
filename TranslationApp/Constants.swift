@@ -9,6 +9,7 @@ import Foundation
 
 struct STATIC{
     static let API_ROOT = "https://www.lyricsfluencer.com"
+    //static let API_ROOT = "http://localhost:8080"
     static let languages: [Language] = [
         Language(language: "af", name: "Afrikaans"),
         Language(language: "ak", name: "Akan"),
