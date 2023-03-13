@@ -13,6 +13,7 @@ struct SettingsView: View {
     let defaults = UserDefaults.standard
     @EnvironmentObject var appBrain: AppBrain
     @State var targetLanguage = LanguageModel(language: "None"/*, name: "Undefined"*/)
+    @State var isDeleteAccountModalPresented = false
     
     var body: some View {
         ZStack{
@@ -33,13 +34,45 @@ struct SettingsView: View {
                 SomeButton(text: "Save choosen language") {
                     self.saveDefaultLanguage()
                 }
+                /*
+                //Delete Account
+                Button {
+                    self.isDeleteAccountModalPresented = true
+                } label: {
+                    HStack{
+                        Text("Delete Account")
+
+                    }
+                    .bold()
+                    .font(.system(size:24))
+                    .frame(width: 300, height: 20, alignment: .center)
+                    .foregroundColor(Color.red)
+                    .padding()
+                    .background {
+                        Color("primaryColor")
+                    }
+                    .cornerRadius(18)
+                }
+                 */
 
             }
+            /*
+            if isDeleteAccountModalPresented{
+                ZStack{
+                    VisualEffectView(effect: UIBlurEffect(style: .dark))
+                    Color.black.opacity(0.4).ignoresSafeArea(.all)
+                }
+                .edgesIgnoringSafeArea(.all)
+            }
+            if isDeleteAccountModalPresented{
+                DeleteAccountModal(isDeleteAccountModalPresented: $isDeleteAccountModalPresented)
+            }*/
             
         }
         .onAppear{
             fetchLocaleStorage()
         }
+        
     }
     func fetchLocaleStorage(){
         let dl = defaults.string(forKey: "defaultLanguage")
@@ -62,3 +95,35 @@ struct SettingsView_Previews: PreviewProvider {
         SettingsView()
     }
 }
+/*
+
+struct DeleteAccountModal: View{
+    let db = Firestore.firestore()
+    @EnvironmentObject var appBrain: AppBrain
+    @Binding var isDeleteAccountModalPresented: Bool
+    
+    var body: some View{
+        ZStack{
+            VStack{
+                TextWithIcon(text: "Delete Account?", systemName: "")
+                HStack{
+                    
+                    SomeSmallButton(text: "Cancel", buttonAction: {
+                        isDeleteAccountModalPresented = false
+                     
+                    }, textColor: Color.green)
+                    
+                    SomeSmallButton(text: "Delete", buttonAction: {
+                        isDeleteAccountModalPresented = false
+                        handleDeleteAccount()
+                    }, textColor: Color.red)
+                    
+                    
+                }
+            }
+        }
+    }
+    func handleDeleteAccount(){
+        
+    }
+}*/

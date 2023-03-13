@@ -34,6 +34,9 @@ class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need i
     }
 
     func handleQuickSearch(searchQuery: String, target: String) {
+        if isQuickSearchLoading {
+            return
+        }
         let json: [String: String] = ["searchQuery": searchQuery, "target": target]
         let urlString = "\(STATIC.API_ROOT)/api/quicksearch"
         
