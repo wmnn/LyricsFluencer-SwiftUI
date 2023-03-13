@@ -9,9 +9,7 @@
 /* Begin PBXBuildFile section */
 		C406045729A2138900D56C0D /* AppBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C406045629A2138900D56C0D /* AppBrain.swift */; };
 		C406045929A21BEC00D56C0D /* Lyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = C406045829A21BEC00D56C0D /* Lyrics.swift */; };
-		C406045D29A277C100D56C0D /* RegisterViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C406045C29A277C100D56C0D /* RegisterViewHandler.swift */; };
 		C42044FA29990571009699F7 /* LyricsFluencer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42044F929990571009699F7 /* LyricsFluencer.swift */; };
-		C42044FC29990571009699F7 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42044FB29990571009699F7 /* RegisterView.swift */; };
 		C42044FE29990574009699F7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C42044FD29990574009699F7 /* Assets.xcassets */; };
 		C420450129990574009699F7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C420450029990574009699F7 /* Preview Assets.xcassets */; };
 		C420450A299905A2009699F7 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4204509299905A2009699F7 /* LoginView.swift */; };
@@ -41,15 +39,14 @@
 		C4C58F4A29A893FE009120C8 /* DecksModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C58F4929A893FE009120C8 /* DecksModel.swift */; };
 		C4C58F4C29A90304009120C8 /* DeckSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C58F4B29A90304009120C8 /* DeckSettingsView.swift */; };
 		C4C58F4E29A91AEB009120C8 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C58F4D29A91AEB009120C8 /* CardView.swift */; };
+		C4D82A5629BF70D1009A3342 /* ReusableViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D82A5529BF70D1009A3342 /* ReusableViews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		C406045629A2138900D56C0D /* AppBrain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBrain.swift; sourceTree = "<group>"; };
 		C406045829A21BEC00D56C0D /* Lyrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lyrics.swift; sourceTree = "<group>"; };
-		C406045C29A277C100D56C0D /* RegisterViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewHandler.swift; sourceTree = "<group>"; };
 		C42044F629990571009699F7 /* TranslationApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TranslationApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C42044F929990571009699F7 /* LyricsFluencer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsFluencer.swift; sourceTree = "<group>"; };
-		C42044FB29990571009699F7 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		C42044FD29990574009699F7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C420450029990574009699F7 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C4204509299905A2009699F7 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -77,6 +74,7 @@
 		C4C58F4929A893FE009120C8 /* DecksModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecksModel.swift; sourceTree = "<group>"; };
 		C4C58F4B29A90304009120C8 /* DeckSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckSettingsView.swift; sourceTree = "<group>"; };
 		C4C58F4D29A91AEB009120C8 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		C4D82A5529BF70D1009A3342 /* ReusableViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableViews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,8 +134,8 @@
 		C42045072999057A009699F7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				C42044FB29990571009699F7 /* RegisterView.swift */,
 				C4204509299905A2009699F7 /* LoginView.swift */,
+				C4D82A5529BF70D1009A3342 /* ReusableViews.swift */,
 				C420453B29992A89009699F7 /* ProtectedViews */,
 			);
 			path = Views;
@@ -202,7 +200,6 @@
 			isa = PBXGroup;
 			children = (
 				C406045629A2138900D56C0D /* AppBrain.swift */,
-				C406045C29A277C100D56C0D /* RegisterViewHandler.swift */,
 				C44F2D2E29AA8BBC004A28AA /* LoginViewHandler.swift */,
 				C44F2D3029AA986B004A28AA /* HomeViewHandler.swift */,
 				C44F2D3229AAA06D004A28AA /* LyricsViewHandler.swift */,
@@ -323,9 +320,7 @@
 				C443138929AA4B9E007D7CA9 /* EditCardViewHandler.swift in Sources */,
 				C420454329995FF0009699F7 /* LanguageModel.swift in Sources */,
 				C4B38AAA29A3602300EEFAF9 /* Constants.swift in Sources */,
-				C42044FC29990571009699F7 /* RegisterView.swift in Sources */,
 				C4C58F4A29A893FE009120C8 /* DecksModel.swift in Sources */,
-				C406045D29A277C100D56C0D /* RegisterViewHandler.swift in Sources */,
 				C420450E299905EC009699F7 /* HomeView.swift in Sources */,
 				C4C58F4829A823D8009120C8 /* DecksView.swift in Sources */,
 				C492FA3429BA52CD003A07E9 /* User.swift in Sources */,
@@ -336,6 +331,7 @@
 				C42044FA29990571009699F7 /* LyricsFluencer.swift in Sources */,
 				C443138529AA39D7007D7CA9 /* CardViewHandler.swift in Sources */,
 				C44F2D2F29AA8BBC004A28AA /* LoginViewHandler.swift in Sources */,
+				C4D82A5629BF70D1009A3342 /* ReusableViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

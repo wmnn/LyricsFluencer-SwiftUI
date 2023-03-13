@@ -13,6 +13,12 @@ import ReplayKit
 struct HomeView: View{
     @EnvironmentObject var appBrain: AppBrain
     @StateObject var homeViewHandler = HomeViewHandler()
+    enum HomeViewField: Hashable {
+        case search
+        case none
+    }
+    @FocusState var fieldInFocus: HomeViewField?
+    
     var body: some View {
         ZStack{
             Color.background
@@ -22,7 +28,26 @@ struct HomeView: View{
                     SomeHeadline(text: "Your free trial has expired, unfortunately you can't subscribe inside the app.", fontSize: 24)
                     TrialExpiredButton(text: "Recognize Song")
                     //handling Quicksearch Input
-                    HomeViewSearchInput(homeViewHandler: homeViewHandler)
+                    TextField(text: $homeViewHandler.searchQuery){
+                        Text("Search").foregroundColor(Color.gray)
+                    }
+                    .font(.system(size:24))
+                    .frame(width: 300, height: 20, alignment: .center)
+                    .padding()
+                    .foregroundColor(Color.black)
+                    .background{
+                        Color("inputColor")
+                    }
+                    .cornerRadius(18)
+                    .autocapitalization(.none)
+                    .autocorrectionDisabled(true)
+                    .onSubmit {
+                        homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.user.targetLanguage.language)
+                        fieldInFocus = HomeViewField.none
+                        self.homeViewHandler.isQuickSearchLoading = true
+                    }
+                    .submitLabel(SubmitLabel.done)
+                    
                     TrialExpiredButton(text: "Quick Search")
                 }else{
                     //Handling target language
@@ -34,11 +59,31 @@ struct HomeView: View{
                     }, systemName: "shazam.logo.fill", binding: $homeViewHandler.isShazamLoading)
                     
                     //handling Quicksearch Input
-                    HomeViewSearchInput(homeViewHandler: homeViewHandler)
-                    
+                    //HomeViewSearchInput(homeViewHandler: homeViewHandler)
+                    TextField(text: $homeViewHandler.searchQuery){
+                        Text("Search").foregroundColor(Color.gray)
+                    }
+                    .font(.system(size:24))
+                    .frame(width: 300, height: 20, alignment: .center)
+                    .padding()
+                    .foregroundColor(Color.black)
+                    .background{
+                        Color("inputColor")
+                    }
+                    .cornerRadius(18)
+                    .autocapitalization(.none)
+                    .autocorrectionDisabled(true)
+                    .onSubmit {
+                        homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.user.targetLanguage.language)
+                        fieldInFocus = HomeViewField.none
+                        self.homeViewHandler.isQuickSearchLoading = true
+                    }
+                    .submitLabel(SubmitLabel.done)
+            
                     SomeButtonWithActivityIndicator(text: "Quick Search", buttonAction: {
                         homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.user.targetLanguage.language)
                         self.homeViewHandler.isQuickSearchLoading = true
+                        fieldInFocus = HomeViewField.none
                     }, systemName: "magnifyingglass",binding: $homeViewHandler.isQuickSearchLoading)
                 }
                 //Flashcard
@@ -130,10 +175,11 @@ struct LanguagesMenu: View{
         
     }
 }
-
+/*
 struct HomeViewSearchInput: View{
     @EnvironmentObject var appBrain: AppBrain
     @StateObject var homeViewHandler: HomeViewHandler
+    @Binding var focusState: HomeViewField
     
     var body: some View{
         TextField(text: $homeViewHandler.searchQuery){
@@ -155,3 +201,4 @@ struct HomeViewSearchInput: View{
         .submitLabel(SubmitLabel.done)
     }
 }
+*/

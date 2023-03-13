@@ -55,7 +55,7 @@ struct LyricsFluencer: App {
     
     var body: some Scene {
         WindowGroup {
-            RegisterView()
+            LoginView()
                 .environmentObject(appBrain)
                 
         }

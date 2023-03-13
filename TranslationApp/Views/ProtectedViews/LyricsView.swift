@@ -18,94 +18,86 @@ struct LyricsView: View {
     var body: some View {
         ZStack{
             Color.background
-            ScrollView{
-                VStack(alignment: .leading){
-                    Title(text: "Artist: \(appBrain.lyricsModel.artist ?? " ")")
-                    Title(text: "Song: \(appBrain.lyricsModel.song ?? " ")")
-                        .padding(.bottom)
-                    if appBrain.lyricsModel.albumArtURL != nil{
-                        AsyncImage(url: appBrain.lyricsModel.albumArtURL){ image in
-                            image
-                                .resizable()
-                                .scaledToFit()
-                                .opacity(1)
-                                .frame(width: 200, height: 200)
-                        } placeholder: {
-                            EmptyView()
-                        }
-                    }
-                   
-                    
-                    ForEach(0..<self.appBrain.lyricsModel.combinedLyrics!.count, id: \.self) { index in
-                        if index % 2 == 0 {
-                            let line = appBrain.lyricsModel.combinedLyrics![index]
-                            let words = lyricsViewHandler.handleSplittingLine(line: line)
-                            WrappingHStack(alignment: .leading){
-                                ForEach(0..<words.count, id:\.self){ index in
-                                    MenuSubView(
-                                        word: String(words[index]),
-                                        color: "textColor",
-                                        lyricsViewHandler: lyricsViewHandler
-                                    )
+                .ignoresSafeArea(.all)
+                ScrollView{
+                    VStack(alignment: .leading){
+                        Title(text: "Artist: \(appBrain.lyricsModel.artist ?? " ")")
+                        Title(text: "Song: \(appBrain.lyricsModel.song ?? " ")")
+                            .padding(.bottom)
+                        
+                        
+                        ForEach(0..<self.appBrain.lyricsModel.combinedLyrics!.count, id: \.self) { index in
+                            if index % 2 == 0 {
+                                let line = appBrain.lyricsModel.combinedLyrics![index]
+                                let words = lyricsViewHandler.handleSplittingLine(line: line)
+                                WrappingHStack(alignment: .leading){
+                                    ForEach(0..<words.count, id:\.self){ index in
+                                        MenuSubView(
+                                            word: String(words[index]),
+                                            color: "textColor",
+                                            lyricsViewHandler: lyricsViewHandler
+                                        )
+                                    }
                                 }
+                            }else{
+                                let line = appBrain.lyricsModel.combinedLyrics![index]
+                                let words = lyricsViewHandler.handleSplittingLine(line: line)
+                                WrappingHStack(alignment: .leading){
+                                    ForEach(0..<words.count, id:\.self){ index in
+                                        MenuSubView(
+                                            word: String(words[index]),
+                                            color: "secondaryColor",
+                                            lyricsViewHandler: lyricsViewHandler
+                                        )
+                                    }
+                                }//Closing WrappingHStack
+                            }//ELSE
+                        }
+                    }//Closing VStack
+                }//Closing Scroll View
+                if lyricsViewHandler.isAddToDeckViewShown || lyricsViewHandler.isWebViewShown{
+                    ZStack{
+                        VisualEffectView(effect: UIBlurEffect(style: .dark))
+                        Color.black.opacity(0.4).ignoresSafeArea(.all)
+                    }
+                    .edgesIgnoringSafeArea(.all)
+                }
+                if lyricsViewHandler.isAddToDeckViewShown{
+                    AddWordView(lyricsViewHandler: lyricsViewHandler)
+                }
+                if lyricsViewHandler.isWebViewShown {
+                    PopUpWebView(lyricsViewHandler: lyricsViewHandler)
+                }
+                
+            }//Closing ZStack
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    if !lyricsViewHandler.isWebViewShown && !lyricsViewHandler.isAddToDeckViewShown{
+                        Button {
+                            self.lyricsViewHandler.isWebViewShown = false
+                            appBrain.lyricsModel.albumArtURL = nil
+                            appBrain.path.removeLast()
+                        } label: {
+                            HStack{
+                                Image(systemName: "arrow.left")
+                                Text("Back")
+                                    .font(.system(size: 24))
                             }
-                        }else{
-                            let line = appBrain.lyricsModel.combinedLyrics![index]
-                            let words = lyricsViewHandler.handleSplittingLine(line: line)
-                            WrappingHStack(alignment: .leading){
-                                ForEach(0..<words.count, id:\.self){ index in
-                                    MenuSubView(
-                                        word: String(words[index]),
-                                        color: "secondaryColor",
-                                        lyricsViewHandler: lyricsViewHandler
-                                    )
-                                }
-                            }//Closing WrappingHStack
-                        }//Closing Else
-                    }//Closing ForEach Line
-                }//Closing VStack
-            }//Closing Scroll View
-            
-            if lyricsViewHandler.isAddToDeckViewShown || lyricsViewHandler.isWebViewShown{
-                ZStack{
-                    VisualEffectView(effect: UIBlurEffect(style: .dark))
-                    Color.black.opacity(0.4).ignoresSafeArea(.all)
-                }
-                .edgesIgnoringSafeArea(.all)
-            }
-            if lyricsViewHandler.isAddToDeckViewShown{
-                AddWordView(lyricsViewHandler: lyricsViewHandler)
-            }
-            if lyricsViewHandler.isWebViewShown {
-                PopUpWebView(lyricsViewHandler: lyricsViewHandler)
-            }
-            
-            
-        }//Closing ZStack
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                if !lyricsViewHandler.isWebViewShown && !lyricsViewHandler.isAddToDeckViewShown{
-                    Button {
-                        self.lyricsViewHandler.isWebViewShown = false
-                        appBrain.lyricsModel.albumArtURL = nil
-                        appBrain.path.removeLast()
-                    } label: {
-                        HStack{
-                            Image(systemName: "arrow.left")
-                            Text("Back")
-                                .font(.system(size: 24))
                         }
                     }
                 }
-            }
-        }//toolbar
+                
+            }//toolbar
+        
     }//View
 }//struct
 
 struct LyricsView_Previews: PreviewProvider {
+    //@StateObject var appBrain = AppBrain()
     static var previews: some View {
         LyricsView(/*artist: "Apache", song: "Roller", combinedLyrics: ["Hey now, you're an all star bleyblade day date\n", "Get your game on, go play\n", "c", "d"]*/)
+        //.environmentObject(appBrain)
     }
 }
 struct MenuSubView: View {
@@ -255,16 +247,16 @@ struct PopUpWebView: View{
         }
     }
 }/*
-struct WebView: UIViewRepresentable{
-    var url: URL
-    func makeUIView(context: Context) -> WKWebView{
-        return WKWebView()
-    }
-    func updateUIView(_ uiView: WKWebView, context: Context){
-        let request = URLRequest(url:url)
-        uiView.load(request)
-    }
-}*/
+  struct WebView: UIViewRepresentable{
+  var url: URL
+  func makeUIView(context: Context) -> WKWebView{
+  return WKWebView()
+  }
+  func updateUIView(_ uiView: WKWebView, context: Context){
+  let request = URLRequest(url:url)
+  uiView.load(request)
+  }
+  }*/
 class WebViewDelegate: NSObject, WKNavigationDelegate {
     let allowedHosts: [String] = ["https://www.google.com/*", "www.google.com"]
     
@@ -278,7 +270,7 @@ class WebViewDelegate: NSObject, WKNavigationDelegate {
             decisionHandler(.allow)
         } else {
             /*print(url.host)
-            print(allowedHosts)*/
+             print(allowedHosts)*/
             decisionHandler(.cancel)
         }
     }
