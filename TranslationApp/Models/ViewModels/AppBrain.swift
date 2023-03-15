@@ -30,7 +30,7 @@ class AppBrain: ObservableObject{
       
         if subscriptionPlan == "free" || subscriptionStatus == "EXPIRED" {
             let requests = defaults.string(forKey: "requests")
-            if Int(requests ?? "") ?? 99 > 100 {
+            if Int(requests ?? "") ?? 99 > 5 {
                 self.user.isTrialExpired = true
             }else{
                 self.user.isTrialExpired = false

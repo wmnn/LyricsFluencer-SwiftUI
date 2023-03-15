@@ -61,6 +61,7 @@ struct SomeButtonWithActivityIndicator: View{
     let buttonAction: () -> Void
     var systemName: String?
     @Binding var binding: Bool
+    var width: CGFloat?
     
     var body: some View{
         Button {
@@ -70,9 +71,9 @@ struct SomeButtonWithActivityIndicator: View{
                 ActivityIndicator()
             }else{
                 if systemName == nil {
-                    TextWithIcon(text: text, systemName: "")
+                    width != nil ? TextWithIcon(text: text, systemName: "", width: width!) : TextWithIcon(text: text, systemName: "")
                 }else{
-                    TextWithIcon(text: text, systemName: systemName!)
+                    width != nil ? TextWithIcon(text: text, systemName: systemName!, width: width!) : TextWithIcon(text: text, systemName: systemName!)
                 }
             }
         }
@@ -81,6 +82,8 @@ struct SomeButtonWithActivityIndicator: View{
 struct TextWithIcon: View{
     var text: String
     var systemName: String
+    var width: CGFloat?
+    
     var body: some View{
         HStack{
             Text(text)
@@ -88,7 +91,7 @@ struct TextWithIcon: View{
         }
         .bold()
         .font(.system(size:24))
-        .frame(width: 300, height: 20, alignment: .center)
+        .frame(width: width != nil ? width! : 300, height: 20, alignment: .center)
         .foregroundColor(Color.white)
         .padding()
         .background {

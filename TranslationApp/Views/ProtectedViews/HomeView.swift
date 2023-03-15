@@ -55,7 +55,6 @@ struct HomeView: View{
                     //handling Shazam
                     SomeButtonWithActivityIndicator(text: "Recognize Song ", buttonAction: {
                         homeViewHandler.handleShazam()
-                        homeViewHandler.isShazamLoading = true
                     }, systemName: "shazam.logo.fill", binding: $homeViewHandler.isShazamLoading)
                     
                     //handling Quicksearch Input
@@ -74,17 +73,53 @@ struct HomeView: View{
                     .autocapitalization(.none)
                     .autocorrectionDisabled(true)
                     .onSubmit {
-                        homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.user.targetLanguage.language)
-                        fieldInFocus = HomeViewField.none
-                        self.homeViewHandler.isQuickSearchLoading = true
+                        if self.homeViewHandler.isQuickSearchLoading{
+                            fieldInFocus = HomeViewField.none
+                            DispatchQueue.main.async {
+                                self.homeViewHandler.isQuickSearchLoading = false
+                                self.homeViewHandler.isShazamLoading = false
+                            }
+                        }else{
+                            print("Else")
+                            if !homeViewHandler.isShazamLoading{
+                                DispatchQueue.main.async {
+                                    self.homeViewHandler.isQuickSearchLoading = true
+                                    homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.user.targetLanguage.language)
+                                    fieldInFocus = HomeViewField.none
+                                    print("Got to here")
+                                }
+                            }
+                        }
                     }
                     .submitLabel(SubmitLabel.done)
-            
-                    SomeButtonWithActivityIndicator(text: "Quick Search", buttonAction: {
-                        homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.user.targetLanguage.language)
-                        self.homeViewHandler.isQuickSearchLoading = true
-                        fieldInFocus = HomeViewField.none
-                    }, systemName: "magnifyingglass",binding: $homeViewHandler.isQuickSearchLoading)
+                    
+                    HStack{/*
+                        SomeButtonWithActivityIndicator(text: "Manual Search", buttonAction: {
+                          
+                        }, systemName: "magnifyingglass",binding: $homeViewHandler.isQuickSearchLoading, width: 300/2)
+                        */
+                        SomeButtonWithActivityIndicator(text: "Quick Search", buttonAction: {
+                            if self.homeViewHandler.isQuickSearchLoading{
+                                fieldInFocus = HomeViewField.none
+                                DispatchQueue.main.async {
+                                    self.homeViewHandler.isQuickSearchLoading = false
+                                    self.homeViewHandler.isShazamLoading = false
+                                }
+                            }else{
+                                print("Else")
+                                if !homeViewHandler.isShazamLoading{
+                                    DispatchQueue.main.async {
+                                        self.homeViewHandler.isQuickSearchLoading = true
+                                        homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.user.targetLanguage.language)
+                                        fieldInFocus = HomeViewField.none
+                                        print("Got to here")
+                                    }
+                                }
+                            }
+                        }, systemName: "magnifyingglass", binding: $homeViewHandler.isQuickSearchLoading, width: 300)
+                    }
+                    .frame(width:300)
+                
                 }
                 //Flashcard
                 SomeButton(text: "Your Flashcards") {
