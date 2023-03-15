@@ -18,13 +18,13 @@ class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need i
     @Published var isQuickSearchLoading = false
     @Published var searchQuery: String = ""
     //For Shazam
+    @Published var isRecording = false
     @Published var shazamMedia = ShazamMedia(
         title: "Title ...",
         subtitle: "Subtitle ...",
         artistName: "Artist ...",
         albumArtURL: URL(string: "https://google.com"),
         genres: ["Pop"])
-    @Published var isRecording = false
     private let audioEngine = AVAudioEngine() //To get microphone input
     private let session = SHSession() //Shazam request
     private let signatureGenerator = SHSignatureGenerator() //Shazam only accepts shsignature files
@@ -32,14 +32,15 @@ class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need i
         super.init()
         session.delegate = self
     }
-
+    
     func handleQuickSearch(searchQuery: String, target: String) {
-        if isQuickSearchLoading {
+        if !isShazamLoading && !isQuickSearchLoading {
+            print("Making not request")
             return
         }
         let json: [String: String] = ["searchQuery": searchQuery, "target": target]
         let urlString = "\(STATIC.API_ROOT)/api/quicksearch"
-        
+        print("Making soon request")
         if let url = URL(string: urlString){
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
@@ -69,14 +70,22 @@ class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need i
                             if isCombinedLyrics{
                                 DispatchQueue.main.async {
                                     //print(self.appBrain!.lyricsModel.combinedLyrics!) //here is the combinedLyrics if you want to print it
-                                    if self.isShazamLoading {
-                                        self.isShazamLoading = false
-                                    }
-                                    if self.isQuickSearchLoading{
-                                        self.isQuickSearchLoading = false
-                                    }
                                     self.appBrain!.updateRequestCounter()
-                                    self.appBrain!.path.append("Lyrics")
+                                    if (!self.isShazamLoading && !self.isQuickSearchLoading) || (self.isShazamLoading && self.isQuickSearchLoading){
+                                        self.isShazamLoading = false
+                                        self.isQuickSearchLoading = false
+                                        return
+                                    }else{
+                                        if self.isQuickSearchLoading{
+                                            self.isQuickSearchLoading = false
+                                        }
+                                        if self.isShazamLoading {
+                                            self.isRecording = false
+                                            self.isShazamLoading = false
+                                        }
+                                        self.appBrain!.path.append("Lyrics") 
+                                    }
+                                    
                                 }
                             }
                         }
@@ -92,29 +101,29 @@ class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need i
         DispatchQueue.main.async {
             self.appBrain!.lyricsModel.combinedLyrics = []
         }
-            if let translatedLyrics = lyricsApiData.translatedLyrics{
-                if let lyrics = self.appBrain!.lyricsModel.lyrics{
-                    let lyricsArr = lyrics.components(separatedBy: "\n")
-                    let translatedLyricsArr = translatedLyrics.components(separatedBy: "\n")
-                        for i in 0..<max(lyricsArr.count, translatedLyricsArr.count) {
-                            if i < lyricsArr.count {
-                                DispatchQueue.main.async {
-                                    self.appBrain!.lyricsModel.combinedLyrics?.append(lyricsArr[i])
-                                }
-                            }
-                            if i < translatedLyricsArr.count {
-                                DispatchQueue.main.async {
-                                    self.appBrain!.lyricsModel.combinedLyrics?.append(translatedLyricsArr[i])
-                                }
-                            }
+        if let translatedLyrics = lyricsApiData.translatedLyrics{
+            if let lyrics = self.appBrain!.lyricsModel.lyrics{
+                let lyricsArr = lyrics.components(separatedBy: "\n")
+                let translatedLyricsArr = translatedLyrics.components(separatedBy: "\n")
+                for i in 0..<max(lyricsArr.count, translatedLyricsArr.count) {
+                    if i < lyricsArr.count {
+                        DispatchQueue.main.async {
+                            self.appBrain!.lyricsModel.combinedLyrics?.append(lyricsArr[i])
                         }
-                }else{
-                    return false
+                    }
+                    if i < translatedLyricsArr.count {
+                        DispatchQueue.main.async {
+                            self.appBrain!.lyricsModel.combinedLyrics?.append(translatedLyricsArr[i])
+                        }
+                    }
                 }
-                return true
             }else{
                 return false
             }
+            return true
+        }else{
+            return false
+        }
     }
     
     func parseJSON(_ lyricsData: Data) -> LyricsApiData? {
@@ -128,16 +137,33 @@ class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need i
         }
     }
     func handleShazam(){
-        self.startOrEndListening()
+        if isQuickSearchLoading{
+            return
+        }else{
+            self.isShazamLoading = true
+            self.startOrEndListening()
+        }
     }
     public func startOrEndListening(){
-        guard !audioEngine.isRunning else{
+        if isRecording{
+            self.isRecording = false
+            self.isShazamLoading = false
+        }
+        guard !audioEngine.isRunning else {
+            // Remove the tap from the input node
+            let inputNode = audioEngine.inputNode
+            inputNode.removeTap(onBus: 0)
+            // Stop the audio engine
             audioEngine.stop()
+            
+            // Update the UI
             DispatchQueue.main.async {
                 self.isRecording = false
+                self.isShazamLoading = false
             }
             return
         }
+        
         let audioSession = AVAudioSession.sharedInstance()
         
         audioSession.requestRecordPermission { granted in
@@ -176,15 +202,17 @@ struct ShazamMedia: Decodable{
 extension HomeViewHandler: SHSessionDelegate{
     //SHSessionDelegate in order to use the second shazam function, you could add SHSessionDelegate to the HomeViewHandler but that wouldn't be that clean
     func session(_ session: SHSession, didFind match: SHMatch) {
-        let mediaItems = match.mediaItems
-        if let firstItem = mediaItems.first{ //it can contain multiple, therefore only the first item
-            let _shazamMedia = ShazamMedia(title: firstItem.title, subtitle: firstItem.subtitle, artistName: firstItem.artist, albumArtURL: firstItem.artworkURL, genres: firstItem.genres)
-            DispatchQueue.main.async {
-                self.audioEngine.stop()
-                self.audioEngine.inputNode.removeTap(onBus: 0)
-                self.shazamMedia = _shazamMedia
-                self.appBrain?.lyricsModel.albumArtURL = firstItem.artworkURL
-                self.handleQuickSearch(searchQuery: (firstItem.title ?? "") + " " + (firstItem.artist ?? ""), target: self.appBrain!.user.targetLanguage.language)
+        if isRecording && isShazamLoading {
+            let mediaItems = match.mediaItems
+            if let firstItem = mediaItems.first{ //it can contain multiple, therefore only the first item
+                let _shazamMedia = ShazamMedia(title: firstItem.title, subtitle: firstItem.subtitle, artistName: firstItem.artist, albumArtURL: firstItem.artworkURL, genres: firstItem.genres)
+                DispatchQueue.main.async {
+                    self.audioEngine.stop()
+                    self.audioEngine.inputNode.removeTap(onBus: 0)
+                    self.shazamMedia = _shazamMedia
+                    self.appBrain?.lyricsModel.albumArtURL = firstItem.artworkURL
+                    self.handleQuickSearch(searchQuery: (firstItem.title ?? "") + " " + (firstItem.artist ?? ""), target: self.appBrain!.user.targetLanguage.language)
+                }
             }
         }
     }
