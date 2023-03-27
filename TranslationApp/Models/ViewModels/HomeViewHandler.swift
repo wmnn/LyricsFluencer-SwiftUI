@@ -99,9 +99,11 @@ class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need i
         
     }
     func turnOffActivityIndicator(){
-        self.isQuickSearchLoading = false
-        self.isRecording = false
-        self.isShazamLoading = false
+        DispatchQueue.main.async {
+            self.isQuickSearchLoading = false
+            self.isRecording = false
+            self.isShazamLoading = false
+        }
     }
     func handleCombineLyrics(_ lyricsApiData: LyricsApiData) async -> Bool{
         DispatchQueue.main.async {
