@@ -55,6 +55,7 @@ class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need i
                 
                 guard let data = data, let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
                     print("Error while receiving response")
+                    self.turnOffActivityIndicator()
                     return
                 }
                 //print("Success: \(data)")
@@ -97,6 +98,11 @@ class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need i
         }
         
     }
+    func turnOffActivityIndicator(){
+        self.isQuickSearchLoading = false
+        self.isRecording = false
+        self.isShazamLoading = false
+    }
     func handleCombineLyrics(_ lyricsApiData: LyricsApiData) async -> Bool{
         DispatchQueue.main.async {
             self.appBrain!.lyricsModel.combinedLyrics = []
@@ -133,6 +139,7 @@ class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need i
             return decodedData
         }catch {
             print(error)
+            self.turnOffActivityIndicator()
             return nil
         }
     }
@@ -219,6 +226,7 @@ extension HomeViewHandler: SHSessionDelegate{
     func session(_ session: SHSession, didNotFindMatchFor signature: SHSignature, error: Error?) {
         if let error = error{
             print(error)
+            
         }
     }
 }
