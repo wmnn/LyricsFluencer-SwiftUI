@@ -258,7 +258,7 @@ struct PopUpWebView: View{
   }
   }*/
 class WebViewDelegate: NSObject, WKNavigationDelegate {
-    let allowedHosts: [String] = ["https://www.google.com/*", "www.google.com"]
+    let allowedHosts: [String] = ["https://www.google.com/*", "www.google.com", "consent.google.com", "dictionary.cambridge.org/*"]
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard let url = navigationAction.request.url else {
@@ -269,8 +269,8 @@ class WebViewDelegate: NSObject, WKNavigationDelegate {
         if allowedHosts.contains(url.host ?? "") {
             decisionHandler(.allow)
         } else {
-            /*print(url.host)
-             print(allowedHosts)*/
+            print(url.host)
+            print(allowedHosts)
             decisionHandler(.cancel)
         }
     }
