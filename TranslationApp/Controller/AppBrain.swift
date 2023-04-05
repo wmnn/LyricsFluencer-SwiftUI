@@ -11,25 +11,16 @@ import FirebaseFirestore
 
 class AppBrain: ObservableObject{
     let db = Firestore.firestore()
-    let defaults = UserDefaults.standard
     @Published var path: NavigationPath = NavigationPath()
     @Published var user = User()
     @Published var lyricsModel = Lyrics()
 
-    func getCurrentUser() -> String{
-        guard let uid = Auth.auth().currentUser?.uid else{
-            print("User not found")
-            return ""
-        }
-        return uid
-    }
-    
     func handleTrial(){
-        let subscriptionPlan = defaults.string(forKey: "subscriptionPlan")
-        let subscriptionStatus = defaults.string(forKey: "subscriptionStatus")
+        let subscriptionPlan = LocaleStorage.getValue(for: "subscriptionPlan")
+        let subscriptionStatus = LocaleStorage.getValue(for: "subscriptionStatus")
       
         if subscriptionPlan == "free" || subscriptionStatus == "EXPIRED" {
-            let requests = defaults.string(forKey: "requests")
+            let requests = LocaleStorage.getValue(for: "requests")
             if Int(requests ?? "") ?? 99 > 5 {
                 self.user.isTrialExpired = true
             }else{
@@ -39,13 +30,7 @@ class AppBrain: ObservableObject{
             self.user.isTrialExpired = false
         }
     }
-    func handleDeleteLocalStorage(){
-        defaults.removeObject(forKey: "subscriptionPlan")
-        defaults.removeObject(forKey: "subscriptionStatus")
-        defaults.removeObject(forKey: "defaultLanguage")
-        defaults.removeObject(forKey: "requests")
-        self.user.isSubscriptionPlanChecked = false
-    }
+
     func getLanguageName(_ languageCode: String) -> String?{
         for language in STATIC.languages {
             if language.language == languageCode {
@@ -58,7 +43,8 @@ class AppBrain: ObservableObject{
         let firebaseAuth = Auth.auth()
         do {
             try firebaseAuth.signOut()
-            self.handleDeleteLocalStorage()
+            LocaleStorage.removeData()
+            self.user.isSubscriptionPlanChecked = false
             self.path = NavigationPath()
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
@@ -66,7 +52,7 @@ class AppBrain: ObservableObject{
     }
     
     func updateRequestCounter(){
-        let uid = self.getCurrentUser()
+        let uid = FirebaseModel.getCurrentUser()
         let userRef = db.collection("users").document(uid)
         userRef.updateData(["requests": FieldValue.increment(Int64(1))]) { (error) in
             if error == nil {
@@ -75,8 +61,8 @@ class AppBrain: ObservableObject{
                 print("not updated")
             }
         }
-        if let requests = defaults.string(forKey: "requests"){
-            defaults.set((Int(requests)! + 1), forKey: "requests")
+        if let requests = LocaleStorage.getValue(for: "requests"){
+            LocaleStorage.setValue(for: "requests", value: (Int(requests)! + 1))
             self.user.requests = Int(requests)! + 1
             DispatchQueue.main.async {
                 self.handleTrial()
@@ -87,7 +73,7 @@ class AppBrain: ObservableObject{
     func handleAddToDeck(front: String, back: String) -> String{
         var documentID: String = ""
         if self.user.selectedDeck.deckName != "" {
-            let uid = self.getCurrentUser()
+            let uid = FirebaseModel.getCurrentUser()
             var ref: DocumentReference? = nil
             ref = db.collection("flashcards").document(uid).collection("decks").document(self.user.selectedDeck.deckName).collection("cards").addDocument(data: [
                 "front": front,
@@ -112,7 +98,7 @@ class AppBrain: ObservableObject{
         return documentID
     }
     func createDeck(deckName: String){
-        let uid = self.getCurrentUser()
+        let uid = FirebaseModel.getCurrentUser()
         let deckName = deckName
         
         db.collection("flashcards").document(uid).getDocument { (document, error) in
@@ -131,42 +117,42 @@ class AppBrain: ObservableObject{
     }
     func fetchingDecks(){
         self.user.decks = []
-        let uid = self.getCurrentUser()
-            db.collection("flashcards").document(uid).collection("decks").getDocuments() { (querySnapshot, error) in
-                if let error = error {
-                    print("Error getting subcollection: \(error)")
-                } else {
-                    for deckDocument in querySnapshot!.documents {
-                        deckDocument.reference.collection("cards").getDocuments { (cardsQuerySnapshot, error) in
-                            if let error = error {
-                                print("Error getting cards subcollection: \(error)")
-                            } else {
-                                var cards = [Card]()
-                                for cardDocument in cardsQuerySnapshot!.documents {
-                                    let front = cardDocument.data()["front"] as? String ?? ""
-                                    let back = cardDocument.data()["back"] as? String ?? ""
-                                    let interval = cardDocument.data()["interval"] as? Int ?? 0
-                                    let createdAt = cardDocument.data()["createdAt"] as? Date ?? Date()
-                                    //let due = cardDocument.data()["due"] as? Date ?? Date()
-                                    //Handling firebase timestamp
-                                    var due: Date
-                                    if let timestamp = cardDocument.data()["due"] as? Timestamp {
-                                        due = timestamp.dateValue()
-                                        // use the date object as needed
-                                    } else {
-                                       due = Date() // use current date as default value
-                                    }
-                                    
-                    
-                                    let card = Card(front: front, back: back, createdAt: createdAt, interval: interval, due: due, id: cardDocument.documentID)
-                                    cards.append(card)
+        FirebaseModel.getDecks { (querySnapshot, error) in
+            if let error = error {
+                print(error)
+                // handle the error
+            } else {
+                for deckDocument in querySnapshot!.documents {
+                    FirebaseModel.getCards(reference: deckDocument.reference) { cardsQuerySnapshot, error in
+                        if let error = error {
+                            print("Error getting cards subcollection: \(error)")
+                        } else {
+                            var cards = [Card]()
+                            for cardDocument in cardsQuerySnapshot!.documents {
+                                let front = cardDocument.data()["front"] as? String ?? ""
+                                let back = cardDocument.data()["back"] as? String ?? ""
+                                let interval = cardDocument.data()["interval"] as? Int ?? 0
+                                let createdAt = cardDocument.data()["createdAt"] as? Date ?? Date()
+                                //let due = cardDocument.data()["due"] as? Date ?? Date()
+                                //Handling firebase timestamp
+                                var due: Date
+                                if let timestamp = cardDocument.data()["due"] as? Timestamp {
+                                    due = timestamp.dateValue()
+                                    // use the date object as needed
+                                } else {
+                                   due = Date() // use current date as default value
                                 }
-                                let deck = Deck(deckName: deckDocument.documentID, cards: cards)
-                                self.user.decks.append(deck)
+                                
+                
+                                let card = Card(front: front, back: back, createdAt: createdAt, interval: interval, due: due, id: cardDocument.documentID)
+                                cards.append(card)
                             }
+                            let deck = Deck(deckName: deckDocument.documentID, cards: cards)
+                            self.user.decks.append(deck)
                         }
                     }
                 }
+            }
         }
     }
    
@@ -202,8 +188,8 @@ class AppBrain: ObservableObject{
                                 Task {
                                     //print(planApiData)
                                     self.user.isSubscriptionPlanChecked = true
-                                    self.defaults.set(planApiData.subscriptionPlan, forKey: "subscriptionPlan")
-                                    self.defaults.set(planApiData.subscriptionStatus ?? "", forKey: "subscriptionStatus")
+                                    LocaleStorage.setValue(for: "subscriptionPlan", value: planApiData.subscriptionPlan)
+                                    LocaleStorage.setValue(for: "subscriptionStatus", value: planApiData.subscriptionStatus ?? "")
                                     self.handleTrial()
                                 }
                             }

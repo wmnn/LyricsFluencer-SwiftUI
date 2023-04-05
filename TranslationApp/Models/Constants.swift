@@ -148,11 +148,13 @@ struct STATIC{
         Language(language: "jv", name: "Javanese"),
         Language(language: "zh-CN", name: "Chinese (Simplified)")
     ]
-}
-struct Language: Codable, Identifiable {
+}/*
+struct LanguageModel: Codable, Identifiable {
     var language: String
     var name: String
     var id: String {
         language
     }
 }
+
+*/

@@ -32,7 +32,7 @@ class DeckSettingsHandler: ObservableObject{
         }
     }
     func handleDeleteDeck(){
-        let uid = self.appBrain!.getCurrentUser()
+        let uid = FirebaseModel.getCurrentUser()
         
         let subcollectionRef = db.collection("flashcards").document(uid).collection("decks").document(self.appBrain!.user.selectedDeck.deckName).collection("cards")
         subcollectionRef.getDocuments { (querySnapshot, error) in

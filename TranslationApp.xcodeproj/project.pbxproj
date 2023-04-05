@@ -18,7 +18,9 @@
 		C420451329990D60009699F7 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C420451229990D60009699F7 /* FirebaseFirestore */; };
 		C420453A29992A78009699F7 /* LyricsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C420453929992A78009699F7 /* LyricsView.swift */; };
 		C4204541299945D2009699F7 /* LyricsApiData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4204540299945D2009699F7 /* LyricsApiData.swift */; };
-		C420454329995FF0009699F7 /* LanguageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C420454229995FF0009699F7 /* LanguageModel.swift */; };
+		C420454329995FF0009699F7 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = C420454229995FF0009699F7 /* Language.swift */; };
+		C434F3F829DDA38A00DF07E8 /* LocaleStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C434F3F729DDA38A00DF07E8 /* LocaleStorage.swift */; };
+		C434F3FA29DDAA3C00DF07E8 /* FirebaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C434F3F929DDAA3C00DF07E8 /* FirebaseModel.swift */; };
 		C4353C1829B7D3E800E02709 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C4353C1729B7D3E800E02709 /* GoogleService-Info.plist */; };
 		C443137F29AA2BE3007D7CA9 /* DeckSettingsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C443137E29AA2BE3007D7CA9 /* DeckSettingsHandler.swift */; };
 		C443138129AA344E007D7CA9 /* DecksViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C443138029AA344E007D7CA9 /* DecksViewHandler.swift */; };
@@ -53,7 +55,9 @@
 		C420450D299905EC009699F7 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		C420453929992A78009699F7 /* LyricsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsView.swift; sourceTree = "<group>"; };
 		C4204540299945D2009699F7 /* LyricsApiData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsApiData.swift; sourceTree = "<group>"; };
-		C420454229995FF0009699F7 /* LanguageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageModel.swift; sourceTree = "<group>"; };
+		C420454229995FF0009699F7 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
+		C434F3F729DDA38A00DF07E8 /* LocaleStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocaleStorage.swift; sourceTree = "<group>"; };
+		C434F3F929DDAA3C00DF07E8 /* FirebaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseModel.swift; sourceTree = "<group>"; };
 		C4353C1729B7D3E800E02709 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C443137E29AA2BE3007D7CA9 /* DeckSettingsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckSettingsHandler.swift; sourceTree = "<group>"; };
 		C443138029AA344E007D7CA9 /* DecksViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecksViewHandler.swift; sourceTree = "<group>"; };
@@ -111,10 +115,10 @@
 			isa = PBXGroup;
 			children = (
 				C4BE116429B8B5CD0064D8FC /* Info.plist */,
-				C42045072999057A009699F7 /* Views */,
 				C420450829990580009699F7 /* Models */,
+				C42045072999057A009699F7 /* Views */,
+				C434F3F629DD9BF300DF07E8 /* Controller */,
 				C42044F929990571009699F7 /* LyricsFluencer.swift */,
-				C4B38AA929A3602300EEFAF9 /* Constants.swift */,
 				C4BE115E29B7EAB20064D8FC /* Extensions.swift */,
 				C42044FD29990574009699F7 /* Assets.xcassets */,
 				C4353C1729B7D3E800E02709 /* GoogleService-Info.plist */,
@@ -144,8 +148,10 @@
 		C420450829990580009699F7 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				C44F2D2C29AA8B83004A28AA /* ViewModels */,
-				C44F2D2B29AA8B7B004A28AA /* Data */,
+				C4B38AA929A3602300EEFAF9 /* Constants.swift */,
+				C44F2D2B29AA8B7B004A28AA /* Schemas */,
+				C434F3F729DDA38A00DF07E8 /* LocaleStorage.swift */,
+				C434F3F929DDAA3C00DF07E8 /* FirebaseModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -160,6 +166,18 @@
 				C443138229AA3942007D7CA9 /* Flashcards */,
 			);
 			path = ProtectedViews;
+			sourceTree = "<group>";
+		};
+		C434F3F629DD9BF300DF07E8 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C406045629A2138900D56C0D /* AppBrain.swift */,
+				C44F2D2E29AA8BBC004A28AA /* LoginViewHandler.swift */,
+				C44F2D3029AA986B004A28AA /* HomeViewHandler.swift */,
+				C44F2D3229AAA06D004A28AA /* LyricsViewHandler.swift */,
+				C443138329AA3960007D7CA9 /* Flashcards */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		C443138229AA3942007D7CA9 /* Flashcards */ = {
@@ -185,27 +203,15 @@
 			path = Flashcards;
 			sourceTree = "<group>";
 		};
-		C44F2D2B29AA8B7B004A28AA /* Data */ = {
+		C44F2D2B29AA8B7B004A28AA /* Schemas */ = {
 			isa = PBXGroup;
 			children = (
-				C492FA3529BA6430003A07E9 /* Api */,
-				C420454229995FF0009699F7 /* LanguageModel.swift */,
-				C406045829A21BEC00D56C0D /* Lyrics.swift */,
 				C492FA3329BA52CD003A07E9 /* User.swift */,
+				C406045829A21BEC00D56C0D /* Lyrics.swift */,
+				C420454229995FF0009699F7 /* Language.swift */,
+				C492FA3529BA6430003A07E9 /* Api */,
 			);
-			path = Data;
-			sourceTree = "<group>";
-		};
-		C44F2D2C29AA8B83004A28AA /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				C406045629A2138900D56C0D /* AppBrain.swift */,
-				C44F2D2E29AA8BBC004A28AA /* LoginViewHandler.swift */,
-				C44F2D3029AA986B004A28AA /* HomeViewHandler.swift */,
-				C44F2D3229AAA06D004A28AA /* LyricsViewHandler.swift */,
-				C443138329AA3960007D7CA9 /* Flashcards */,
-			);
-			path = ViewModels;
+			path = Schemas;
 			sourceTree = "<group>";
 		};
 		C44F2D2D29AA8BA3004A28AA /* Onboarding */ = {
@@ -312,13 +318,15 @@
 				C443137F29AA2BE3007D7CA9 /* DeckSettingsHandler.swift in Sources */,
 				C406045729A2138900D56C0D /* AppBrain.swift in Sources */,
 				C420450A299905A2009699F7 /* LoginView.swift in Sources */,
+				C434F3FA29DDAA3C00DF07E8 /* FirebaseModel.swift in Sources */,
 				C44F2D3129AA986B004A28AA /* HomeViewHandler.swift in Sources */,
 				C443138129AA344E007D7CA9 /* DecksViewHandler.swift in Sources */,
 				C4C58F4C29A90304009120C8 /* DeckSettingsView.swift in Sources */,
 				C44F2D3329AAA06D004A28AA /* LyricsViewHandler.swift in Sources */,
+				C434F3F829DDA38A00DF07E8 /* LocaleStorage.swift in Sources */,
 				C443138729AA485B007D7CA9 /* EditCardsView.swift in Sources */,
 				C443138929AA4B9E007D7CA9 /* EditCardViewHandler.swift in Sources */,
-				C420454329995FF0009699F7 /* LanguageModel.swift in Sources */,
+				C420454329995FF0009699F7 /* Language.swift in Sources */,
 				C4B38AAA29A3602300EEFAF9 /* Constants.swift in Sources */,
 				C4C58F4A29A893FE009120C8 /* DecksModel.swift in Sources */,
 				C420450E299905EC009699F7 /* HomeView.swift in Sources */,
@@ -458,7 +466,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"TranslationApp/Preview Content\"";
 				DEVELOPMENT_TEAM = Q8DA5M63VC;
 				ENABLE_PREVIEWS = YES;
@@ -495,7 +503,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"TranslationApp/Preview Content\"";
 				DEVELOPMENT_TEAM = Q8DA5M63VC;
 				ENABLE_PREVIEWS = YES;

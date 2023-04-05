@@ -12,7 +12,7 @@ import FirebaseFirestore
 struct DefaultLanguageView: View {
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
-    @State var targetLanguage = LanguageModel(language: "None")
+    @State var targetLanguage = Language(language: "None")
     @EnvironmentObject var appBrain: AppBrain
     
     var body: some View {
@@ -25,7 +25,7 @@ struct DefaultLanguageView: View {
                         Button {
                             self.targetLanguage.language = STATIC.languages[index].language
                         } label: {
-                            Text(STATIC.languages[index].name)
+                            Text(STATIC.languages[index].name!)
                         }
                     }
                 } label: {
@@ -52,8 +52,8 @@ struct DefaultLanguageView: View {
         }
         .navigationBarBackButtonHidden(true)
     }
-    func handleData(_ targetLanguage: LanguageModel){
-        let uid = appBrain.getCurrentUser()
+    func handleData(_ targetLanguage: Language){
+        let uid = FirebaseModel.getCurrentUser()
         if uid != ""{
             //Adding data to db
             let data: [String: Any] = ["defaultLanguage": targetLanguage.language, "requests": 0]

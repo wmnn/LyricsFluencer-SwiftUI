@@ -188,7 +188,7 @@ struct LanguagesMenu: View{
                     appBrain.user.targetLanguage.language = STATIC.languages[index].language
                     //appBrain.targetLanguage.name = STATIC.languages[index].name
                 } label: {
-                    Text(STATIC.languages[index].name)
+                    Text(STATIC.languages[index].name!)
                 }
             }
         } label: {

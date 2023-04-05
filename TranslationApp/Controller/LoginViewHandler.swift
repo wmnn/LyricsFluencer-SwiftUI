@@ -86,7 +86,7 @@ class LoginViewHandler: ObservableObject{
                 self.appBrain!.path.append("DefaultLanguage")
             }
         }else{
-            self.appBrain!.handleDeleteLocalStorage()
+            LocaleStorage.removeData()
         }
     }
     

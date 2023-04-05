@@ -20,7 +20,7 @@ class CardViewHandler: ObservableObject{
         let documentID = filteredDeck[index].id
         let documentFront = filteredDeck[index].front
         let documentBack = filteredDeck[index].back
-        let uid = self.appBrain!.getCurrentUser()
+        let uid = FirebaseModel.getCurrentUser()
         var interval = filteredDeck[index].interval
         if interval == 0{
             interval = 1

@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-struct LanguageModel: Codable{
+struct Language: Codable, Identifiable{
     var language: String = "None"
+    var name: String?
     var id: String {
         language
     }
