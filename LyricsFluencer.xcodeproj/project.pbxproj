@@ -47,7 +47,7 @@
 /* Begin PBXFileReference section */
 		C406045629A2138900D56C0D /* AppBrain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBrain.swift; sourceTree = "<group>"; };
 		C406045829A21BEC00D56C0D /* Lyrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lyrics.swift; sourceTree = "<group>"; };
-		C42044F629990571009699F7 /* TranslationApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TranslationApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C42044F629990571009699F7 /* LyricsFluencer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LyricsFluencer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C42044F929990571009699F7 /* LyricsFluencer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsFluencer.swift; sourceTree = "<group>"; };
 		C42044FD29990574009699F7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C420450029990574009699F7 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -98,7 +98,7 @@
 		C42044ED29990571009699F7 = {
 			isa = PBXGroup;
 			children = (
-				C42044F829990571009699F7 /* TranslationApp */,
+				C42044F829990571009699F7 /* LyricsFluencer */,
 				C42044F729990571009699F7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -106,12 +106,12 @@
 		C42044F729990571009699F7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C42044F629990571009699F7 /* TranslationApp.app */,
+				C42044F629990571009699F7 /* LyricsFluencer.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C42044F829990571009699F7 /* TranslationApp */ = {
+		C42044F829990571009699F7 /* LyricsFluencer */ = {
 			isa = PBXGroup;
 			children = (
 				C4BE116429B8B5CD0064D8FC /* Info.plist */,
@@ -124,7 +124,7 @@
 				C4353C1729B7D3E800E02709 /* GoogleService-Info.plist */,
 				C42044FF29990574009699F7 /* Preview Content */,
 			);
-			path = TranslationApp;
+			path = LyricsFluencer;
 			sourceTree = "<group>";
 		};
 		C42044FF29990574009699F7 /* Preview Content */ = {
@@ -234,9 +234,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C42044F529990571009699F7 /* TranslationApp */ = {
+		C42044F529990571009699F7 /* LyricsFluencer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C420450429990574009699F7 /* Build configuration list for PBXNativeTarget "TranslationApp" */;
+			buildConfigurationList = C420450429990574009699F7 /* Build configuration list for PBXNativeTarget "LyricsFluencer" */;
 			buildPhases = (
 				C42044F229990571009699F7 /* Sources */,
 				C42044F329990571009699F7 /* Frameworks */,
@@ -246,14 +246,14 @@
 			);
 			dependencies = (
 			);
-			name = TranslationApp;
+			name = LyricsFluencer;
 			packageProductDependencies = (
 				C420451029990D60009699F7 /* FirebaseAuth */,
 				C420451229990D60009699F7 /* FirebaseFirestore */,
 				C4B38AAC29A39B2500EEFAF9 /* WrappingHStack */,
 			);
 			productName = TranslationApp;
-			productReference = C42044F629990571009699F7 /* TranslationApp.app */;
+			productReference = C42044F629990571009699F7 /* LyricsFluencer.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -271,7 +271,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C42044F129990571009699F7 /* Build configuration list for PBXProject "TranslationApp" */;
+			buildConfigurationList = C42044F129990571009699F7 /* Build configuration list for PBXProject "LyricsFluencer" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -288,7 +288,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C42044F529990571009699F7 /* TranslationApp */,
+				C42044F529990571009699F7 /* LyricsFluencer */,
 			);
 		};
 /* End PBXProject section */
@@ -537,7 +537,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C42044F129990571009699F7 /* Build configuration list for PBXProject "TranslationApp" */ = {
+		C42044F129990571009699F7 /* Build configuration list for PBXProject "LyricsFluencer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C420450229990574009699F7 /* Debug */,
@@ -546,7 +546,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C420450429990574009699F7 /* Build configuration list for PBXNativeTarget "TranslationApp" */ = {
+		C420450429990574009699F7 /* Build configuration list for PBXNativeTarget "LyricsFluencer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C420450529990574009699F7 /* Debug */,
