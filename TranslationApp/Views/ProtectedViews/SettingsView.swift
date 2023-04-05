@@ -12,7 +12,7 @@ struct SettingsView: View {
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
     @EnvironmentObject var appBrain: AppBrain
-    @State var targetLanguage = LanguageModel(language: "None"/*, name: "Undefined"*/)
+    @State var targetLanguage = Language(language: "None"/*, name: "Undefined"*/)
     @State var isDeleteAccountModalPresented = false
     
     var body: some View {
@@ -22,7 +22,7 @@ struct SettingsView: View {
             VStack{
                 Menu{
                     ForEach(0..<STATIC.languages.count, id: \.self) { index in
-                        SomeButton(text: STATIC.languages[index].name) {
+                        SomeButton(text: STATIC.languages[index].name!) {
                             self.targetLanguage.language = STATIC.languages[index].language
                         }
                     }
@@ -81,7 +81,7 @@ struct SettingsView: View {
         }
     }
     func saveDefaultLanguage(){
-        let uid = self.appBrain.getCurrentUser()
+        let uid = FirebaseModel.getCurrentUser()
         let data: [String: Any] = ["defaultLanguage": self.targetLanguage.language]
         db.collection("users").document(uid).setData(data, merge: true)
         defaults.set(self.targetLanguage.language, forKey: "defaultLanguage")

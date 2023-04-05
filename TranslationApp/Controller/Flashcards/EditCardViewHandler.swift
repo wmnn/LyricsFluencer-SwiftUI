@@ -31,7 +31,7 @@ class EditCardsViewHandler: ObservableObject{
         self.isDeleteCardAlertShown = false
     }
     func handleEditCard(){
-        let uid = self.appBrain!.getCurrentUser()
+        let uid = FirebaseModel.getCurrentUser()
         self.db.collection("flashcards").document(uid).collection("decks").document(self.appBrain!.user.selectedDeck.deckName).collection("cards").document(self.selectedCardID).setData([
             "front" : self.front,
             "back" : self.back
@@ -73,7 +73,7 @@ class EditCardsViewHandler: ObservableObject{
         self.isDeleteCardAlertShown = true
     }
     func handleDeleteCard(){
-        let uid = self.appBrain!.getCurrentUser()
+        let uid = FirebaseModel.getCurrentUser()
         
         self.db.collection("flashcards").document(uid).collection("decks").document(self.appBrain!.user.selectedDeck.deckName).collection("cards").document(self.selectedCardID).delete(){ err in
             if let err = err {
