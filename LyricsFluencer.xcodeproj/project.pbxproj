@@ -467,11 +467,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_ASSET_PATHS = "\"TranslationApp/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"LyricsFluencer/Preview Content\"";
 				DEVELOPMENT_TEAM = Q8DA5M63VC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TranslationApp/Info.plist;
+				INFOPLIST_FILE = LyricsFluencer/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LyricsFluencer;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Provide access to your microphone in order to recognize a song.";
@@ -504,11 +504,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_ASSET_PATHS = "\"TranslationApp/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"LyricsFluencer/Preview Content\"";
 				DEVELOPMENT_TEAM = Q8DA5M63VC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TranslationApp/Info.plist;
+				INFOPLIST_FILE = LyricsFluencer/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LyricsFluencer;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Provide access to your microphone in order to recognize a song.";

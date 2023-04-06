@@ -220,7 +220,7 @@ extension HomeViewHandler: SHSessionDelegate{
                     self.audioEngine.inputNode.removeTap(onBus: 0)
                     self.shazamMedia = _shazamMedia
                     self.appBrain?.lyricsModel.albumArtURL = firstItem.artworkURL
-                    self.handleQuickSearch(searchQuery: (firstItem.title ?? "") + " " + (firstItem.artist ?? ""), target: self.appBrain!.user.targetLanguage.language)
+                    self.handleQuickSearch(searchQuery: (firstItem.title ?? "") + " " + (firstItem.artist ?? ""), target: self.appBrain!.user.nativeLanguage.language)
                 }
             }
         }

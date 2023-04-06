@@ -33,16 +33,20 @@ class LoginViewHandler: ObservableObject{
                 if let document = document, document.exists {
                     let subscriptionPlan = document.get("subscriptionPlan") as? String
                     let requests = document.get("requests") as? Int
-                    let defaultLanguage = document.get("defaultLanguage") as? String
+                    let nativeLanguage = document.get("nativeLanguage") as? String
+                    let learnedLanguage = document.get("learnedLanguage") as? String
+                    print(document)
                     
                     //Saving to local storage
                     self.defaults.set(subscriptionPlan, forKey: "subscriptionPlan")
                     self.defaults.set(requests, forKey: "requests")
-                    self.defaults.set(defaultLanguage, forKey: "defaultLanguage")
-                    //self.defaults.set(defaultLanguageName, forKey: "defaultLanguageName")
+                    self.defaults.set(nativeLanguage, forKey: "nativeLanguage")
+                    self.defaults.set(learnedLanguage, forKey: "learnedLanguage")
+
                     self.appBrain!.user.subscriptionPlan = subscriptionPlan
                     self.appBrain!.user.requests = requests
-                    self.appBrain!.user.targetLanguage.language = defaultLanguage ?? ""
+                    self.appBrain!.user.nativeLanguage.language = nativeLanguage ?? ""
+                    self.appBrain!.user.learnedLanguage.language = learnedLanguage ?? ""
                     
                     DispatchQueue.main.async {
                         self.appBrain!.fetchingDecks()
@@ -57,8 +61,8 @@ class LoginViewHandler: ObservableObject{
     }
     
     func handleLoginNavigation(){
-        let defaultLanguage = defaults.string(forKey: "defaultLanguage")
-        if defaultLanguage != nil{
+        let learnedLanguage = defaults.string(forKey: "learnedLanguage")
+        if learnedLanguage != nil{
             self.appBrain!.path.append("Home")
         }else{
             self.appBrain!.path.append("DefaultLanguage")
@@ -66,12 +70,14 @@ class LoginViewHandler: ObservableObject{
     }
     func handleAutoLogin(){
         if Auth.auth().currentUser != nil {
-            let defaultLanguage = defaults.string(forKey: "defaultLanguage")
+            let learnedLanguage = defaults.string(forKey: "learnedLanguage")
+            let nativeLanguage = defaults.string(forKey: "nativeLanguage")
             let requests = defaults.string(forKey: "requests")
             let subscriptionPlan = defaults.string(forKey: "subscriptionPlan")
             
-            if defaultLanguage != nil, requests != nil, subscriptionPlan != nil/*, decks != nil*/{
-                self.appBrain!.user.targetLanguage.language = defaultLanguage!
+            if learnedLanguage != nil, requests != nil, subscriptionPlan != nil, nativeLanguage != nil{
+                self.appBrain!.user.learnedLanguage.language = learnedLanguage!
+                self.appBrain!.user.nativeLanguage.language = nativeLanguage!
                 self.appBrain!.user.requests = Int(requests!)
                 //self.appBrain!.user.targetLanguage.name = appBrain!.getLanguageName(defaultLanguage!) ?? ""
     

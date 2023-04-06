@@ -42,7 +42,7 @@ struct HomeView: View{
                     .autocapitalization(.none)
                     .autocorrectionDisabled(true)
                     .onSubmit {
-                        homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.user.targetLanguage.language)
+                        homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.user.nativeLanguage.language)
                         fieldInFocus = HomeViewField.none
                         self.homeViewHandler.isQuickSearchLoading = true
                     }
@@ -50,8 +50,10 @@ struct HomeView: View{
                     
                     TrialExpiredButton(text: "Quick Search")
                 }else{
-                    //Handling target language
-                    LanguagesMenu()
+                    //Handling languages
+                    LanguagesMenu(binding: self.$appBrain.user.learnedLanguage, title: "Learned Language:")
+                    LanguagesMenu(binding: self.$appBrain.user.nativeLanguage, title: "Your Language:")
+                            
                     //handling Shazam
                     SomeButtonWithActivityIndicator(text: "Recognize Song ", buttonAction: {
                         homeViewHandler.handleShazam()
@@ -84,7 +86,7 @@ struct HomeView: View{
                             if !homeViewHandler.isShazamLoading{
                                 DispatchQueue.main.async {
                                     self.homeViewHandler.isQuickSearchLoading = true
-                                    homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.user.targetLanguage.language)
+                                    homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.user.nativeLanguage.language)
                                     fieldInFocus = HomeViewField.none
                                     print("Got to here")
                                 }
@@ -110,7 +112,7 @@ struct HomeView: View{
                                 if !homeViewHandler.isShazamLoading{
                                     DispatchQueue.main.async {
                                         self.homeViewHandler.isQuickSearchLoading = true
-                                        homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.user.targetLanguage.language)
+                                        homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.user.nativeLanguage.language)
                                         fieldInFocus = HomeViewField.none
                                         print("Got to here")
                                     }
@@ -180,20 +182,23 @@ struct TrialExpiredButton: View{
 
 struct LanguagesMenu: View{
     @EnvironmentObject var appBrain: AppBrain
+    @Binding var binding : Language
+    var title: String
     
     var body: some View{
         Menu{
             ForEach(0..<STATIC.languages.count, id: \.self) { index in
                 Button {
-                    appBrain.user.targetLanguage.language = STATIC.languages[index].language
-                    //appBrain.targetLanguage.name = STATIC.languages[index].name
+                    binding.language = STATIC.languages[index].language
+                    //appBrain.user.nativeLanguage.language = STATIC.languages[index].language
+
                 } label: {
                     Text(STATIC.languages[index].name!)
                 }
             }
         } label: {
             Label(
-                title: {Text("Target language: \(self.appBrain.getLanguageName(self.appBrain.user.targetLanguage.language) ?? "")")
+                title: {Text("\(title) \(self.appBrain.getLanguageName(binding.language) ?? "")")
                         .font(.system(size:24))
                         .bold()
                         .frame(width: 300, height: 20, alignment: .center)
@@ -210,6 +215,7 @@ struct LanguagesMenu: View{
         
     }
 }
+
 /*
 struct HomeViewSearchInput: View{
     @EnvironmentObject var appBrain: AppBrain

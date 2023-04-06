@@ -12,7 +12,8 @@ struct SettingsView: View {
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
     @EnvironmentObject var appBrain: AppBrain
-    @State var targetLanguage = Language(language: "None"/*, name: "Undefined"*/)
+    @State var nativeLanguage = Language(language: "None")
+    @State var learnedLanguage = Language(language: "None")
     @State var isDeleteAccountModalPresented = false
     
     var body: some View {
@@ -20,19 +21,35 @@ struct SettingsView: View {
             Color.background
                 .ignoresSafeArea()
             VStack{
+                //Set learned Language
+                SomeHeadline(text: "What language do you learn?", fontSize: 28)
                 Menu{
                     ForEach(0..<STATIC.languages.count, id: \.self) { index in
                         SomeButton(text: STATIC.languages[index].name!) {
-                            self.targetLanguage.language = STATIC.languages[index].language
+                            self.learnedLanguage.language = STATIC.languages[index].language
                         }
                     }
                 } label: {
-                    SomeButton(text: "Default language: \(self.appBrain.getLanguageName(targetLanguage.language) ?? "")") {
+                    SomeButton(text: "Learned Language: \(self.appBrain.getLanguageName(learnedLanguage.language) ?? "")") {
                         
                     }
                 }
-                SomeButton(text: "Save choosen language") {
-                    self.saveDefaultLanguage()
+                //Set Native language
+                SomeHeadline(text: "What is your native Language?", fontSize: 28)
+                Menu{
+                    ForEach(0..<STATIC.languages.count, id: \.self) { index in
+                        SomeButton(text: STATIC.languages[index].name!) {
+                            self.nativeLanguage.language = STATIC.languages[index].language
+                        }
+                    }
+                } label: {
+                    SomeButton(text: "Your Language: \(self.appBrain.getLanguageName(nativeLanguage.language) ?? "")") {
+                        
+                    }
+                }
+                Spacer()
+                SomeButton(text: "Save Settings") {
+                    self.saveSettings()
                 }
                 /*
                 //Delete Account
@@ -70,22 +87,27 @@ struct SettingsView: View {
             
         }
         .onAppear{
-            fetchLocaleStorage()
-        }
-        
-    }
-    func fetchLocaleStorage(){
-        let dl = defaults.string(forKey: "defaultLanguage")
-        if dl != nil{
-            self.targetLanguage.language = dl!
+            setStateVariables()
         }
     }
-    func saveDefaultLanguage(){
+    
+    func setStateVariables(){
+        self.nativeLanguage.language = self.appBrain.user.nativeLanguage.language
+        self.learnedLanguage.language = self.appBrain.user.learnedLanguage.language
+    }
+    
+    func saveSettings(){
         let uid = FirebaseModel.getCurrentUser()
-        let data: [String: Any] = ["defaultLanguage": self.targetLanguage.language]
+        let data: [String: Any] = ["nativeLanguage": self.nativeLanguage.language, "learnedLanguage" : self.learnedLanguage.language]
+        //Save to firebase
         db.collection("users").document(uid).setData(data, merge: true)
-        defaults.set(self.targetLanguage.language, forKey: "defaultLanguage")
-        self.appBrain.user.targetLanguage.language = self.targetLanguage.language
+        //Save into local Storage
+        LocaleStorage.setValue(for: "nativeLanguage", value: self.nativeLanguage.language)
+        LocaleStorage.setValue(for: "learnedLanguage", value: self.learnedLanguage.language)
+        //Adapt changes to the app
+        self.appBrain.user.nativeLanguage.language = self.nativeLanguage.language
+        self.appBrain.user.learnedLanguage.language = self.learnedLanguage.language
+        //Go back to Home View
         self.appBrain.path.removeLast()
     }
 }

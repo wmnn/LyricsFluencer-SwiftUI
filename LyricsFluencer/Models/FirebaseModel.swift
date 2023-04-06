@@ -44,7 +44,6 @@ struct FirebaseModel{
         }
     }
     static func getCards(reference: DocumentReference,completion: @escaping (QuerySnapshot?, Error?) -> Void) {
-        let uid = self.getCurrentUser()
         reference.collection("cards").getDocuments { (cardsQuerySnapshot, error) in
             if let error = error {
                 print("Error getting subcollection: \(error)")

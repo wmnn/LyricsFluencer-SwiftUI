@@ -9,7 +9,8 @@ import Foundation
 
 struct User: Codable{
     var requests: Int?
-    var targetLanguage = Language(language: "None")
+    var nativeLanguage = Language(language: "None")
+    var learnedLanguage = Language(language: "None")
     var decks: [Deck] = []
     var selectedDeck = Deck(deckName: "", cards: [])
     var subscriptionPlan: String?
