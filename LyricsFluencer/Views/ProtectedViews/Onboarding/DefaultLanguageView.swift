@@ -12,7 +12,7 @@ import FirebaseFirestore
 struct DefaultLanguageView: View {
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
-    @State var targetLanguage = Language(language: "None")
+    @State var nativeLanguage = Language(language: "None")
     @EnvironmentObject var appBrain: AppBrain
     
     var body: some View {
@@ -23,14 +23,14 @@ struct DefaultLanguageView: View {
                 Menu{
                     ForEach(0..<STATIC.languages.count, id: \.self) { index in
                         Button {
-                            self.targetLanguage.language = STATIC.languages[index].language
+                            self.nativeLanguage.language = STATIC.languages[index].language
                         } label: {
                             Text(STATIC.languages[index].name!)
                         }
                     }
                 } label: {
                     Label(
-                        title: {Text("Target language: \(self.appBrain.getLanguageName(targetLanguage.language) ?? "")")
+                        title: {Text("Your Language: \(self.appBrain.getLanguageName(nativeLanguage.language) ?? "")")
                                 .font(.system(size:24))
                                 .bold()
                                 .frame(width: 300, height: 20, alignment: .center)
@@ -46,22 +46,22 @@ struct DefaultLanguageView: View {
                     
                 }
                 SomeButton(text: "Save choosen language") {
-                    handleData(targetLanguage)
+                    handleData(nativeLanguage)
                 }
             }
         }
         .navigationBarBackButtonHidden(true)
     }
-    func handleData(_ targetLanguage: Language){
+    func handleData(_ nativeLanguage: Language){
         let uid = FirebaseModel.getCurrentUser()
         if uid != ""{
             //Adding data to db
-            let data: [String: Any] = ["defaultLanguage": targetLanguage.language, "requests": 0]
+            let data: [String: Any] = ["nativeLanguage": nativeLanguage.language, "requests": 0]
             db.collection("users").document(uid).setData(data, merge: true)
             //Saving data locally
-            defaults.set(targetLanguage.language, forKey: "defaultLanguage")
+            defaults.set(nativeLanguage.language, forKey: "defaultLanguage")
             defaults.set(0, forKey: "requests")
-            self.appBrain.user.targetLanguage.language = targetLanguage.language
+            self.appBrain.user.nativeLanguage.language = nativeLanguage.language
             self.appBrain.user.requests = 0
             //Redirect
             appBrain.path.append("Home")
