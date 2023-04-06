@@ -14,6 +14,8 @@ struct LocaleStorage{
         defaults.removeObject(forKey: "subscriptionPlan")
         defaults.removeObject(forKey: "subscriptionStatus")
         defaults.removeObject(forKey: "defaultLanguage")
+        defaults.removeObject(forKey: "learnedLanguage")
+        defaults.removeObject(forKey: "nativeLanguage")
         defaults.removeObject(forKey: "requests")
     }
     static func getValue(for key: String) -> String?{

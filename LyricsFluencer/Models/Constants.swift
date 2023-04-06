@@ -11,12 +11,12 @@ struct STATIC{
     static let API_ROOT = "https://www.lyricsfluencer.com"
     //static let API_ROOT = "http://localhost:8080"
     static let languages: [Language] = [
-        Language(language: "af", name: "Afrikaans"),
+        /*Language(language: "af", name: "Afrikaans"),
         Language(language: "ak", name: "Akan"),
         Language(language: "sq", name: "Albanian"),
-        Language(language: "am", name: "Amharic"),
+        Language(language: "am", name: "Amharic"),*/
         Language(language: "ar", name: "Arabic"),
-        Language(language: "hy", name: "Armenian"),
+        /*Language(language: "hy", name: "Armenian"),
         Language(language: "as", name: "Assamese"),
         Language(language: "ay", name: "Aymara"),
         Language(language: "az", name: "Azerbaijani"),
@@ -38,20 +38,20 @@ struct STATIC{
         Language(language: "da", name: "Danish"),
         Language(language: "dv", name: "Divehi"),
         Language(language: "doi", name: "Dogri"),
-        Language(language: "nl", name: "Dutch"),
+        Language(language: "nl", name: "Dutch"),*/
         Language(language: "en", name: "English"),
-        Language(language: "eo", name: "Esperanto"),
+        /*Language(language: "eo", name: "Esperanto"),
         Language(language: "et", name: "Estonian"),
         Language(language: "ee", name: "Ewe"),
         Language(language: "tl", name: "Filipino"),
-        Language(language: "fi", name: "Finnish"),
+        Language(language: "fi", name: "Finnish"),*/
         Language(language: "fr", name: "French"),
-        Language(language: "fy", name: "Frisian"),
+        /*Language(language: "fy", name: "Frisian"),
         Language(language: "gl", name: "Galician"),
         Language(language: "lg", name: "Ganda"),
-        Language(language: "ka", name: "Georgian"),
+        Language(language: "ka", name: "Georgian"),*/
         Language(language: "de", name: "German"),
-        Language(language: "gom", name: "Goan Konkani"),
+        /*Language(language: "gom", name: "Goan Konkani"),
         Language(language: "el", name: "Greek"),
         Language(language: "gn", name: "Guarani"),
         Language(language: "gu", name: "Gujarati"),
@@ -66,10 +66,10 @@ struct STATIC{
         Language(language: "ig", name: "Igbo"),
         Language(language: "ilo", name: "Iloko"),
         Language(language: "id", name: "Indonesian"),
-        Language(language: "ga", name: "Irish"),
+        Language(language: "ga", name: "Irish"),*/
         Language(language: "it", name: "Italian"),
         Language(language: "ja", name: "Japanese"),
-        Language(language: "jw", name: "Javanese"),
+        /*Language(language: "jw", name: "Javanese"),
         Language(language: "kn", name: "Kannada"),
         Language(language: "kk", name: "Kazakh"),
         Language(language: "km", name: "Khmer"),
@@ -104,13 +104,13 @@ struct STATIC{
         Language(language: "om", name: "Oromo"),
         Language(language: "ps", name: "Pashto"),
         Language(language: "fa", name: "Persian"),
-        Language(language: "pl", name: "Polish"),
+        Language(language: "pl", name: "Polish"),*/
         Language(language: "pt", name: "Portuguese"),
-        Language(language: "pa", name: "Punjabi"),
+        /*Language(language: "pa", name: "Punjabi"),
         Language(language: "qu", name: "Quechua"),
-        Language(language: "ro", name: "Romanian"),
+        Language(language: "ro", name: "Romanian"),*/
         Language(language: "ru", name: "Russian"),
-        Language(language: "sm", name: "Samoan"),
+        /*Language(language: "sm", name: "Samoan"),
         Language(language: "sa", name: "Sanskrit"),
         Language(language: "gd", name: "Scots Gaelic"),
         Language(language: "sr", name: "Serbian"),
@@ -120,9 +120,9 @@ struct STATIC{
         Language(language: "si", name: "Sinhala"),
         Language(language: "sk", name: "Slovak"),
         Language(language: "sl", name: "Slovenian"),
-        Language(language: "so", name: "Somali"),
+        Language(language: "so", name: "Somali"),*/
         Language(language: "es", name: "Spanish"),
-        Language(language: "su", name: "Sundanese"),
+        /*Language(language: "su", name: "Sundanese"),
         Language(language: "sw", name: "Swahili"),
         Language(language: "sv", name: "Swedish"),
         Language(language: "tg", name: "Tajik"),
@@ -131,9 +131,9 @@ struct STATIC{
         Language(language: "te", name: "Telugu"),
         Language(language: "th", name: "Thai"),
         Language(language: "ti", name: "Tigrinya"),
-        Language(language: "ts", name: "Tsonga"),
+        Language(language: "ts", name: "Tsonga"),*/
         Language(language: "tr", name: "Turkish"),
-        Language(language: "tk", name: "Turkmen"),
+        /*Language(language: "tk", name: "Turkmen"),
         Language(language: "uk", name: "Ukrainian"),
         Language(language: "ur", name: "Urdu"),
         Language(language: "ug", name: "Uyghur"),
@@ -146,7 +146,7 @@ struct STATIC{
         Language(language: "zu", name: "Zulu"),
         Language(language: "he", name: "Hebrew"),
         Language(language: "jv", name: "Javanese"),
-        Language(language: "zh-CN", name: "Chinese (Simplified)")
+        Language(language: "zh-CN", name: "Chinese (Simplified)")*/
     ]
 }/*
 struct LanguageModel: Codable, Identifiable {
