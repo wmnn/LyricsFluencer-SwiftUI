@@ -13,4 +13,5 @@ struct LyricsApiData: Codable{
     let song: String
     let lyrics: String
     let translatedLyrics: String?
+    let detectedLanguage: String?
 }

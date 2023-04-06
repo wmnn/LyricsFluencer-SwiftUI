@@ -132,7 +132,7 @@ struct STATIC{
         Language(language: "th", name: "Thai"),
         Language(language: "ti", name: "Tigrinya"),
         Language(language: "ts", name: "Tsonga"),*/
-        Language(language: "tr", name: "Turkish"),
+        //Language(language: "tr", name: "Turkish"),
         /*Language(language: "tk", name: "Turkmen"),
         Language(language: "uk", name: "Ukrainian"),
         Language(language: "ur", name: "Urdu"),

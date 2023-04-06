@@ -94,34 +94,45 @@ struct LyricsView: View {
 }//struct
 
 struct LyricsView_Previews: PreviewProvider {
-    //@StateObject var appBrain = AppBrain()
+
     static var previews: some View {
-        LyricsView(/*artist: "Apache", song: "Roller", combinedLyrics: ["Hey now, you're an all star bleyblade day date\n", "Get your game on, go play\n", "c", "d"]*/)
-        //.environmentObject(appBrain)
+        LyricsView()
+
     }
 }
 struct MenuSubView: View {
     var word : String
     var color : String
     @StateObject var lyricsViewHandler: LyricsViewHandler
+    @EnvironmentObject var appBrain: AppBrain
     
     var body: some View {
         Menu{
             Button {
-                lyricsViewHandler.selectedWord = word
-                lyricsViewHandler.back = word
-                lyricsViewHandler.urlString = "https://www.google.com/search?q=\(word)+meaning"
+                lyricsViewHandler.selectedWord = lyricsViewHandler.cleanWord(word)
+                lyricsViewHandler.back = lyricsViewHandler.cleanWord(word)
+                lyricsViewHandler.urlString = "https://www.google.com/search?q=\(lyricsViewHandler.cleanWord(word))+\(appBrain.getLanguageName(appBrain.lyricsModel.detectedLanguage.language)?.lowercased() ?? "show")+meaning"
                 lyricsViewHandler.isAddToDeckViewShown.toggle()
             } label: {
                 Text("Add to deck")
             }
             Button {
-                lyricsViewHandler.selectedWord = word
-                lyricsViewHandler.urlString = "https://www.google.com/search?q=\(word)+meaning"
+                lyricsViewHandler.selectedWord = lyricsViewHandler.cleanWord(word)
+                lyricsViewHandler.urlString = "https://www.google.com/search?q=\(lyricsViewHandler.cleanWord(word))+\(appBrain.getLanguageName(appBrain.lyricsModel.detectedLanguage.language)?.lowercased() ?? "show")+meaning"
                 lyricsViewHandler.isWebViewShown.toggle()
             } label: {
                 Text("Google Meaning")
             }
+            Button {
+                lyricsViewHandler.selectedWord = lyricsViewHandler.cleanWord(word)
+                print( self.appBrain.getLanguageName(self.appBrain.lyricsModel.detectedLanguage.language) ?? "")
+                lyricsViewHandler.urlString = "https://conjugator.reverso.net/conjugation-\(appBrain.getLanguageName(appBrain.lyricsModel.detectedLanguage.language)?.lowercased() ?? "english")-verb-\(lyricsViewHandler.cleanWord(word)).html"
+                lyricsViewHandler.isWebViewShown.toggle()
+   
+            } label: {
+                Text("Show Conjugation (only on Verbs)")
+            }
+            
         } label: {
             Text(word)
                 .font(.system(size:18))
@@ -258,7 +269,7 @@ struct PopUpWebView: View{
   }
   }*/
 class WebViewDelegate: NSObject, WKNavigationDelegate {
-    let allowedHosts: [String] = ["https://www.google.com/*", "www.google.com", "consent.google.com", "dictionary.cambridge.org/*"]
+    let allowedHosts: [String] = ["https://www.google.com/*", "www.google.com", "consent.google.com", "dictionary.cambridge.org/*", "conjugator.reverso.net/*", "conjugator.reverso.net"]
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard let url = navigationAction.request.url else {
@@ -269,7 +280,7 @@ class WebViewDelegate: NSObject, WKNavigationDelegate {
         if allowedHosts.contains(url.host ?? "") {
             decisionHandler(.allow)
         } else {
-            print(url.host)
+            print(url.host ?? "")
             print(allowedHosts)
             decisionHandler(.cancel)
         }

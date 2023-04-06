@@ -30,4 +30,11 @@ class LyricsViewHandler: ObservableObject{
         }
         return words
     }
+    func cleanWord(_ word: String) -> String {
+        var newWord = word
+        if word.hasSuffix(",") || word.hasSuffix("'") {
+            newWord = String(word.dropLast())
+        }
+        return newWord
+    }
 }

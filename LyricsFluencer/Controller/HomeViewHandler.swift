@@ -63,10 +63,10 @@ class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need i
                     DispatchQueue.main.async {
                         Task {
                             self.appBrain!.lyricsModel.lyrics = lyricsApiData.lyrics
-                            print(lyricsApiData.lyrics)
+                            print("Detected Language = \(lyricsApiData.detectedLanguage ?? "")")
+                            self.appBrain!.lyricsModel.detectedLanguage.language = lyricsApiData.detectedLanguage ?? ""
                             self.appBrain!.lyricsModel.artist = lyricsApiData.artist
                             self.appBrain!.lyricsModel.song = lyricsApiData.song
-                            print(self.appBrain!.lyricsModel.song!)
                             let isCombinedLyrics = await self.handleCombineLyrics(lyricsApiData) //the function returns a boolean value
                             if isCombinedLyrics{
                                 DispatchQueue.main.async {
