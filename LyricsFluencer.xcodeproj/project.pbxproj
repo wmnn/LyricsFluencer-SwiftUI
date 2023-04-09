@@ -29,7 +29,7 @@
 		C443138929AA4B9E007D7CA9 /* EditCardViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C443138829AA4B9E007D7CA9 /* EditCardViewHandler.swift */; };
 		C44C62D1299B8EE20091C401 /* DefaultLanguageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44C62D0299B8EE20091C401 /* DefaultLanguageView.swift */; };
 		C44F2D2F29AA8BBC004A28AA /* LoginViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F2D2E29AA8BBC004A28AA /* LoginViewHandler.swift */; };
-		C44F2D3129AA986B004A28AA /* HomeViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F2D3029AA986B004A28AA /* HomeViewHandler.swift */; };
+		C44F2D3129AA986B004A28AA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F2D3029AA986B004A28AA /* HomeViewController.swift */; };
 		C44F2D3329AAA06D004A28AA /* LyricsViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F2D3229AAA06D004A28AA /* LyricsViewHandler.swift */; };
 		C492FA3429BA52CD003A07E9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C492FA3329BA52CD003A07E9 /* User.swift */; };
 		C4B0824F29B4FEA800640349 /* PlanApiData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B0824E29B4FEA800640349 /* PlanApiData.swift */; };
@@ -42,6 +42,9 @@
 		C4C58F4C29A90304009120C8 /* DeckSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C58F4B29A90304009120C8 /* DeckSettingsView.swift */; };
 		C4C58F4E29A91AEB009120C8 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C58F4D29A91AEB009120C8 /* CardView.swift */; };
 		C4D82A5629BF70D1009A3342 /* ReusableViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D82A5529BF70D1009A3342 /* ReusableViews.swift */; };
+		C4F2267929DF83760082B9F1 /* BrowseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F2267829DF83760082B9F1 /* BrowseView.swift */; };
+		C4F2267B29DF841B0082B9F1 /* BrowseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F2267A29DF841B0082B9F1 /* BrowseViewController.swift */; };
+		C4F2267D29DF8C850082B9F1 /* PopularSongsApiData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F2267C29DF8C850082B9F1 /* PopularSongsApiData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,7 +69,7 @@
 		C443138829AA4B9E007D7CA9 /* EditCardViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardViewHandler.swift; sourceTree = "<group>"; };
 		C44C62D0299B8EE20091C401 /* DefaultLanguageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLanguageView.swift; sourceTree = "<group>"; };
 		C44F2D2E29AA8BBC004A28AA /* LoginViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewHandler.swift; sourceTree = "<group>"; };
-		C44F2D3029AA986B004A28AA /* HomeViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewHandler.swift; sourceTree = "<group>"; };
+		C44F2D3029AA986B004A28AA /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		C44F2D3229AAA06D004A28AA /* LyricsViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsViewHandler.swift; sourceTree = "<group>"; };
 		C492FA3329BA52CD003A07E9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C4B0824E29B4FEA800640349 /* PlanApiData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanApiData.swift; sourceTree = "<group>"; };
@@ -79,6 +82,9 @@
 		C4C58F4B29A90304009120C8 /* DeckSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckSettingsView.swift; sourceTree = "<group>"; };
 		C4C58F4D29A91AEB009120C8 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		C4D82A5529BF70D1009A3342 /* ReusableViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableViews.swift; sourceTree = "<group>"; };
+		C4F2267829DF83760082B9F1 /* BrowseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseView.swift; sourceTree = "<group>"; };
+		C4F2267A29DF841B0082B9F1 /* BrowseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewController.swift; sourceTree = "<group>"; };
+		C4F2267C29DF8C850082B9F1 /* PopularSongsApiData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularSongsApiData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +169,7 @@
 				C420450D299905EC009699F7 /* HomeView.swift */,
 				C420453929992A78009699F7 /* LyricsView.swift */,
 				C4BE116229B7ECC60064D8FC /* SettingsView.swift */,
+				C4F2267829DF83760082B9F1 /* BrowseView.swift */,
 				C443138229AA3942007D7CA9 /* Flashcards */,
 			);
 			path = ProtectedViews;
@@ -173,8 +180,9 @@
 			children = (
 				C406045629A2138900D56C0D /* AppBrain.swift */,
 				C44F2D2E29AA8BBC004A28AA /* LoginViewHandler.swift */,
-				C44F2D3029AA986B004A28AA /* HomeViewHandler.swift */,
+				C44F2D3029AA986B004A28AA /* HomeViewController.swift */,
 				C44F2D3229AAA06D004A28AA /* LyricsViewHandler.swift */,
+				C4F2267A29DF841B0082B9F1 /* BrowseViewController.swift */,
 				C443138329AA3960007D7CA9 /* Flashcards */,
 			);
 			path = Controller;
@@ -227,6 +235,7 @@
 			children = (
 				C4204540299945D2009699F7 /* LyricsApiData.swift */,
 				C4B0824E29B4FEA800640349 /* PlanApiData.swift */,
+				C4F2267C29DF8C850082B9F1 /* PopularSongsApiData.swift */,
 			);
 			path = Api;
 			sourceTree = "<group>";
@@ -319,7 +328,7 @@
 				C406045729A2138900D56C0D /* AppBrain.swift in Sources */,
 				C420450A299905A2009699F7 /* LoginView.swift in Sources */,
 				C434F3FA29DDAA3C00DF07E8 /* FirebaseModel.swift in Sources */,
-				C44F2D3129AA986B004A28AA /* HomeViewHandler.swift in Sources */,
+				C44F2D3129AA986B004A28AA /* HomeViewController.swift in Sources */,
 				C443138129AA344E007D7CA9 /* DecksViewHandler.swift in Sources */,
 				C4C58F4C29A90304009120C8 /* DeckSettingsView.swift in Sources */,
 				C44F2D3329AAA06D004A28AA /* LyricsViewHandler.swift in Sources */,
@@ -332,13 +341,16 @@
 				C420450E299905EC009699F7 /* HomeView.swift in Sources */,
 				C4C58F4829A823D8009120C8 /* DecksView.swift in Sources */,
 				C492FA3429BA52CD003A07E9 /* User.swift in Sources */,
+				C4F2267D29DF8C850082B9F1 /* PopularSongsApiData.swift in Sources */,
 				C44C62D1299B8EE20091C401 /* DefaultLanguageView.swift in Sources */,
+				C4F2267929DF83760082B9F1 /* BrowseView.swift in Sources */,
 				C4BE116329B7ECC60064D8FC /* SettingsView.swift in Sources */,
 				C4BE115F29B7EAB20064D8FC /* Extensions.swift in Sources */,
 				C4C58F4E29A91AEB009120C8 /* CardView.swift in Sources */,
 				C42044FA29990571009699F7 /* LyricsFluencer.swift in Sources */,
 				C443138529AA39D7007D7CA9 /* CardViewHandler.swift in Sources */,
 				C44F2D2F29AA8BBC004A28AA /* LoginViewHandler.swift in Sources */,
+				C4F2267B29DF841B0082B9F1 /* BrowseViewController.swift in Sources */,
 				C4D82A5629BF70D1009A3342 /* ReusableViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

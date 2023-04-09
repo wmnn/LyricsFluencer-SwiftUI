@@ -183,7 +183,7 @@ class AppBrain: ObservableObject{
                             return
                         }
                         //print("Success: \(data)")
-                        if let planApiData: PlanApiData = self.parsePlanApiJSON(data){
+                        if let planApiData: PlanApiData = AppBrain.parseData(data: data, dataModel: PlanApiData.self){
                             DispatchQueue.main.async {
                                 Task {
                                     //print(planApiData)
@@ -203,14 +203,50 @@ class AppBrain: ObservableObject{
         
         
     }
-    func parsePlanApiJSON(_ planApiData: Data) -> PlanApiData? {
+    static func parseData<T: Decodable>(data: Data, dataModel: T.Type, errorAction: (() -> Void)? = nil) -> T?{ //I am parsing data with the dataModel that defines the structure of the data
         let decoder = JSONDecoder()
         do{
-            let decodedData = try decoder.decode(PlanApiData.self, from: planApiData)
+            let decodedData = try decoder.decode(T.self, from: data)
             return decodedData
         }catch {
             print(error)
+            if let errorAction = errorAction{
+                errorAction()
+            }
             return nil
         }
     }
+    
+    func handleCombineLyrics<T: CombinedLyricsDataProtocol>(_ data: T, dataModel: T.Type) async -> Bool{
+        DispatchQueue.main.async {
+            self.lyricsModel.combinedLyrics = []
+        }
+        if let translatedLyrics = data.translatedLyrics{
+            if let lyrics = self.lyricsModel.lyrics{
+                let lyricsArr = lyrics.components(separatedBy: "\n")
+                let translatedLyricsArr = translatedLyrics.components(separatedBy: "\n")
+                for i in 0..<max(lyricsArr.count, translatedLyricsArr.count) {
+                    if i < lyricsArr.count {
+                        DispatchQueue.main.async {
+                            self.lyricsModel.combinedLyrics?.append(lyricsArr[i])
+                        }
+                    }
+                    if i < translatedLyricsArr.count {
+                        DispatchQueue.main.async {
+                            self.lyricsModel.combinedLyrics?.append(translatedLyricsArr[i])
+                        }
+                    }
+                }
+            }else{
+                return false
+            }
+            return true
+        }else{
+            return false
+        }
+    }
+}
+
+protocol CombinedLyricsDataProtocol: Decodable {
+    var translatedLyrics: String? { get }
 }

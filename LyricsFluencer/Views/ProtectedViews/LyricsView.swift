@@ -110,6 +110,7 @@ struct MenuSubView: View {
         Menu{
             Button {
                 lyricsViewHandler.selectedWord = lyricsViewHandler.cleanWord(word)
+                lyricsViewHandler.front = ""
                 lyricsViewHandler.back = lyricsViewHandler.cleanWord(word)
                 lyricsViewHandler.urlString = "https://www.google.com/search?q=\(lyricsViewHandler.cleanWord(word))+\(appBrain.getLanguageName(appBrain.lyricsModel.detectedLanguage.language)?.lowercased() ?? "show")+meaning"
                 lyricsViewHandler.isAddToDeckViewShown.toggle()
@@ -123,15 +124,41 @@ struct MenuSubView: View {
             } label: {
                 Text("Google Meaning")
             }
+            
             Button {
                 lyricsViewHandler.selectedWord = lyricsViewHandler.cleanWord(word)
-                print( self.appBrain.getLanguageName(self.appBrain.lyricsModel.detectedLanguage.language) ?? "")
-                lyricsViewHandler.urlString = "https://conjugator.reverso.net/conjugation-\(appBrain.getLanguageName(appBrain.lyricsModel.detectedLanguage.language)?.lowercased() ?? "english")-verb-\(lyricsViewHandler.cleanWord(word)).html"
+                print("https://translate.google.com/?sl=\(appBrain.lyricsModel.detectedLanguage.language)&tl=\(appBrain.user.nativeLanguage.language)&text=\(lyricsViewHandler.cleanWord(word).lowercased())&op=translate")
+                lyricsViewHandler.urlString = "https://translate.google.com/?sl=\(appBrain.lyricsModel.detectedLanguage.language)&tl=\(appBrain.user.nativeLanguage.language)&text=\(lyricsViewHandler.cleanWord(word).lowercased())&op=translate"
                 lyricsViewHandler.isWebViewShown.toggle()
-   
             } label: {
-                Text("Show Conjugation (only on Verbs)")
+                Text("Google Translate")
             }
+            
+            ForEach(0..<STATIC.languages.count, id: \.self) { i in
+                if STATIC.languages[i].language == appBrain.lyricsModel.detectedLanguage.language{
+                    Button {
+                        lyricsViewHandler.selectedWord = lyricsViewHandler.cleanWord(word)
+                        print( self.appBrain.getLanguageName(self.appBrain.lyricsModel.detectedLanguage.language) ?? "")
+                        lyricsViewHandler.urlString = "https://conjugator.reverso.net/conjugation-\(appBrain.getLanguageName(appBrain.lyricsModel.detectedLanguage.language)?.lowercased() ?? "english")-verb-\(lyricsViewHandler.cleanWord(word)).html"
+                        lyricsViewHandler.isWebViewShown.toggle()
+           
+                    } label: {
+                        Text("Show Conjugation (only on Verbs)")
+                    }
+                }
+            }
+            /*
+                Button {
+                    lyricsViewHandler.selectedWord = lyricsViewHandler.cleanWord(word)
+                    print( self.appBrain.getLanguageName(self.appBrain.lyricsModel.detectedLanguage.language) ?? "")
+                    lyricsViewHandler.urlString = "https://conjugator.reverso.net/conjugation-\(appBrain.getLanguageName(appBrain.lyricsModel.detectedLanguage.language)?.lowercased() ?? "english")-verb-\(lyricsViewHandler.cleanWord(word)).html"
+                    lyricsViewHandler.isWebViewShown.toggle()
+       
+                } label: {
+                    Text("Show Conjugation (only on Verbs)")
+                }
+            
+            */
             
         } label: {
             Text(word)
@@ -269,7 +296,7 @@ struct PopUpWebView: View{
   }
   }*/
 class WebViewDelegate: NSObject, WKNavigationDelegate {
-    let allowedHosts: [String] = ["https://www.google.com/*", "www.google.com", "consent.google.com", "dictionary.cambridge.org/*", "conjugator.reverso.net/*", "conjugator.reverso.net"]
+    let allowedHosts: [String] = ["https://www.google.com/*", "www.google.com", "consent.google.com", "dictionary.cambridge.org/*", "conjugator.reverso.net/*", "conjugator.reverso.net", "context.reverso.net", "context.reverso.net/*", "www.hinative.com/*", "en.m.wiktionary.org/*", "www.italki.com/*", "translate.google.com", "translate.google.com/*"]
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard let url = navigationAction.request.url else {
@@ -281,7 +308,7 @@ class WebViewDelegate: NSObject, WKNavigationDelegate {
             decisionHandler(.allow)
         } else {
             print(url.host ?? "")
-            print(allowedHosts)
+            //print(allowedHosts)
             decisionHandler(.cancel)
         }
     }

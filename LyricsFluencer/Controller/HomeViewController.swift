@@ -10,7 +10,7 @@ import FirebaseFirestore
 import ShazamKit
 import AVKit //for using the microphone
 
-class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need it to,  conform to shazams delegates
+class HomeViewController: NSObject, ObservableObject{ //NSObject because the need it to,  conform to shazams delegates
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
     var appBrain: AppBrain?
@@ -59,7 +59,7 @@ class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need i
                     return
                 }
                 //print("Success: \(data)")
-                if let lyricsApiData: LyricsApiData = self.parseJSON(data){
+                if let lyricsApiData: LyricsApiData = AppBrain.parseData(data: data, dataModel: LyricsApiData.self, errorAction: {self.turnOffActivityIndicator()}){
                     DispatchQueue.main.async {
                         Task {
                             self.appBrain!.lyricsModel.lyrics = lyricsApiData.lyrics
@@ -67,7 +67,7 @@ class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need i
                             self.appBrain!.lyricsModel.detectedLanguage.language = lyricsApiData.detectedLanguage ?? ""
                             self.appBrain!.lyricsModel.artist = lyricsApiData.artist
                             self.appBrain!.lyricsModel.song = lyricsApiData.song
-                            let isCombinedLyrics = await self.handleCombineLyrics(lyricsApiData) //the function returns a boolean value
+                            let isCombinedLyrics = await self.appBrain!.handleCombineLyrics(lyricsApiData, dataModel: LyricsApiData.self)
                             if isCombinedLyrics{
                                 DispatchQueue.main.async {
                                     //print(self.appBrain!.lyricsModel.combinedLyrics!) //here is the combinedLyrics if you want to print it
@@ -105,46 +105,7 @@ class HomeViewHandler: NSObject, ObservableObject{ //NSObject because the need i
             self.isShazamLoading = false
         }
     }
-    func handleCombineLyrics(_ lyricsApiData: LyricsApiData) async -> Bool{
-        DispatchQueue.main.async {
-            self.appBrain!.lyricsModel.combinedLyrics = []
-        }
-        if let translatedLyrics = lyricsApiData.translatedLyrics{
-            if let lyrics = self.appBrain!.lyricsModel.lyrics{
-                let lyricsArr = lyrics.components(separatedBy: "\n")
-                let translatedLyricsArr = translatedLyrics.components(separatedBy: "\n")
-                for i in 0..<max(lyricsArr.count, translatedLyricsArr.count) {
-                    if i < lyricsArr.count {
-                        DispatchQueue.main.async {
-                            self.appBrain!.lyricsModel.combinedLyrics?.append(lyricsArr[i])
-                        }
-                    }
-                    if i < translatedLyricsArr.count {
-                        DispatchQueue.main.async {
-                            self.appBrain!.lyricsModel.combinedLyrics?.append(translatedLyricsArr[i])
-                        }
-                    }
-                }
-            }else{
-                return false
-            }
-            return true
-        }else{
-            return false
-        }
-    }
-    
-    func parseJSON(_ lyricsData: Data) -> LyricsApiData? {
-        let decoder = JSONDecoder()
-        do{
-            let decodedData = try decoder.decode(LyricsApiData.self, from: lyricsData)
-            return decodedData
-        }catch {
-            print(error)
-            self.turnOffActivityIndicator()
-            return nil
-        }
-    }
+
     func handleShazam(){
         if isQuickSearchLoading{
             return
@@ -208,7 +169,7 @@ struct ShazamMedia: Decodable{
 
 //For Shazam
 
-extension HomeViewHandler: SHSessionDelegate{
+extension HomeViewController: SHSessionDelegate{
     //SHSessionDelegate in order to use the second shazam function, you could add SHSessionDelegate to the HomeViewHandler but that wouldn't be that clean
     func session(_ session: SHSession, didFind match: SHMatch) {
         if isRecording && isShazamLoading {

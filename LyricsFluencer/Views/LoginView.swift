@@ -91,6 +91,8 @@ struct LoginView: View {
                                 EditCardsView()
                             case "Settings":
                                 SettingsView()
+                            case "Browse":
+                                BrowseView()
                             default:
                                 LoginView()
                             }

@@ -12,7 +12,7 @@ import ReplayKit
 
 struct HomeView: View{
     @EnvironmentObject var appBrain: AppBrain
-    @StateObject var homeViewHandler = HomeViewHandler()
+    @StateObject var homeViewHandler = HomeViewController()
     enum HomeViewField: Hashable {
         case search
         case none
@@ -122,6 +122,9 @@ struct HomeView: View{
                     }
                     .frame(width:300)
                 
+                }
+                SomeButton(text: "Browse Songs") {
+                    self.appBrain.path.append("Browse")
                 }
                 //Flashcard
                 SomeButton(text: "Your Flashcards") {
