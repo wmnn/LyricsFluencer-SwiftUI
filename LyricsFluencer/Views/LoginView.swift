@@ -25,8 +25,7 @@ struct LoginView: View {
                     Color.background
                         .ignoresSafeArea()
                     VStack{
-                        SomeHeadline(text: "Login", fontSize: 32)
-                        
+                        Spacer()
                         TextField(text: self.$loginViewHandler.email){
                             Text("Email").foregroundColor(.gray)
                         }
@@ -68,6 +67,10 @@ struct LoginView: View {
                             self.fieldInFocus = LoginField.none
                             self.loginViewHandler.login(email: loginViewHandler.email, password: loginViewHandler.password)
                         }, systemName: "arrow.right", binding: $loginViewHandler.isLoginLoading)
+                        Spacer()
+                        SomeButton(text: "Go to Register", buttonAction:{
+                            self.appBrain.path.append("Register")
+                        }, systemName: "arrow")
                         
                         .navigationTitle("Login")
                         .navigationBarBackButtonHidden(true)
@@ -93,6 +96,8 @@ struct LoginView: View {
                                 SettingsView()
                             case "Browse":
                                 BrowseView()
+                            case "Register":
+                                RegisterView()
                             default:
                                 LoginView()
                             }

@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseAuth
 import FirebaseFirestore
+import Firebase
 
 class LoginViewHandler: ObservableObject{
     let defaults = UserDefaults.standard

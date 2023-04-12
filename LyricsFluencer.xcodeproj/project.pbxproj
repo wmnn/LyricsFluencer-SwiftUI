@@ -37,6 +37,9 @@
 		C4B38AAD29A39B2500EEFAF9 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = C4B38AAC29A39B2500EEFAF9 /* WrappingHStack */; };
 		C4BE115F29B7EAB20064D8FC /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BE115E29B7EAB20064D8FC /* Extensions.swift */; };
 		C4BE116329B7ECC60064D8FC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BE116229B7ECC60064D8FC /* SettingsView.swift */; };
+		C4C1AFD029E73A9400CA5D18 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1AFCF29E73A9400CA5D18 /* RegisterView.swift */; };
+		C4C1AFD229E73B4A00CA5D18 /* RegisterViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1AFD129E73B4A00CA5D18 /* RegisterViewHandler.swift */; };
+		C4C1AFD429E7488C00CA5D18 /* DeleteAccountApiData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1AFD329E7488C00CA5D18 /* DeleteAccountApiData.swift */; };
 		C4C58F4829A823D8009120C8 /* DecksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C58F4729A823D8009120C8 /* DecksView.swift */; };
 		C4C58F4A29A893FE009120C8 /* DecksModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C58F4929A893FE009120C8 /* DecksModel.swift */; };
 		C4C58F4C29A90304009120C8 /* DeckSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C58F4B29A90304009120C8 /* DeckSettingsView.swift */; };
@@ -77,6 +80,9 @@
 		C4BE115E29B7EAB20064D8FC /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		C4BE116229B7ECC60064D8FC /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		C4BE116429B8B5CD0064D8FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C4C1AFCF29E73A9400CA5D18 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		C4C1AFD129E73B4A00CA5D18 /* RegisterViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewHandler.swift; sourceTree = "<group>"; };
+		C4C1AFD329E7488C00CA5D18 /* DeleteAccountApiData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountApiData.swift; sourceTree = "<group>"; };
 		C4C58F4729A823D8009120C8 /* DecksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecksView.swift; sourceTree = "<group>"; };
 		C4C58F4929A893FE009120C8 /* DecksModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecksModel.swift; sourceTree = "<group>"; };
 		C4C58F4B29A90304009120C8 /* DeckSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckSettingsView.swift; sourceTree = "<group>"; };
@@ -145,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				C4204509299905A2009699F7 /* LoginView.swift */,
+				C4C1AFCF29E73A9400CA5D18 /* RegisterView.swift */,
 				C4D82A5529BF70D1009A3342 /* ReusableViews.swift */,
 				C420453B29992A89009699F7 /* ProtectedViews */,
 			);
@@ -179,6 +186,7 @@
 			isa = PBXGroup;
 			children = (
 				C406045629A2138900D56C0D /* AppBrain.swift */,
+				C4C1AFD129E73B4A00CA5D18 /* RegisterViewHandler.swift */,
 				C44F2D2E29AA8BBC004A28AA /* LoginViewHandler.swift */,
 				C44F2D3029AA986B004A28AA /* HomeViewController.swift */,
 				C44F2D3229AAA06D004A28AA /* LyricsViewHandler.swift */,
@@ -236,6 +244,7 @@
 				C4204540299945D2009699F7 /* LyricsApiData.swift */,
 				C4B0824E29B4FEA800640349 /* PlanApiData.swift */,
 				C4F2267C29DF8C850082B9F1 /* PopularSongsApiData.swift */,
+				C4C1AFD329E7488C00CA5D18 /* DeleteAccountApiData.swift */,
 			);
 			path = Api;
 			sourceTree = "<group>";
@@ -320,6 +329,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4C1AFD429E7488C00CA5D18 /* DeleteAccountApiData.swift in Sources */,
+				C4C1AFD229E73B4A00CA5D18 /* RegisterViewHandler.swift in Sources */,
+				C4C1AFD029E73A9400CA5D18 /* RegisterView.swift in Sources */,
 				C4204541299945D2009699F7 /* LyricsApiData.swift in Sources */,
 				C4B0824F29B4FEA800640349 /* PlanApiData.swift in Sources */,
 				C420453A29992A78009699F7 /* LyricsView.swift in Sources */,
@@ -478,7 +490,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"LyricsFluencer/Preview Content\"";
 				DEVELOPMENT_TEAM = Q8DA5M63VC;
 				ENABLE_PREVIEWS = YES;
@@ -497,7 +509,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = co.wuerdemann.LyricsFluencer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -515,7 +527,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"LyricsFluencer/Preview Content\"";
 				DEVELOPMENT_TEAM = Q8DA5M63VC;
 				ENABLE_PREVIEWS = YES;
@@ -534,7 +546,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = co.wuerdemann.LyricsFluencer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

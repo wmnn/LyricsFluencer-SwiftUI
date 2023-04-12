@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Firebase
 import FirebaseFirestore
 import ShazamKit
 import AVKit //for using the microphone
@@ -115,7 +116,7 @@ class HomeViewController: NSObject, ObservableObject{ //NSObject because the nee
         }
     }
     public func startOrEndListening(){
-        if isRecording{
+        if isRecording {
             self.isRecording = false
             self.isShazamLoading = false
         }
@@ -137,7 +138,11 @@ class HomeViewController: NSObject, ObservableObject{ //NSObject because the nee
         let audioSession = AVAudioSession.sharedInstance()
         
         audioSession.requestRecordPermission { granted in
-            guard granted else { return }
+            guard granted else {
+                print("Not granted")
+                self.isShazamLoading = false
+                return
+            }
             try? audioSession.setActive(true, options: .notifyOthersOnDeactivation)
             let inputNode = self.audioEngine.inputNode
             let recordingFormat = inputNode.outputFormat(forBus: 0)
@@ -189,6 +194,10 @@ extension HomeViewController: SHSessionDelegate{
     func session(_ session: SHSession, didNotFindMatchFor signature: SHSignature, error: Error?) {
         if let error = error{
             print(error)
+            DispatchQueue.main.async {
+                self.isRecording = false
+                self.isShazamLoading = false
+            }
             
         }
     }

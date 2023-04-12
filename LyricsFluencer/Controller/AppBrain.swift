@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 import FirebaseAuth
 import FirebaseFirestore
 
@@ -45,8 +46,12 @@ class AppBrain: ObservableObject{
             try firebaseAuth.signOut()
             LocaleStorage.removeData()
             self.user.isSubscriptionPlanChecked = false
+            self.user = User()
             self.path = NavigationPath()
         } catch let signOutError as NSError {
+            LocaleStorage.removeData()
+            self.user.isSubscriptionPlanChecked = false
+            self.path = NavigationPath()
             print("Error signing out: %@", signOutError)
         }
     }

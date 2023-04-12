@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 import FirebaseFirestore
 
 struct SettingsView: View {
@@ -51,14 +52,14 @@ struct SettingsView: View {
                 SomeButton(text: "Save Settings") {
                     self.saveSettings()
                 }
-                /*
+                
                 //Delete Account
                 Button {
                     self.isDeleteAccountModalPresented = true
                 } label: {
                     HStack{
                         Text("Delete Account")
-
+                        
                     }
                     .bold()
                     .font(.system(size:24))
@@ -70,10 +71,10 @@ struct SettingsView: View {
                     }
                     .cornerRadius(18)
                 }
-                 */
-
+                
+                
             }
-            /*
+            
             if isDeleteAccountModalPresented{
                 ZStack{
                     VisualEffectView(effect: UIBlurEffect(style: .dark))
@@ -83,7 +84,7 @@ struct SettingsView: View {
             }
             if isDeleteAccountModalPresented{
                 DeleteAccountModal(isDeleteAccountModalPresented: $isDeleteAccountModalPresented)
-            }*/
+            }
             
         }
         .onAppear{
@@ -110,6 +111,7 @@ struct SettingsView: View {
         //Go back to Home View
         self.appBrain.path.removeLast()
     }
+    
 }
 
 struct SettingsView_Previews: PreviewProvider {
@@ -117,7 +119,7 @@ struct SettingsView_Previews: PreviewProvider {
         SettingsView()
     }
 }
-/*
+
 
 struct DeleteAccountModal: View{
     let db = Firestore.firestore()
@@ -132,12 +134,12 @@ struct DeleteAccountModal: View{
                     
                     SomeSmallButton(text: "Cancel", buttonAction: {
                         isDeleteAccountModalPresented = false
-                     
+                        
                     }, textColor: Color.green)
                     
                     SomeSmallButton(text: "Delete", buttonAction: {
                         isDeleteAccountModalPresented = false
-                        handleDeleteAccount()
+                        handleDelete()
                     }, textColor: Color.red)
                     
                     
@@ -145,7 +147,50 @@ struct DeleteAccountModal: View{
             }
         }
     }
-    func handleDeleteAccount(){
-        
-    }
-}*/
+    func handleDelete(){
+            let currentUser = Auth.auth().currentUser
+            currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
+                if let error = error {
+                    // Handle error
+                    print(error)
+                    return;
+                }
+                let urlString = "\(STATIC.API_ROOT)/payment/account"
+                if let url = URL(string: urlString){
+                    let json: [String: String] = ["token": idToken ?? ""]
+                    var request = URLRequest(url: url)
+                    request.httpMethod = "DELETE"
+                    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                    request.httpBody = try? JSONSerialization.data(withJSONObject: json)
+                    
+                    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                        if let err = error {
+                            print("Error while sending request: \(err)")
+                            return
+                        }
+                        
+                        guard let data = data, let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
+                            print("Error while receiving response")
+                            return
+                        }
+                        //print("Success: \(data)")
+                        if let deleteAccountApiData: DeleteAccountApiData = AppBrain.parseData(data: data, dataModel: DeleteAccountApiData.self){
+                            DispatchQueue.main.async {
+                                Task {
+                                    if deleteAccountApiData.status == 200 {
+                                        appBrain.logout()
+                                    }else{
+                                        print("Error")
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    task.resume()
+                }
+                
+            }
+        }
+    
+}
+
