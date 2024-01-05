@@ -3,6 +3,10 @@
 ## What is the goal of the app?
 Learning a language through music lyrics. 
 
+## Run yourself?
+
+  - Add a firebase GoogleService-Info.plist file inside ./LyricsFluencer
+
 ## Contents & Features
 
 * SwiftUI - The App source code for IOS
