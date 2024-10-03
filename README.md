@@ -3,7 +3,7 @@
 ## What is the goal of the app?
 Learning a language through music lyrics. 
 
-## Run yourself?
+## Run yourself? (Not possible currently, the app depends on a backend (implemented in NextJS) and the backend is broken at the moment. It depends on services and doesn't scrape the right data anymore, the project is archived)
 
   - Add a firebase GoogleService-Info.plist file inside ./LyricsFluencer
 
@@ -13,14 +13,6 @@ Learning a language through music lyrics.
   - Recognize songs with ShazamKit inside the App
   - Look at the songs lyrics in the original and your native language
   - Add words to a flashcard deck
-* NextJS / Express Fullstack Web Application
-  - Scraping of Lyrics
-  - GoogleApi Lyrics Translations
-  - Firebase User Authentication
-  - Paypal & Stripe Payment 
-  
-* Express Backend Fullstack Web Application
-   - The build files of the NextJs application are exposed with this express app, in order to have a lightweight production server
 
 # How does the App work?
 
