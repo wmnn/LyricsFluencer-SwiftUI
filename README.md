@@ -6,11 +6,11 @@ The goal of the app is to learn a language through music lyrics. Each bar will b
 
 ## How does the app work ?
 
-The app depends on a [backend](https://github.com/wmnn/LyricsFluencerBackend). You can either do a quick search (the lyrics will be displayed afterwards without selecting the right song) or click on browse songs and select the right song manually. In both cases an api endpoint will be called. The backend will then use the musixmatch api to find a corresponding song in relation to the search query. 
+The app depends on a [backend](https://github.com/wmnn/LyricsFluencerBackend), that will also display a website, but not feature complete. You can either do a quick search (the lyrics will be displayed afterwards without selecting the right song) or click on browse songs and select the right song manually. In both cases an api endpoint will be called. The backend will then use the musixmatch api to find a corresponding song in relation to the search query. 
 
-The musixmatch api reponse will contain a link to a site where the lyrics are displayed. On quicksearch the backend will repond with the lyrics and translated lyrics right away. On manual search, where the user can select the right song, only the search results will be displayed and after clicking on the right song, the api will be called on the lyrics will be generated. Look into the "How the lyrics are generated" section to find out more about how the lyrics are generated.
+The musixmatch api reponse will contain a link to a site where the lyrics are displayed. On quicksearch the backend will repond with the lyrics and translated lyrics right away. On manual search, where the user can select the right song, only the search results will be displayed and after clicking on the right song, the api will be called and the lyrics will be generated. Look into the "How the lyrics are generated" section to find out more about how the lyrics are generated.
 
-Authentication is done through firebase and is not depended on the backend. A role and subscription system was implemented, subscriptions were possible on the website served from the backend, not in app due to app store policies. Subscriptions were possible through stripe and paypal.
+Authentication is done through firebase and is not depended on the backend. A role and subscription system was implemented, subscriptions were possible on the website served from the backend, not in app due to app store policies. Subscriptions were possible through stripe and paypal, the api endpoints and the code for the subscriptions is still available on the backend, but subscriptions are removed from the website.
 
 ## How the lyrics are generated ?
 
