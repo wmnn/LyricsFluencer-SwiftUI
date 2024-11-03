@@ -12,6 +12,7 @@ import FirebaseFirestore
 struct DecksView: View {
     
     @EnvironmentObject var appBrain: AppBrain
+    @EnvironmentObject var deckContext: DeckContext
     @StateObject var decksViewHandler: DecksViewHandler = DecksViewHandler()
     
     var body: some View {
@@ -21,7 +22,7 @@ struct DecksView: View {
             Color.background
                 .ignoresSafeArea()
             VStack{
-                ForEach(appBrain.deckModel.decks) { deck in
+                ForEach(deckContext.decks) { deck in
                     DeckView{
                         return deck
                     }
@@ -39,7 +40,7 @@ struct DecksView: View {
                 .alert("Create deck", isPresented: $decksViewHandler.showCreateDeckAlert, actions: {
                     TextField("Deckname", text: $decksViewHandler.createDeckName)
                     Button("Create Deck", action: {
-                        appBrain.createDeck(deckName: self.decksViewHandler.createDeckName)
+                        deckContext.createDeck(deckName: self.decksViewHandler.createDeckName)
                         DispatchQueue.main.async {
                             self.decksViewHandler.createDeckName = ""
                         }

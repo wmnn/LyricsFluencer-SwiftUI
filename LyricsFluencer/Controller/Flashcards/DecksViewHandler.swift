@@ -9,14 +9,15 @@ import Foundation
 
 class DecksViewHandler: ObservableObject{
     var appBrain: AppBrain?
+    var deckContext: DeckContext!
     @Published var showCreateDeckAlert = false
     @Published var createDeckName = ""
     
     
     func handleSelectedADeck(deckName: String, cards: [Card]){
         //Selected a deck
-        self.appBrain!.deckModel.selectedDeck.deckName = deckName
-        self.appBrain!.deckModel.selectedDeck.cards = cards
+        self.deckContext.selectedDeck.deckName = deckName
+        self.deckContext.selectedDeck.cards = cards
         self.appBrain!.path.append("CardsView")
     }
     func handleCountDueCards(cards: [Card]) -> Int{

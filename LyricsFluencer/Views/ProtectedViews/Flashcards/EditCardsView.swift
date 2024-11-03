@@ -8,18 +8,20 @@
 import SwiftUI
 
 struct EditCardsView: View {
+    
     @EnvironmentObject var appBrain: AppBrain
+    @EnvironmentObject var deckContext: DeckContext
     @StateObject var editCardViewHandler = EditCardsViewHandler()
     
     var body: some View {
         ScrollView{
             VStack{
-                ForEach(appBrain.deckModel.selectedDeck.cards ?? []) { card in
+                ForEach(deckContext.selectedDeck.cards ?? []) { card in
                     EditCardsViewCard(card: card)
                 }
             }
         }
-        .navigationTitle(appBrain.deckModel.selectedDeck.deckName)
+        .navigationTitle(deckContext.selectedDeck.deckName)
         .onAppear{
             self.editCardViewHandler.appBrain = self.appBrain
         }

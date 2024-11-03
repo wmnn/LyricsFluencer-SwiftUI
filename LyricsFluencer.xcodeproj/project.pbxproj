@@ -31,11 +31,11 @@
 		C44F2D3129AA986B004A28AA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F2D3029AA986B004A28AA /* HomeViewController.swift */; };
 		C44F2D3329AAA06D004A28AA /* LyricsViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F2D3229AAA06D004A28AA /* LyricsViewHandler.swift */; };
 		C47536542CD7EC48006F71E7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C47536532CD7EC48006F71E7 /* GoogleService-Info.plist */; };
-		C47536562CD7ED88006F71E7 /* DeckModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47536552CD7ED85006F71E7 /* DeckModel.swift */; };
+		C47536562CD7ED88006F71E7 /* FirestoreDeckModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47536552CD7ED85006F71E7 /* FirestoreDeckModel.swift */; };
 		C47536592CD7FEA9006F71E7 /* DeckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47536582CD7FEA7006F71E7 /* DeckView.swift */; };
 		C475365C2CD8014D006F71E7 /* EditCardsViewCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C475365B2CD80148006F71E7 /* EditCardsViewCard.swift */; };
 		C475365E2CD80B5B006F71E7 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = C475365D2CD80B59006F71E7 /* Card.swift */; };
-		C47536602CD8128F006F71E7 /* DeckController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C475365F2CD8128A006F71E7 /* DeckController.swift */; };
+		C47536602CD8128F006F71E7 /* DeckContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C475365F2CD8128A006F71E7 /* DeckContext.swift */; };
 		C492FA3429BA52CD003A07E9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C492FA3329BA52CD003A07E9 /* User.swift */; };
 		C4B0824F29B4FEA800640349 /* PlanApiData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B0824E29B4FEA800640349 /* PlanApiData.swift */; };
 		C4B38AAA29A3602300EEFAF9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B38AA929A3602300EEFAF9 /* Constants.swift */; };
@@ -79,11 +79,11 @@
 		C44F2D3029AA986B004A28AA /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		C44F2D3229AAA06D004A28AA /* LyricsViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsViewHandler.swift; sourceTree = "<group>"; };
 		C47536532CD7EC48006F71E7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		C47536552CD7ED85006F71E7 /* DeckModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckModel.swift; sourceTree = "<group>"; };
+		C47536552CD7ED85006F71E7 /* FirestoreDeckModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDeckModel.swift; sourceTree = "<group>"; };
 		C47536582CD7FEA7006F71E7 /* DeckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckView.swift; sourceTree = "<group>"; };
 		C475365B2CD80148006F71E7 /* EditCardsViewCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardsViewCard.swift; sourceTree = "<group>"; };
 		C475365D2CD80B59006F71E7 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
-		C475365F2CD8128A006F71E7 /* DeckController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckController.swift; sourceTree = "<group>"; };
+		C475365F2CD8128A006F71E7 /* DeckContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckContext.swift; sourceTree = "<group>"; };
 		C492FA3329BA52CD003A07E9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C4B0824E29B4FEA800640349 /* PlanApiData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanApiData.swift; sourceTree = "<group>"; };
 		C4B38AA929A3602300EEFAF9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -171,7 +171,7 @@
 		C420450829990580009699F7 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				C47536552CD7ED85006F71E7 /* DeckModel.swift */,
+				C47536552CD7ED85006F71E7 /* FirestoreDeckModel.swift */,
 				C4B38AA929A3602300EEFAF9 /* Constants.swift */,
 				C44F2D2B29AA8B7B004A28AA /* Schemas */,
 				C434F3F729DDA38A00DF07E8 /* LocaleStorage.swift */,
@@ -196,7 +196,7 @@
 		C434F3F629DD9BF300DF07E8 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				C475365F2CD8128A006F71E7 /* DeckController.swift */,
+				C475365F2CD8128A006F71E7 /* DeckContext.swift */,
 				C406045629A2138900D56C0D /* AppBrain.swift */,
 				C4C1AFD129E73B4A00CA5D18 /* RegisterViewHandler.swift */,
 				C44F2D2E29AA8BBC004A28AA /* LoginViewHandler.swift */,
@@ -375,7 +375,7 @@
 				C4B38AAA29A3602300EEFAF9 /* Constants.swift in Sources */,
 				C4C58F4A29A893FE009120C8 /* Deck.swift in Sources */,
 				C420450E299905EC009699F7 /* HomeView.swift in Sources */,
-				C47536562CD7ED88006F71E7 /* DeckModel.swift in Sources */,
+				C47536562CD7ED88006F71E7 /* FirestoreDeckModel.swift in Sources */,
 				C4C58F4829A823D8009120C8 /* DecksView.swift in Sources */,
 				C492FA3429BA52CD003A07E9 /* User.swift in Sources */,
 				C4F2267D29DF8C850082B9F1 /* PopularSongsApiData.swift in Sources */,
@@ -386,7 +386,7 @@
 				C47536592CD7FEA9006F71E7 /* DeckView.swift in Sources */,
 				C4BE115F29B7EAB20064D8FC /* Extensions.swift in Sources */,
 				C4C58F4E29A91AEB009120C8 /* CardView.swift in Sources */,
-				C47536602CD8128F006F71E7 /* DeckController.swift in Sources */,
+				C47536602CD8128F006F71E7 /* DeckContext.swift in Sources */,
 				C42044FA29990571009699F7 /* LyricsFluencer.swift in Sources */,
 				C443138529AA39D7007D7CA9 /* CardViewHandler.swift in Sources */,
 				C44F2D2F29AA8BBC004A28AA /* LoginViewHandler.swift in Sources */,

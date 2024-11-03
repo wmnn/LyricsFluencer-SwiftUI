@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DeckSettingsView: View {
     @EnvironmentObject var appBrain: AppBrain
+    @EnvironmentObject var deckContext: DeckContext
     @StateObject var deckSettingsHandler = DeckSettingsHandler()
     
     var body: some View {
@@ -33,10 +34,7 @@ struct DeckSettingsView: View {
                 }
             }
         }
-        .navigationTitle(appBrain.deckModel.selectedDeck.deckName)
-        .onAppear{
-            self.deckSettingsHandler.appBrain = self.appBrain
-        }
+        .navigationTitle(self.deckContext.selectedDeck.deckName)
         .alert("Create card", isPresented: $deckSettingsHandler.showCreateCardAlert, actions: {
             TextField("Front", text: self.$deckSettingsHandler.front)
                 .autocapitalization(.none)
@@ -45,7 +43,7 @@ struct DeckSettingsView: View {
                 .autocapitalization(.none)
                 .autocorrectionDisabled(true)
             Button("Create Card", action: {
-                deckSettingsHandler.handleCreateCard()
+                deckSettingsHandler.handleCreateCard(deckContext: deckContext)
             })
             Button("Cancel", role: .cancel, action: {
                 deckSettingsHandler.handleCancel()
@@ -54,10 +52,12 @@ struct DeckSettingsView: View {
             Text("Provide Details.")
         })
         .alert("Do you want to delete this deck?", isPresented: $deckSettingsHandler.showDeleteDeckAlert, actions: {
-            Button("Yes, delete", action: {
-                deckSettingsHandler.handleDeleteDeck()
+            Button("Yes, delete") {
+                self.deckContext.handleDeleteDeck()
                 self.appBrain.path.removeLast()
-            })
+                
+            }
+
             Button("Cancel", role: .cancel, action: {
                 deckSettingsHandler.showDeleteDeckAlert.toggle()
             })

@@ -10,10 +10,13 @@ import FirebaseAuth
 import FirebaseFirestore
 import Firebase
 
-class LoginViewHandler: ObservableObject{
+class LoginViewHandler: ObservableObject {
+    
     let defaults = UserDefaults.standard
     let db = Firestore.firestore()
     var appBrain: AppBrain?
+    var deckContext: DeckContext!
+    
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var isLoginLoading = false
@@ -50,7 +53,10 @@ class LoginViewHandler: ObservableObject{
                     self.appBrain!.user.learnedLanguage.language = learnedLanguage ?? ""
                     
                     DispatchQueue.main.async {
-                        self.appBrain!.fetchingDecks()
+                        Task {
+                            try await self.deckContext.fetchingDecks()
+                        }
+                        
                         self.isLoginLoading = false
                         self.handleLoginNavigation()
                         self.appBrain!.handleTrial()
@@ -69,7 +75,7 @@ class LoginViewHandler: ObservableObject{
             self.appBrain!.path.append("DefaultLanguage")
         }
     }
-    func handleAutoLogin(){
+    func handleAutoLogin() {
         if Auth.auth().currentUser != nil {
             let learnedLanguage = defaults.string(forKey: "learnedLanguage")
             let nativeLanguage = defaults.string(forKey: "nativeLanguage")
@@ -77,17 +83,21 @@ class LoginViewHandler: ObservableObject{
             let subscriptionPlan = defaults.string(forKey: "subscriptionPlan")
             
             if learnedLanguage != nil, requests != nil, subscriptionPlan != nil, nativeLanguage != nil{
+                
+           
                 self.appBrain!.user.learnedLanguage.language = learnedLanguage!
                 self.appBrain!.user.nativeLanguage.language = nativeLanguage!
                 self.appBrain!.user.requests = Int(requests!)
                 //self.appBrain!.user.targetLanguage.name = appBrain!.getLanguageName(defaultLanguage!) ?? ""
-    
+                
+                
                 if !self.appBrain!.user.isAutoLogin{
-                    DispatchQueue.main.async {
-                        self.appBrain!.fetchingDecks()
-                    }
+                    self.deckContext.fetchingDecks()
+    
                     self.appBrain!.path.append("Home")
                     self.appBrain!.user.isAutoLogin = true
+                    
+                    
                 }
             }else{
                 self.appBrain!.path.append("DefaultLanguage")

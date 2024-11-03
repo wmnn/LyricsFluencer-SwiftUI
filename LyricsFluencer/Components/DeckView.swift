@@ -9,12 +9,13 @@ import SwiftUI
 struct DeckView: View {
     
     @EnvironmentObject var appBrain: AppBrain
+    @EnvironmentObject var deckContext: DeckContext
     @StateObject var decksViewHandler: DecksViewHandler = DecksViewHandler()
     
     let deck: Deck
 
     init(@ViewBuilder _ getDeck: () -> Deck) {
-            self.deck = getDeck()
+        self.deck = getDeck()
     }
     
     var body: some View{
@@ -49,8 +50,7 @@ struct DeckView: View {
                 }
                 
                 Button {
-                    appBrain.deckModel.selectedDeck.deckName = deck.deckName
-                    appBrain.deckModel.selectedDeck.cards = deck.cards ?? []
+                    deckContext.selectedDeck = deck;
                     appBrain.path.append("DeckSettingsView")
                 } label: {
                     Image(systemName: "gearshape")

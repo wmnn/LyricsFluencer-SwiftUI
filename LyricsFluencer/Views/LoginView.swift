@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct LoginView: View {
+    
     @EnvironmentObject var appBrain: AppBrain
+    @EnvironmentObject var deckContext: DeckContext
     @StateObject var loginViewHandler = LoginViewHandler()
     @Environment(\.scenePhase) var scenePhase
     enum LoginField: Hashable {
@@ -107,7 +109,11 @@ struct LoginView: View {
                             case .active:
                                 print("App is active")
                                 self.loginViewHandler.appBrain = self.appBrain
+                                self.loginViewHandler.deckContext = self.deckContext
                                 self.loginViewHandler.handleAutoLogin()
+                                
+                                
+                                
                             case .inactive:
                                 print("App is inactive")
                             case .background:

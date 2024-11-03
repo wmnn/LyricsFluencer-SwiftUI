@@ -173,6 +173,7 @@ struct MenuSubView: View {
 struct AddWordView: View{
     let db = Firestore.firestore()
     @EnvironmentObject var appBrain: AppBrain
+    @EnvironmentObject var deckContext: DeckContext
     @StateObject var lyricsViewHandler: LyricsViewHandler
     
     var body: some View{
@@ -181,9 +182,9 @@ struct AddWordView: View{
             VStack{
                 //Menu
                 Menu{
-                    ForEach(appBrain.deckModel.decks, id: \.self) { deck in
+                    ForEach(deckContext.decks, id: \.self) { deck in
                         Button {
-                            appBrain.deckModel.selectedDeck.deckName = deck.deckName
+                            deckContext.selectedDeck.deckName = deck.deckName
                         } label: {
                             Text(deck.deckName)
                         }
@@ -198,7 +199,7 @@ struct AddWordView: View{
                 } label: {
                     Label(
                         title: {
-                            Text("Selected Deck: \(appBrain.deckModel.selectedDeck.deckName)")
+                            Text("Selected Deck: \(deckContext.selectedDeck.deckName)")
                                 .font(.system(size:24))
                                 .bold()
                                 .frame(width: 300, height: 20, alignment: .center)
@@ -229,7 +230,7 @@ struct AddWordView: View{
                     }, textColor: Color.red)
                     
                     SomeSmallButton(text: "Add", buttonAction: {
-                        var _ = appBrain.handleAddToDeck(front: self.lyricsViewHandler.front, back: self.lyricsViewHandler.back)
+                        var _ = deckContext.handleAddToDeck(front: self.lyricsViewHandler.front, back: self.lyricsViewHandler.back)
                         lyricsViewHandler.isAddToDeckViewShown.toggle()
                     }, textColor: Color.green)
                     
@@ -239,14 +240,14 @@ struct AddWordView: View{
         .frame(width: 350, height: 400)
         .cornerRadius(10)
         .onAppear{
-            if appBrain.deckModel.selectedDeck.deckName == ""&&appBrain.deckModel.decks.count > 0{
-                appBrain.deckModel.selectedDeck.deckName = appBrain.deckModel.decks[0].deckName
+            if deckContext.selectedDeck.deckName == ""&&deckContext.decks.count > 0{
+                deckContext.selectedDeck.deckName = deckContext.decks[0].deckName
             }
         }
         .alert("Create deck", isPresented: $lyricsViewHandler.showCreateDeckAlert, actions: {
             TextField("Deckname", text: $lyricsViewHandler.createDeckName)
             Button("Create Deck", action: {
-                appBrain.createDeck(deckName: self.lyricsViewHandler.createDeckName)
+                deckContext.createDeck(deckName: self.lyricsViewHandler.createDeckName)
                 DispatchQueue.main.async {
                     self.lyricsViewHandler.createDeckName = ""
                     self.lyricsViewHandler.showCreateDeckAlert = false

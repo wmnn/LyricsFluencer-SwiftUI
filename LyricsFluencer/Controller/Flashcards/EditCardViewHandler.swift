@@ -9,10 +9,11 @@ import Foundation
 import FirebaseFirestore
 
 
-class EditCardsViewHandler: ObservableObject{
+class EditCardsViewHandler: ObservableObject {
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
     var appBrain: AppBrain?
+    var deckContext: DeckContext!
     @Published var front: String = ""
     @Published var back: String = ""
     @Published var selectedCardID: String = ""
@@ -32,7 +33,7 @@ class EditCardsViewHandler: ObservableObject{
     }
     func handleEditCard(){
         let uid = FirebaseModel.getCurrentUser()
-        self.db.collection("flashcards").document(uid).collection("decks").document(self.appBrain!.deckModel.selectedDeck.deckName).collection("cards").document(self.selectedCardID).setData([
+        self.db.collection("flashcards").document(uid).collection("decks").document(self.deckContext.selectedDeck.deckName).collection("cards").document(self.selectedCardID).setData([
             "front" : self.front,
             "back" : self.back
             ], merge: true){ err in
@@ -40,8 +41,8 @@ class EditCardsViewHandler: ObservableObject{
                 print("Error while editing card \(err)")
             } else {
                 // Filter the decks array and create a new array with updated decks
-                let newDecks = self.appBrain!.deckModel.decks.map { deck in
-                    if deck.deckName == self.appBrain!.deckModel.selectedDeck.deckName {
+                let newDecks = self.deckContext.decks.map { deck in
+                    if deck.deckName == self.deckContext.selectedDeck.deckName {
                         // If deck name matches selected deck, filter the cards array and create a new array with updated cards
                         let newCards = deck.cards?.map { card in
                             if card.id == self.selectedCardID {
@@ -54,7 +55,7 @@ class EditCardsViewHandler: ObservableObject{
                         // Update the deck's cards property with the new array of cards
                         var updatedDeck = deck
                         updatedDeck.cards = newCards
-                        self.appBrain!.deckModel.selectedDeck.cards = newCards
+                        self.deckContext.selectedDeck.cards = newCards
                         return updatedDeck
                     } else {
                         // For all other decks, return them as is
@@ -62,7 +63,7 @@ class EditCardsViewHandler: ObservableObject{
                     }
                 }
                 // Update the appBrain's decks array with the new array of decks
-                self.appBrain!.deckModel.decks = newDecks
+                self.deckContext.decks = newDecks
                 self.isEditCardAlertShown = false
             }
         }
@@ -75,13 +76,13 @@ class EditCardsViewHandler: ObservableObject{
     func handleDeleteCard(){
         let uid = FirebaseModel.getCurrentUser()
         
-        self.db.collection("flashcards").document(uid).collection("decks").document(self.appBrain!.deckModel.selectedDeck.deckName).collection("cards").document(self.selectedCardID).delete(){ err in
+        self.db.collection("flashcards").document(uid).collection("decks").document(self.deckContext.selectedDeck.deckName).collection("cards").document(self.selectedCardID).delete(){ err in
             if let err = err {
                 print("Error while deleting deck \(err)")
             } else {
                 // Filter the decks array and create a new array with updated decks
-                let newDecks = self.appBrain!.deckModel.decks.map { deck in
-                    if deck.deckName == self.appBrain!.deckModel.selectedDeck.deckName {
+                let newDecks = self.deckContext.decks.map { deck in
+                    if deck.deckName == self.deckContext.selectedDeck.deckName {
                         // If deck name matches selected deck, filter the cards array and create a new array with updated cards
                         let newCards = deck.cards?.filter { card in
                             return card.id != self.selectedCardID
@@ -89,7 +90,7 @@ class EditCardsViewHandler: ObservableObject{
                         // Update the deck's cards property with the new array of cards
                         var updatedDeck = deck
                         updatedDeck.cards = newCards
-                        self.appBrain!.deckModel.selectedDeck.cards = newCards
+                        self.deckContext.selectedDeck.cards = newCards
                         return updatedDeck
                     } else {
                         // For all other decks, return them as is
@@ -97,7 +98,7 @@ class EditCardsViewHandler: ObservableObject{
                     }
                 }
                 // Update the appBrain's decks array with the new array of decks
-                self.appBrain!.deckModel.decks = newDecks
+                self.deckContext.decks = newDecks
                 self.isDeleteCardAlertShown = false
             }
         }

@@ -10,12 +10,12 @@ import Firebase
 import FirebaseAuth
 import FirebaseFirestore
 
-class AppBrain: ObservableObject{
+class AppBrain: ObservableObject {
+    
     let db = Firestore.firestore()
     @Published var path: NavigationPath = NavigationPath()
     @Published var user = User()
     @Published var lyricsModel = Lyrics()
-    @Published var deckModel: DeckModel = DeckModel()
 
     func handleTrial(){
         let subscriptionPlan = LocaleStorage.getValue(for: "subscriptionPlan")
@@ -75,18 +75,6 @@ class AppBrain: ObservableObject{
                 self.handleTrial()
             }
         }
-    }
-
-    func handleAddToDeck(front: String, back: String) -> String{
-        return deckModel.handleAddToDeck(front: front, back: back)
-    }
-    
-    func createDeck(deckName: String){
-        deckModel.createDeck(deckName: deckName)
-    }
-    
-    func fetchingDecks() {
-        deckModel.fetchingDecks()
     }
     
     func checkSubscriptionPlan(){
