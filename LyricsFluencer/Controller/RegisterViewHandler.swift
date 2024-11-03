@@ -21,7 +21,7 @@ class RegisterViewHandler: ObservableObject{
         Auth.auth().createUser(withEmail: self.email, password: self.password) { authResult, error in
             if let e = error{
                 print(e.localizedDescription)
-            }else{
+            } else {
                 //Adding User to db
                 let uid = FirebaseModel.getCurrentUser()
                 let data: [String: Any] = ["subscriptionPlan": "free"]
