@@ -1,5 +1,7 @@
 # LyricsFluencer App
 
+The projects comprises 2 repositories, the NextJS [backend](https://github.com/wmnn/LyricsFluencerBackend) / web application and in this repository the SwiftUI app.
+
 ## What can you do with the app ?
 
 The goal of the app is to learn a language through music lyrics. Each bar will be translated to your mother tongue and a bar will be displayed under the bar of the orginal lyrics. You can click on a word and add it to your vocabulary deck. You can also google the meaning and display conjugation within the app. It is possible to recognize the song you are currently playing through the ShazamKit.
