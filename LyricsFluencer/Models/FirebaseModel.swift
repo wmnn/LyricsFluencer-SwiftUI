@@ -44,7 +44,7 @@ struct FirebaseModel{
             }
         }
     }
-    static func getCards(reference: DocumentReference,completion: @escaping (QuerySnapshot?, Error?) -> Void) {
+    static func getCards(reference: DocumentReference, completion: @escaping (QuerySnapshot?, Error?) -> Void) {
         reference.collection("cards").getDocuments { (cardsQuerySnapshot, error) in
             if let error = error {
                 print("Error getting subcollection: \(error)")

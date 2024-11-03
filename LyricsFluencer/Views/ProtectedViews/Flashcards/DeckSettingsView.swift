@@ -33,7 +33,7 @@ struct DeckSettingsView: View {
                 }
             }
         }
-        .navigationTitle(appBrain.user.selectedDeck.deckName)
+        .navigationTitle(appBrain.deckModel.selectedDeck.deckName)
         .onAppear{
             self.deckSettingsHandler.appBrain = self.appBrain
         }
@@ -56,6 +56,7 @@ struct DeckSettingsView: View {
         .alert("Do you want to delete this deck?", isPresented: $deckSettingsHandler.showDeleteDeckAlert, actions: {
             Button("Yes, delete", action: {
                 deckSettingsHandler.handleDeleteDeck()
+                self.appBrain.path.removeLast()
             })
             Button("Cancel", role: .cancel, action: {
                 deckSettingsHandler.showDeleteDeckAlert.toggle()

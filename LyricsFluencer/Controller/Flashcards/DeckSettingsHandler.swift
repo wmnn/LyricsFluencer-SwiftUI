@@ -31,29 +31,7 @@ class DeckSettingsHandler: ObservableObject{
             self.showCreateCardAlert = false
         }
     }
-    func handleDeleteDeck(){
-        let uid = FirebaseModel.getCurrentUser()
-        
-        let subcollectionRef = db.collection("flashcards").document(uid).collection("decks").document(self.appBrain!.user.selectedDeck.deckName).collection("cards")
-        subcollectionRef.getDocuments { (querySnapshot, error) in
-            if let error = error {
-                print("Error getting documents: \(error)")
-            } else {
-                for document in querySnapshot!.documents {
-                    document.reference.delete()
-                }
-                self.db.collection("flashcards").document(uid).collection("decks").document(self.appBrain!.user.selectedDeck.deckName).delete(){ err in
-                    if let err = err{
-                        print("Error while deleting deck \(err)")
-                    }else{
-                        let newDecks = self.appBrain!.user.decks.filter { deck in
-                            return deck.deckName != self.appBrain!.user.selectedDeck.deckName
-                        }
-                        self.appBrain!.user.decks = newDecks
-                        self.appBrain!.path.removeLast()
-                    }
-                }
-            }
-        }
+    func handleDeleteDeck() {
+        appBrain?.deckModel.handleDeleteDeck()
     }
 }

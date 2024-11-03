@@ -11,8 +11,6 @@ struct User: Codable{
     var requests: Int?
     var nativeLanguage = Language(language: "None")
     var learnedLanguage = Language(language: "None")
-    var decks: [Deck] = []
-    var selectedDeck = Deck(deckName: "", cards: [])
     var subscriptionPlan: String?
     var subscriptionStatus: String?
     var isTrialExpired: Bool = true

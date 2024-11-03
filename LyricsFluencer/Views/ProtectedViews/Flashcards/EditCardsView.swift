@@ -14,64 +14,15 @@ struct EditCardsView: View {
     var body: some View {
         ScrollView{
             VStack{
-                ForEach(appBrain.user.selectedDeck.cards ?? []) { card in
-                    HStack{
-                        VStack(alignment: .leading){
-                            Text(card.front)
-                            Text(card.back)
-                        }
-                        Spacer()
-                        Button {
-                            editCardViewHandler.handleIsEditCardClicked(front: card.front, back: card.back, id: card.id)
-                        } label: {
-                            Image(systemName: "pencil")
-                        }
-                        Button {
-                            editCardViewHandler.handleIsDeleteCardAlertClicked(id: card.id)
-                        } label: {
-                            Image(systemName: "trash")
-                        }   
-                    }
-                    .bold()
-                    .font(.system(size: 18))
-                    .frame(width: 300, height: 20, alignment: .center)
-                    .foregroundColor(Color("textColor"))
-                    .padding()
-                    .background {
-                        Color("primaryColor")
-                    }
-                    .cornerRadius(18)
+                ForEach(appBrain.deckModel.selectedDeck.cards ?? []) { card in
+                    EditCardsViewCard(card: card)
                 }
             }
         }
-        .navigationTitle(appBrain.user.selectedDeck.deckName)
+        .navigationTitle(appBrain.deckModel.selectedDeck.deckName)
         .onAppear{
             self.editCardViewHandler.appBrain = self.appBrain
         }
-        .alert("Edit Card", isPresented: $editCardViewHandler.isEditCardAlertShown, actions: {
-            TextField("Front", text: self.$editCardViewHandler.front)
-                .autocorrectionDisabled(true)
-            TextField("Back", text: self.$editCardViewHandler.back)
-                .autocorrectionDisabled(true)
-            Button("Save Changes", action: {
-                editCardViewHandler.handleEditCard()
-            })
-            Button("Cancel", role: .cancel, action: {
-                editCardViewHandler.handleCancel()
-            })
-        }, message: {
-            Text("Provide Details.")
-        })
-        .alert("Do you want to delete this card?", isPresented: $editCardViewHandler.isDeleteCardAlertShown, actions: {
-            Button("Yes, delete", action: {
-                editCardViewHandler.handleDeleteCard()
-            })
-            Button("Cancel", role: .cancel, action: {
-                editCardViewHandler.handleCancel()
-            })
-        }, message: {
-            //Text("Are you sure?")
-        })
     }
 }
 

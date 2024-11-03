@@ -14,12 +14,3 @@ struct Deck: Identifiable, Hashable, Codable{
         return deckName
     }
 }
-
-struct Card: Hashable, Identifiable, Codable{
-    var front: String
-    var back: String
-    var createdAt: Date?
-    var interval: Int = 0
-    var due: Date
-    var id: String
-}
