@@ -6,7 +6,7 @@ The goal of the app is to learn a language through music lyrics. Each bar will b
 
 ## How does the app work ?
 
-The app depends on a [backend](https://github.com/wmnn/LyricsFluencerBackend), that will also display a website, but not feature complete. You can either do a quick search (the lyrics will be displayed afterwards without selecting the right song) or click on browse songs and select the right song manually. In both cases an api endpoint will be called. The backend will then use the musixmatch api to find a corresponding song in relation to the search query. 
+The app depends on a [backend](https://github.com/wmnn/LyricsFluencerBackend), that will also display a React/NextJS website, but not feature complete. You can either do a quick search (the lyrics will be displayed afterwards without selecting the right song) or click on browse songs and select the right song manually. In both cases an api endpoint will be called. The backend will then use the musixmatch api to find a corresponding song in relation to the search query. 
 
 The musixmatch api reponse will contain a link to a site where the lyrics are displayed. On quicksearch the backend will repond with the lyrics and translated lyrics right away. On manual search, where the user can select the right song, only the search results will be displayed and after clicking on the right song, the api will be called and the lyrics will be generated. Look into the "How the lyrics are generated" section to find out more about how the lyrics are generated.
 
@@ -16,14 +16,12 @@ Authentication is done through firebase and is not depended on the backend. A ro
 
 It is quite hard to find a good api for music lyrics, musixmatch offers a free api, where only a part of the lyrics will be send and not the whole song. Other services only provide enterprise solutions. In order to display the lyrics of the whole song the lyrics will be scraped from the musixmatch website. The translated lyrics in the native tongue, the lyrics will be translated through the google translate api. The backend reponse for the client will contain the original and the translated lyrics. The client is responsible for showing it correctly beneath each other.
 
-The search results of the musixmatch api will contain a link, where the right lyrics are displayed.  
+If the lyrics couldn't be scraped, the limited results for non commercial use from the musixmatch api are displayed. If the lyrics couldn't be translated through the google translate api, only the lyrics will be displayed, without the translation beneath.
 
 
 ## Run yourself? 
 
-In 2023 the app was available in the apple app store, but I didn't renew my app developer license.
-
-Due to the dependence on the musixmatch service and the google translation api it is not possible currently, the backend doesn't scrape the right data anymore, the project is archived.
+In 2023 the app was available in the apple app store, but I didn't renew my app developer license. You can clone the repository and run it local in XCode.
 
 - Run the [backend](https://github.com/wmnn/LyricsFluencerBackend)
 - Add api route to `Models > Constants.swift`
