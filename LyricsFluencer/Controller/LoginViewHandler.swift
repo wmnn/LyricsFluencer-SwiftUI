@@ -54,7 +54,7 @@ class LoginViewHandler: ObservableObject {
                     
                     DispatchQueue.main.async {
                         Task {
-                            try await self.deckContext.fetchingDecks()
+                            self.deckContext.fetchingDecks()
                         }
                         
                         self.isLoginLoading = false

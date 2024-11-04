@@ -11,7 +11,9 @@ import FirebaseFirestore
 import ReplayKit
 
 struct HomeView: View{
+    
     @EnvironmentObject var appBrain: AppBrain
+    @EnvironmentObject var songContext: SongContext
     @StateObject var homeViewHandler = HomeViewController()
     enum HomeViewField: Hashable {
         case search
@@ -84,12 +86,8 @@ struct HomeView: View{
                         }else{
                             print("Else")
                             if !homeViewHandler.isShazamLoading{
-                                DispatchQueue.main.async {
-                                    self.homeViewHandler.isQuickSearchLoading = true
-                                    homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.user.nativeLanguage.language)
-                                    fieldInFocus = HomeViewField.none
-                                    print("Got to here")
-                                }
+                                homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.user.nativeLanguage.language)
+                                fieldInFocus = HomeViewField.none
                             }
                         }
                     }
@@ -101,20 +99,19 @@ struct HomeView: View{
                         }, systemName: "magnifyingglass",binding: $homeViewHandler.isQuickSearchLoading, width: 300/2)
                         */
                         SomeButtonWithActivityIndicator(text: "Quick Search", buttonAction: {
-                            if self.homeViewHandler.isQuickSearchLoading{
+                            if self.homeViewHandler.isQuickSearchLoading {
                                 fieldInFocus = HomeViewField.none
                                 DispatchQueue.main.async {
                                     self.homeViewHandler.isQuickSearchLoading = false
                                     self.homeViewHandler.isShazamLoading = false
                                 }
-                            }else{
-                                print("Else")
+                            } else {
                                 if !homeViewHandler.isShazamLoading{
                                     DispatchQueue.main.async {
                                         self.homeViewHandler.isQuickSearchLoading = true
+                                        print("Calling inside HomeView handleQuickSearch")
                                         homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: appBrain.user.nativeLanguage.language)
                                         fieldInFocus = HomeViewField.none
-                                        print("Got to here")
                                     }
                                 }
                             }
@@ -152,6 +149,7 @@ struct HomeView: View{
             appBrain.handleTrial()
             appBrain.checkSubscriptionPlan()
             self.homeViewHandler.appBrain = self.appBrain
+            self.homeViewHandler.songContext = self.songContext
         }
     }
 }

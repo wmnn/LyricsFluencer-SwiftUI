@@ -7,10 +7,11 @@
 
 import Foundation
 
-struct PopularSongsApiData: Codable{
+struct PopularSongsResponse: Codable{
     var status: Int
-    var data : [PopularSongApiDataContainer]
+    var songs : [Song]
 }
+/*
 struct PopularSongApiDataContainer: Codable, Identifiable{
     var id: Int { track.commontrack_id }
     var track: PopularSongApiData
@@ -23,3 +24,4 @@ struct PopularSongApiData: Codable, Identifiable{
     var album_name: String
     var artist_name: String
 }
+*/

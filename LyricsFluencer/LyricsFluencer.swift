@@ -45,9 +45,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct LyricsFluencer: App {
+    
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject var appBrain = AppBrain()
     @StateObject var deckContext = DeckContext()
+    @StateObject var songContext = SongContext()
     
     init() {
         print("My App is starting")
@@ -59,6 +61,7 @@ struct LyricsFluencer: App {
             LoginView()
                 .environmentObject(appBrain)
                 .environmentObject(deckContext)
+                .environmentObject(songContext)
                 
         }
     }

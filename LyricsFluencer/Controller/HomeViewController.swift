@@ -12,9 +12,12 @@ import ShazamKit
 import AVKit //for using the microphone
 
 class HomeViewController: NSObject, ObservableObject{ //NSObject because the need it to,  conform to shazams delegates
+    
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
     var appBrain: AppBrain?
+    var songContext: SongContext?
+    
     @Published var isShazamLoading = false
     @Published var isQuickSearchLoading = false
     @Published var searchQuery: String = ""
@@ -39,66 +42,40 @@ class HomeViewController: NSObject, ObservableObject{ //NSObject because the nee
             print("Making not request")
             return
         }
-        let json: [String: String] = ["searchQuery": searchQuery, "target": target]
-        let urlString = "\(STATIC.API_ROOT)/api/quicksearch"
-        print("Making soon request")
-        if let url = URL(string: urlString){
-            var request = URLRequest(url: url)
-            request.httpMethod = "POST"
-            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.httpBody = try? JSONSerialization.data(withJSONObject: json)
+        self.isQuickSearchLoading = true
+        print("Calling in HomeViewController handleQuickSearch")
+        
+        songContext?.handleQuickSearch(searchQuery: searchQuery, targetLanguageCode: appBrain!.user.learnedLanguage.language){ song, error in
             
-            let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                if let err = error {
-                    print("Error while sending request: \(err)")
+            guard song != nil && error == nil else {
+                DispatchQueue.main.async {
+                    self.isQuickSearchLoading = false;
+                    // self.turnOffActivityIndicator()
+                }
+                return;
+            }
+            
+            DispatchQueue.main.async {
+                self.appBrain!.updateRequestCounter()
+                if (!self.isShazamLoading && !self.isQuickSearchLoading) || (self.isShazamLoading && self.isQuickSearchLoading){
+                    self.isShazamLoading = false
+                    self.isQuickSearchLoading = false
                     return
+                } else {
+                    if self.isQuickSearchLoading{
+                        self.isQuickSearchLoading = false
+                    }
+                    if self.isShazamLoading {
+                        self.isRecording = false
+                        self.isShazamLoading = false
+                    }
+                    self.appBrain!.path.append("Lyrics")
                 }
                 
-                guard let data = data, let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
-                    print("Error while receiving response")
-                    self.turnOffActivityIndicator()
-                    return
-                }
-                //print("Success: \(data)")
-                if let lyricsApiData: LyricsApiData = AppBrain.parseData(data: data, dataModel: LyricsApiData.self, errorAction: {self.turnOffActivityIndicator()}){
-                    DispatchQueue.main.async {
-                        Task {
-                            self.appBrain!.lyricsModel.lyrics = lyricsApiData.lyrics
-                            print("Detected Language = \(lyricsApiData.detectedLanguage ?? "")")
-                            self.appBrain!.lyricsModel.detectedLanguage.language = lyricsApiData.detectedLanguage ?? ""
-                            self.appBrain!.lyricsModel.artist = lyricsApiData.artist
-                            self.appBrain!.lyricsModel.song = lyricsApiData.song
-                            let isCombinedLyrics = await self.appBrain!.handleCombineLyrics(lyricsApiData, dataModel: LyricsApiData.self)
-                            if isCombinedLyrics{
-                                DispatchQueue.main.async {
-                                    //print(self.appBrain!.lyricsModel.combinedLyrics!) //here is the combinedLyrics if you want to print it
-                                    self.appBrain!.updateRequestCounter()
-                                    if (!self.isShazamLoading && !self.isQuickSearchLoading) || (self.isShazamLoading && self.isQuickSearchLoading){
-                                        self.isShazamLoading = false
-                                        self.isQuickSearchLoading = false
-                                        return
-                                    }else{
-                                        if self.isQuickSearchLoading{
-                                            self.isQuickSearchLoading = false
-                                        }
-                                        if self.isShazamLoading {
-                                            self.isRecording = false
-                                            self.isShazamLoading = false
-                                        }
-                                        self.appBrain!.path.append("Lyrics") 
-                                    }
-                                    
-                                }
-                            }
-                        }
-                    }
-                    
-                }
             }
-            task.resume()
         }
-        
     }
+    
     func turnOffActivityIndicator(){
         DispatchQueue.main.async {
             self.isQuickSearchLoading = false
@@ -185,7 +162,7 @@ extension HomeViewController: SHSessionDelegate{
                     self.audioEngine.stop()
                     self.audioEngine.inputNode.removeTap(onBus: 0)
                     self.shazamMedia = _shazamMedia
-                    self.appBrain?.lyricsModel.albumArtURL = firstItem.artworkURL
+                    // self.appBrain?.lyricsModel.albumArtURL = firstItem.artworkURL
                     self.handleQuickSearch(searchQuery: (firstItem.title ?? "") + " " + (firstItem.artist ?? ""), target: self.appBrain!.user.nativeLanguage.language)
                 }
             }

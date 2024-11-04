@@ -15,7 +15,6 @@ class AppBrain: ObservableObject {
     let db = Firestore.firestore()
     @Published var path: NavigationPath = NavigationPath()
     @Published var user = User()
-    @Published var lyricsModel = Lyrics()
 
     func handleTrial(){
         let subscriptionPlan = LocaleStorage.getValue(for: "subscriptionPlan")
@@ -65,7 +64,7 @@ class AppBrain: ObservableObject {
             if error == nil {
                 print("Updated request counter")
             }else{
-                print("not updated")
+                print("not updated request counter")
             }
         }
         if let requests = LocaleStorage.getValue(for: "requests"){
@@ -99,7 +98,7 @@ class AppBrain: ObservableObject {
                         }
                         
                         guard let data = data, let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
-                            print("Error while receiving response")
+                            print("Error while receiving response, subscription plan")
                             return
                         }
                         //print("Success: \(data)")
@@ -128,7 +127,7 @@ class AppBrain: ObservableObject {
         do{
             let decodedData = try decoder.decode(T.self, from: data)
             return decodedData
-        }catch {
+        } catch {
             print(error)
             if let errorAction = errorAction{
                 errorAction()
@@ -136,37 +135,4 @@ class AppBrain: ObservableObject {
             return nil
         }
     }
-    
-    func handleCombineLyrics<T: CombinedLyricsDataProtocol>(_ data: T, dataModel: T.Type) async -> Bool{
-        DispatchQueue.main.async {
-            self.lyricsModel.combinedLyrics = []
-        }
-        if let translatedLyrics = data.translatedLyrics{
-            if let lyrics = self.lyricsModel.lyrics{
-                let lyricsArr = lyrics.components(separatedBy: "\n")
-                let translatedLyricsArr = translatedLyrics.components(separatedBy: "\n")
-                for i in 0..<max(lyricsArr.count, translatedLyricsArr.count) {
-                    if i < lyricsArr.count {
-                        DispatchQueue.main.async {
-                            self.lyricsModel.combinedLyrics?.append(lyricsArr[i])
-                        }
-                    }
-                    if i < translatedLyricsArr.count {
-                        DispatchQueue.main.async {
-                            self.lyricsModel.combinedLyrics?.append(translatedLyricsArr[i])
-                        }
-                    }
-                }
-            }else{
-                return false
-            }
-            return true
-        }else{
-            return false
-        }
-    }
-}
-
-protocol CombinedLyricsDataProtocol: Decodable {
-    var translatedLyrics: String? { get }
 }
