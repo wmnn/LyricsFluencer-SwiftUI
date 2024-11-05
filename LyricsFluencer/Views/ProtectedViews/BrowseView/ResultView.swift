@@ -14,7 +14,8 @@ struct ResultView: View {
     var song: Song
     var gWidht: CGFloat
     var idx: Int
-    @EnvironmentObject var appBrain: AppBrain
+    @EnvironmentObject var appBrain: AppContext
+    @EnvironmentObject var userContext: UserContext
     @StateObject var browseViewController = BrowseViewController()
     @EnvironmentObject var songContext: SongContext
     
@@ -22,7 +23,7 @@ struct ResultView: View {
         
         Button {
             print("Clicked on song, ", song)
-            songContext.handleSelectedSong(song: song, nativeLanguage: appBrain.user.nativeLanguage.language) {_ in
+            songContext.handleSelectedSong(song: song, nativeLanguage: userContext.user!.nativeLanguage ?? "") {_ in
                 DispatchQueue.main.async {
                     self.appBrain.path.append("Lyrics")
                 }

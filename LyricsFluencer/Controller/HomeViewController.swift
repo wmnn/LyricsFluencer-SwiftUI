@@ -1,5 +1,5 @@
 //
-//  HomeViewHandler.swift
+//  HomeViewController.swift
 //  TranslationApp
 //
 //  Created by Peter Christian Würdemann on 25.02.23.
@@ -15,8 +15,9 @@ class HomeViewController: NSObject, ObservableObject{ //NSObject because the nee
     
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
-    var appBrain: AppBrain?
+    var appBrain: AppContext?
     var songContext: SongContext?
+    var userContext: UserContext?
     
     @Published var isShazamLoading = false
     @Published var isQuickSearchLoading = false
@@ -45,7 +46,7 @@ class HomeViewController: NSObject, ObservableObject{ //NSObject because the nee
         self.isQuickSearchLoading = true
         print("Calling in HomeViewController handleQuickSearch")
         
-        songContext?.handleQuickSearch(searchQuery: searchQuery, targetLanguageCode: appBrain!.user.learnedLanguage.language){ song, error in
+        songContext?.handleQuickSearch(searchQuery: searchQuery, targetLanguageCode: userContext!.user!.learnedLanguage ?? "DE"){ song, error in
             
             guard song != nil && error == nil else {
                 DispatchQueue.main.async {
@@ -56,7 +57,6 @@ class HomeViewController: NSObject, ObservableObject{ //NSObject because the nee
             }
             
             DispatchQueue.main.async {
-                self.appBrain!.updateRequestCounter()
                 if (!self.isShazamLoading && !self.isQuickSearchLoading) || (self.isShazamLoading && self.isQuickSearchLoading){
                     self.isShazamLoading = false
                     self.isQuickSearchLoading = false
@@ -163,7 +163,7 @@ extension HomeViewController: SHSessionDelegate{
                     self.audioEngine.inputNode.removeTap(onBus: 0)
                     self.shazamMedia = _shazamMedia
                     // self.appBrain?.lyricsModel.albumArtURL = firstItem.artworkURL
-                    self.handleQuickSearch(searchQuery: (firstItem.title ?? "") + " " + (firstItem.artist ?? ""), target: self.appBrain!.user.nativeLanguage.language)
+                    self.handleQuickSearch(searchQuery: (firstItem.title ?? "") + " " + (firstItem.artist ?? ""), target: self.userContext!.user!.nativeLanguage ?? "DE")
                 }
             }
         }

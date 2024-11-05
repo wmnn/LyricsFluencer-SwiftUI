@@ -47,15 +47,3 @@ struct Song: Codable {
         album = try? container.decode(String.self, forKey: .album)
     }
 }
-
-
-
-struct Lyrics: Codable{
-    var artist: String?
-    var song: String?
-    var lyrics: String?
-    var detectedLanguage: Language = Language(language: "")
-    var combinedLyrics: [String]? = []
-    var albumArtURL: URL?
-}
-

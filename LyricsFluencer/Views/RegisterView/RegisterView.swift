@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct RegisterView: View {
-    @EnvironmentObject var appBrain: AppBrain
-    @StateObject var registerViewHandler = RegisterViewHandler()
+    
+    @EnvironmentObject var appBrain: AppContext
+    @EnvironmentObject var userContext: UserContext
+    @StateObject var registerViewController = RegisterViewController()
     
     var body: some View {
         VStack{
@@ -17,7 +19,7 @@ struct RegisterView: View {
                 Color.background
                     .ignoresSafeArea()
                 VStack {
-                    TextField(text: $registerViewHandler.email){
+                    TextField(text: $registerViewController.email){
                         Text("Email").foregroundColor(.gray)
                     }
                     .font(.system(size:18))
@@ -29,7 +31,7 @@ struct RegisterView: View {
                     }
                     .cornerRadius(18)
                     
-                    SecureField(text: $registerViewHandler.password){
+                    SecureField(text: $registerViewController.password){
                         Text("Password").foregroundColor(.gray)
                     }
                     .font(.system(size:18))
@@ -40,9 +42,12 @@ struct RegisterView: View {
                         Color("inputColor")
                     }
                     .cornerRadius(18)
+                    .onAppear{
+                        self.registerViewController.userContext = self.userContext
+                    }
                     SomeButtonWithActivityIndicator(text: "Sign Up", buttonAction: {
-                        self.registerViewHandler.register(appBrain: appBrain)
-                    }, binding: $registerViewHandler.isSignUpLoading)
+                        self.registerViewController.register(appBrain: appBrain)
+                    }, binding: $registerViewController.isSignUpLoading)
                     
                 }//Closing V-Stack
             }//Closing Z-Stack

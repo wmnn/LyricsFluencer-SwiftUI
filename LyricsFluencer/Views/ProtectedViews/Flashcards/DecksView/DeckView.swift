@@ -8,7 +8,7 @@ import SwiftUI
 
 struct DeckView: View {
     
-    @EnvironmentObject var appBrain: AppBrain
+    @EnvironmentObject var appBrain: AppContext
     @EnvironmentObject var deckContext: DeckContext
     @StateObject var decksViewHandler: DecksViewHandler = DecksViewHandler()
     

@@ -10,35 +10,36 @@ struct WordView: View {
     
     var word : String
     var color : String
-    @StateObject var lyricsViewHandler: LyricsViewHandler
-    @EnvironmentObject var appBrain: AppBrain
+    @StateObject var lyricsViewController: LyricsViewController
+    @EnvironmentObject var appBrain: AppContext
     @EnvironmentObject var songContext: SongContext
+    @EnvironmentObject var userContext: UserContext
     
     var body: some View {
         
         Menu{
             Button {
-                lyricsViewHandler.selectedWord = lyricsViewHandler.cleanWord(word)
-                lyricsViewHandler.front = ""
-                lyricsViewHandler.back = lyricsViewHandler.cleanWord(word)
-                lyricsViewHandler.urlString = "https://www.google.com/search?q=\(lyricsViewHandler.cleanWord(word))+\(appBrain.getLanguageName(songContext.song.detectedLanguage ?? "EN")?.lowercased() ?? "show")+meaning"
-                lyricsViewHandler.isAddToDeckViewShown.toggle()
+                lyricsViewController.selectedWord = lyricsViewController.cleanWord(word)
+                lyricsViewController.front = ""
+                lyricsViewController.back = lyricsViewController.cleanWord(word)
+                lyricsViewController.urlString = "https://www.google.com/search?q=\(lyricsViewController.cleanWord(word))+\(appBrain.getLanguageName(songContext.song.detectedLanguage ?? "EN")?.lowercased() ?? "show")+meaning"
+                lyricsViewController.isAddToDeckViewShown.toggle()
             } label: {
                 Text("Add to deck")
             }
             Button {
-                lyricsViewHandler.selectedWord = lyricsViewHandler.cleanWord(word)
-                lyricsViewHandler.urlString = "https://www.google.com/search?q=\(lyricsViewHandler.cleanWord(word))+\(appBrain.getLanguageName(songContext.song.detectedLanguage ?? "EN")?.lowercased() ?? "show")+meaning"
-                lyricsViewHandler.isWebViewShown.toggle()
+                lyricsViewController.selectedWord = lyricsViewController.cleanWord(word)
+                lyricsViewController.urlString = "https://www.google.com/search?q=\(lyricsViewController.cleanWord(word))+\(appBrain.getLanguageName(songContext.song.detectedLanguage ?? "EN")?.lowercased() ?? "show")+meaning"
+                lyricsViewController.isWebViewShown.toggle()
             } label: {
                 Text("Google Meaning")
             }
             
             Button {
-                lyricsViewHandler.selectedWord = lyricsViewHandler.cleanWord(word)
-                print("https://translate.google.com/?sl=\(songContext.song.detectedLanguage ?? "EN")&tl=\(appBrain.user.nativeLanguage.language)&text=\(lyricsViewHandler.cleanWord(word).lowercased())&op=translate")
-                lyricsViewHandler.urlString = "https://translate.google.com/?sl=\(songContext.song.detectedLanguage ?? "EN")&tl=\(appBrain.user.nativeLanguage.language)&text=\(lyricsViewHandler.cleanWord(word).lowercased())&op=translate"
-                lyricsViewHandler.isWebViewShown.toggle()
+                lyricsViewController.selectedWord = lyricsViewController.cleanWord(word)
+                print("https://translate.google.com/?sl=\(songContext.song.detectedLanguage ?? "EN")&tl=\(userContext.user!.nativeLanguage ?? "DE")&text=\(lyricsViewController.cleanWord(word).lowercased())&op=translate")
+                lyricsViewController.urlString = "https://translate.google.com/?sl=\(songContext.song.detectedLanguage ?? "EN")&tl=\(userContext.user!.nativeLanguage ?? "DE")&text=\(lyricsViewController.cleanWord(word).lowercased())&op=translate"
+                lyricsViewController.isWebViewShown.toggle()
             } label: {
                 Text("Google Translate")
             }
@@ -46,10 +47,10 @@ struct WordView: View {
             ForEach(0..<STATIC.languages.count, id: \.self) { i in
                 if STATIC.languages[i].language == songContext.song.detectedLanguage ?? "EN"{
                     Button {
-                        lyricsViewHandler.selectedWord = lyricsViewHandler.cleanWord(word)
+                        lyricsViewController.selectedWord = lyricsViewController.cleanWord(word)
                         print( self.appBrain.getLanguageName(songContext.song.detectedLanguage ?? "EN") ?? "")
-                        lyricsViewHandler.urlString = "https://conjugator.reverso.net/conjugation-\(appBrain.getLanguageName(songContext.song.detectedLanguage ?? "EN")?.lowercased() ?? "english")-verb-\(lyricsViewHandler.cleanWord(word)).html"
-                        lyricsViewHandler.isWebViewShown.toggle()
+                        lyricsViewController.urlString = "https://conjugator.reverso.net/conjugation-\(appBrain.getLanguageName(songContext.song.detectedLanguage ?? "EN")?.lowercased() ?? "english")-verb-\(lyricsViewController.cleanWord(word)).html"
+                        lyricsViewController.isWebViewShown.toggle()
            
                     } label: {
                         Text("Show Conjugation (only on Verbs)")
@@ -58,10 +59,10 @@ struct WordView: View {
             }
             /*
                 Button {
-                    lyricsViewHandler.selectedWord = lyricsViewHandler.cleanWord(word)
+                    lyricsViewController.selectedWord = lyricsViewController.cleanWord(word)
                     print( self.appBrain.getLanguageName(self.appBrain.lyricsModel.detectedLanguage.language) ?? "")
-                    lyricsViewHandler.urlString = "https://conjugator.reverso.net/conjugation-\(appBrain.getLanguageName(appBrain.lyricsModel.detectedLanguage.language)?.lowercased() ?? "english")-verb-\(lyricsViewHandler.cleanWord(word)).html"
-                    lyricsViewHandler.isWebViewShown.toggle()
+                    lyricsViewController.urlString = "https://conjugator.reverso.net/conjugation-\(appBrain.getLanguageName(appBrain.lyricsModel.detectedLanguage.language)?.lowercased() ?? "english")-verb-\(lyricsViewController.cleanWord(word)).html"
+                    lyricsViewController.isWebViewShown.toggle()
        
                 } label: {
                     Text("Show Conjugation (only on Verbs)")

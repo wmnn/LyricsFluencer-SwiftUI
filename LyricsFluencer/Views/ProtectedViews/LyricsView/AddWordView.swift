@@ -10,9 +10,9 @@ import FirebaseFirestore
 struct AddWordView: View{
     
     let db = Firestore.firestore()
-    @EnvironmentObject var appBrain: AppBrain
+    @EnvironmentObject var appBrain: AppContext
     @EnvironmentObject var deckContext: DeckContext
-    @StateObject var lyricsViewHandler: LyricsViewHandler
+    @StateObject var lyricsViewController: LyricsViewController
     
     var body: some View{
         ZStack{
@@ -29,7 +29,7 @@ struct AddWordView: View{
                     }
                     //if appBrain.decks.count == 0 {
                     Button {
-                        self.lyricsViewHandler.showCreateDeckAlert = true
+                        self.lyricsViewController.showCreateDeckAlert = true
                     } label: {
                         Text("Create a new deck")
                     }
@@ -54,22 +54,22 @@ struct AddWordView: View{
                 }
                 
                 //Front
-                SomeTextField(binding: $lyricsViewHandler.front, placeholder: "Front")
+                SomeTextField(binding: $lyricsViewController.front, placeholder: "Front")
                 //Back
-                SomeTextField(binding: $lyricsViewHandler.back, placeholder: "Back")
+                SomeTextField(binding: $lyricsViewController.back, placeholder: "Back")
                 //Google
                 SomeButton(text: "Google Meaning", buttonAction:{
-                    lyricsViewHandler.isWebViewShown.toggle()
+                    lyricsViewController.isWebViewShown.toggle()
                 }, systemName: "magnifyingglass")
                 //Add or cancel
                 HStack{
                     SomeSmallButton(text: "Cancel", buttonAction: {
-                        lyricsViewHandler.isAddToDeckViewShown.toggle()
+                        lyricsViewController.isAddToDeckViewShown.toggle()
                     }, textColor: Color.red)
                     
                     SomeSmallButton(text: "Add", buttonAction: {
-                        var _ = deckContext.handleAddToDeck(front: self.lyricsViewHandler.front, back: self.lyricsViewHandler.back)
-                        lyricsViewHandler.isAddToDeckViewShown.toggle()
+                        var _ = deckContext.handleAddToDeck(front: self.lyricsViewController.front, back: self.lyricsViewController.back)
+                        lyricsViewController.isAddToDeckViewShown.toggle()
                     }, textColor: Color.green)
                     
                 }
@@ -82,17 +82,17 @@ struct AddWordView: View{
                 deckContext.selectedDeck.deckName = deckContext.decks[0].deckName
             }
         }
-        .alert("Create deck", isPresented: $lyricsViewHandler.showCreateDeckAlert, actions: {
-            TextField("Deckname", text: $lyricsViewHandler.createDeckName)
+        .alert("Create deck", isPresented: $lyricsViewController.showCreateDeckAlert, actions: {
+            TextField("Deckname", text: $lyricsViewController.createDeckName)
             Button("Create Deck", action: {
-                deckContext.createDeck(deckName: self.lyricsViewHandler.createDeckName)
+                deckContext.createDeck(deckName: self.lyricsViewController.createDeckName)
                 DispatchQueue.main.async {
-                    self.lyricsViewHandler.createDeckName = ""
-                    self.lyricsViewHandler.showCreateDeckAlert = false
+                    self.lyricsViewController.createDeckName = ""
+                    self.lyricsViewController.showCreateDeckAlert = false
                 }
             })
             Button("Cancel", role: .cancel, action: {
-                self.lyricsViewHandler.showCreateDeckAlert = false
+                self.lyricsViewController.showCreateDeckAlert = false
             })
             
         }, message: {

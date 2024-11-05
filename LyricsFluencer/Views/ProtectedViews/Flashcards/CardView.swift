@@ -9,7 +9,7 @@ import SwiftUI
 import FirebaseFirestore
 
 struct CardView: View {
-    @EnvironmentObject var appBrain: AppBrain
+    @EnvironmentObject var appBrain: AppContext
     @StateObject var cardViewHandler: CardViewHandler = CardViewHandler()
     
     var body: some View {

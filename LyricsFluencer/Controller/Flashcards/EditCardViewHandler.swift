@@ -12,7 +12,7 @@ import FirebaseFirestore
 class EditCardsViewHandler: ObservableObject {
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
-    var appBrain: AppBrain?
+    var appBrain: AppContext?
     var deckContext: DeckContext!
     @Published var front: String = ""
     @Published var back: String = ""
@@ -32,7 +32,7 @@ class EditCardsViewHandler: ObservableObject {
         self.isDeleteCardAlertShown = false
     }
     func handleEditCard(){
-        let uid = FirebaseModel.getCurrentUser()
+        let uid = UserModel.getCurrentUserId()
         self.db.collection("flashcards").document(uid).collection("decks").document(self.deckContext.selectedDeck.deckName).collection("cards").document(self.selectedCardID).setData([
             "front" : self.front,
             "back" : self.back
@@ -74,7 +74,7 @@ class EditCardsViewHandler: ObservableObject {
         self.isDeleteCardAlertShown = true
     }
     func handleDeleteCard(){
-        let uid = FirebaseModel.getCurrentUser()
+        let uid = UserModel.getCurrentUserId()
         
         self.db.collection("flashcards").document(uid).collection("decks").document(self.deckContext.selectedDeck.deckName).collection("cards").document(self.selectedCardID).delete(){ err in
             if let err = err {

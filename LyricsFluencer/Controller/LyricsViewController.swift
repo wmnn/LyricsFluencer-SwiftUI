@@ -1,5 +1,5 @@
 //
-//  LyricsViewHandler.swift
+//  LyricsViewController.swift
 //  TranslationApp
 //
 //  Created by Peter Christian Würdemann on 25.02.23.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-class LyricsViewHandler: ObservableObject{
+class LyricsViewController: ObservableObject{
     @Published var isWebViewShown = false
     @Published var isAddToDeckViewShown = false
     @Published var selectedWord: String = ""

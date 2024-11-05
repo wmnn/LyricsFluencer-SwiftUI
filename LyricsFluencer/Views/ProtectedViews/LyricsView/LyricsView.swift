@@ -13,9 +13,9 @@ import FirebaseFirestore
 
 struct LyricsView: View {
     
-    @EnvironmentObject var appBrain: AppBrain
+    @EnvironmentObject var appBrain: AppContext
     @EnvironmentObject var songContext: SongContext
-    @StateObject var lyricsViewHandler = LyricsViewHandler()
+    @StateObject var lyricsViewController = LyricsViewController()
     
     var body: some View {
         ZStack{
@@ -32,14 +32,14 @@ struct LyricsView: View {
                         ForEach(0..<self.songContext.song.lyrics!.count, id: \.self) { idx in
                                 LyricBarView(
                                     bar: self.songContext.song.lyrics![idx],
-                                    lyricsViewHandler: lyricsViewHandler
+                                    lyricsViewController: lyricsViewController
                                 )
                                 
                                 
                                 if self.songContext.song.translation!.count > idx {
                                     TranslationBarView(
                                         bar: self.songContext.song.translation![idx],
-                                        lyricsViewHandler: lyricsViewHandler
+                                        lyricsViewController: lyricsViewController
                                     )
                                 }
                         }
@@ -47,18 +47,18 @@ struct LyricsView: View {
                         
                     }//Closing VStack
                 }//Closing Scroll View
-                if lyricsViewHandler.isAddToDeckViewShown || lyricsViewHandler.isWebViewShown{
+                if lyricsViewController.isAddToDeckViewShown || lyricsViewController.isWebViewShown{
                     ZStack{
                         VisualEffectView(effect: UIBlurEffect(style: .dark))
                         Color.black.opacity(0.4).ignoresSafeArea(.all)
                     }
                     .edgesIgnoringSafeArea(.all)
                 }
-                if lyricsViewHandler.isAddToDeckViewShown{
-                    AddWordView(lyricsViewHandler: lyricsViewHandler)
+                if lyricsViewController.isAddToDeckViewShown{
+                    AddWordView(lyricsViewController: lyricsViewController)
                 }
-                if lyricsViewHandler.isWebViewShown {
-                    PopUpWebView(lyricsViewHandler: lyricsViewHandler)
+                if lyricsViewController.isWebViewShown {
+                    PopUpWebView(lyricsViewController: lyricsViewController)
                 }
                 
             }//Closing ZStack
@@ -66,9 +66,9 @@ struct LyricsView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     
-                    if !lyricsViewHandler.isWebViewShown && !lyricsViewHandler.isAddToDeckViewShown{
+                    if !lyricsViewController.isWebViewShown && !lyricsViewController.isAddToDeckViewShown{
                         Button {
-                            self.lyricsViewHandler.isWebViewShown = false
+                            self.lyricsViewController.isWebViewShown = false
                             // appBrain.lyricsModel.albumArtURL = nil
                             appBrain.path.removeLast()
                         } label: {

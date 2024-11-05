@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C406045729A2138900D56C0D /* AppBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C406045629A2138900D56C0D /* AppBrain.swift */; };
+		C406045729A2138900D56C0D /* AppContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C406045629A2138900D56C0D /* AppContext.swift */; };
 		C406045929A21BEC00D56C0D /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = C406045829A21BEC00D56C0D /* Song.swift */; };
 		C42044FA29990571009699F7 /* LyricsFluencer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42044F929990571009699F7 /* LyricsFluencer.swift */; };
 		C42044FE29990574009699F7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C42044FD29990574009699F7 /* Assets.xcassets */; };
@@ -19,17 +19,17 @@
 		C420453A29992A78009699F7 /* LyricsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C420453929992A78009699F7 /* LyricsView.swift */; };
 		C4204541299945D2009699F7 /* LyricsApiData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4204540299945D2009699F7 /* LyricsApiData.swift */; };
 		C420454329995FF0009699F7 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = C420454229995FF0009699F7 /* Language.swift */; };
-		C434F3F829DDA38A00DF07E8 /* LocaleStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C434F3F729DDA38A00DF07E8 /* LocaleStorage.swift */; };
-		C434F3FA29DDAA3C00DF07E8 /* FirebaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C434F3F929DDAA3C00DF07E8 /* FirebaseModel.swift */; };
+		C434F3F829DDA38A00DF07E8 /* LocaleStorageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C434F3F729DDA38A00DF07E8 /* LocaleStorageModel.swift */; };
+		C434F3FA29DDAA3C00DF07E8 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C434F3F929DDAA3C00DF07E8 /* UserModel.swift */; };
 		C443137F29AA2BE3007D7CA9 /* DeckSettingsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C443137E29AA2BE3007D7CA9 /* DeckSettingsHandler.swift */; };
 		C443138129AA344E007D7CA9 /* DecksViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C443138029AA344E007D7CA9 /* DecksViewHandler.swift */; };
 		C443138529AA39D7007D7CA9 /* CardViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C443138429AA39D7007D7CA9 /* CardViewHandler.swift */; };
 		C443138729AA485B007D7CA9 /* EditCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C443138629AA485B007D7CA9 /* EditCardsView.swift */; };
 		C443138929AA4B9E007D7CA9 /* EditCardViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C443138829AA4B9E007D7CA9 /* EditCardViewHandler.swift */; };
 		C44C62D1299B8EE20091C401 /* DefaultLanguageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44C62D0299B8EE20091C401 /* DefaultLanguageView.swift */; };
-		C44F2D2F29AA8BBC004A28AA /* LoginViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F2D2E29AA8BBC004A28AA /* LoginViewHandler.swift */; };
+		C44F2D2F29AA8BBC004A28AA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F2D2E29AA8BBC004A28AA /* LoginViewController.swift */; };
 		C44F2D3129AA986B004A28AA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F2D3029AA986B004A28AA /* HomeViewController.swift */; };
-		C44F2D3329AAA06D004A28AA /* LyricsViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F2D3229AAA06D004A28AA /* LyricsViewHandler.swift */; };
+		C44F2D3329AAA06D004A28AA /* LyricsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F2D3229AAA06D004A28AA /* LyricsViewController.swift */; };
 		C47536542CD7EC48006F71E7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C47536532CD7EC48006F71E7 /* GoogleService-Info.plist */; };
 		C47536562CD7ED88006F71E7 /* FirestoreDeckModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47536552CD7ED85006F71E7 /* FirestoreDeckModel.swift */; };
 		C47536592CD7FEA9006F71E7 /* DeckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47536582CD7FEA7006F71E7 /* DeckView.swift */; };
@@ -57,20 +57,25 @@
 		C4BE115F29B7EAB20064D8FC /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BE115E29B7EAB20064D8FC /* Extensions.swift */; };
 		C4BE116329B7ECC60064D8FC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BE116229B7ECC60064D8FC /* SettingsView.swift */; };
 		C4C1AFD029E73A9400CA5D18 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1AFCF29E73A9400CA5D18 /* RegisterView.swift */; };
-		C4C1AFD229E73B4A00CA5D18 /* RegisterViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1AFD129E73B4A00CA5D18 /* RegisterViewHandler.swift */; };
-		C4C1AFD429E7488C00CA5D18 /* DeleteAccountApiData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1AFD329E7488C00CA5D18 /* DeleteAccountApiData.swift */; };
+		C4C1AFD229E73B4A00CA5D18 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1AFD129E73B4A00CA5D18 /* RegisterViewController.swift */; };
+		C4C1AFD429E7488C00CA5D18 /* DeleteAccountResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1AFD329E7488C00CA5D18 /* DeleteAccountResponse.swift */; };
 		C4C58F4829A823D8009120C8 /* DecksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C58F4729A823D8009120C8 /* DecksView.swift */; };
 		C4C58F4A29A893FE009120C8 /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C58F4929A893FE009120C8 /* Deck.swift */; };
 		C4C58F4C29A90304009120C8 /* DeckSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C58F4B29A90304009120C8 /* DeckSettingsView.swift */; };
 		C4C58F4E29A91AEB009120C8 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C58F4D29A91AEB009120C8 /* CardView.swift */; };
 		C4D82A5629BF70D1009A3342 /* ReusableViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D82A5529BF70D1009A3342 /* ReusableViews.swift */; };
+		C4E0D4552CD90B2100AE0C87 /* UserContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E0D4542CD90B1D00AE0C87 /* UserContext.swift */; };
+		C4E0D4572CD91EC800AE0C87 /* QuickSearchInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E0D4562CD91EC300AE0C87 /* QuickSearchInput.swift */; };
+		C4E0D4592CD91F1C00AE0C87 /* TrailExpiredButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E0D4582CD91F1600AE0C87 /* TrailExpiredButton.swift */; };
+		C4E0D45B2CD91F6500AE0C87 /* TrialExpiredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E0D45A2CD91F6100AE0C87 /* TrialExpiredView.swift */; };
+		C4E0D45D2CD9211C00AE0C87 /* QuickSearchButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E0D45C2CD9211800AE0C87 /* QuickSearchButton.swift */; };
 		C4F2267929DF83760082B9F1 /* BrowseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F2267829DF83760082B9F1 /* BrowseView.swift */; };
 		C4F2267B29DF841B0082B9F1 /* BrowseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F2267A29DF841B0082B9F1 /* BrowseViewController.swift */; };
 		C4F2267D29DF8C850082B9F1 /* PopularSongsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F2267C29DF8C850082B9F1 /* PopularSongsResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		C406045629A2138900D56C0D /* AppBrain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBrain.swift; sourceTree = "<group>"; };
+		C406045629A2138900D56C0D /* AppContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContext.swift; sourceTree = "<group>"; };
 		C406045829A21BEC00D56C0D /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		C42044F629990571009699F7 /* LyricsFluencer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LyricsFluencer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C42044F929990571009699F7 /* LyricsFluencer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsFluencer.swift; sourceTree = "<group>"; };
@@ -81,17 +86,17 @@
 		C420453929992A78009699F7 /* LyricsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsView.swift; sourceTree = "<group>"; };
 		C4204540299945D2009699F7 /* LyricsApiData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsApiData.swift; sourceTree = "<group>"; };
 		C420454229995FF0009699F7 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
-		C434F3F729DDA38A00DF07E8 /* LocaleStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocaleStorage.swift; sourceTree = "<group>"; };
-		C434F3F929DDAA3C00DF07E8 /* FirebaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseModel.swift; sourceTree = "<group>"; };
+		C434F3F729DDA38A00DF07E8 /* LocaleStorageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocaleStorageModel.swift; sourceTree = "<group>"; };
+		C434F3F929DDAA3C00DF07E8 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		C443137E29AA2BE3007D7CA9 /* DeckSettingsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckSettingsHandler.swift; sourceTree = "<group>"; };
 		C443138029AA344E007D7CA9 /* DecksViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecksViewHandler.swift; sourceTree = "<group>"; };
 		C443138429AA39D7007D7CA9 /* CardViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewHandler.swift; sourceTree = "<group>"; };
 		C443138629AA485B007D7CA9 /* EditCardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardsView.swift; sourceTree = "<group>"; };
 		C443138829AA4B9E007D7CA9 /* EditCardViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardViewHandler.swift; sourceTree = "<group>"; };
 		C44C62D0299B8EE20091C401 /* DefaultLanguageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLanguageView.swift; sourceTree = "<group>"; };
-		C44F2D2E29AA8BBC004A28AA /* LoginViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewHandler.swift; sourceTree = "<group>"; };
+		C44F2D2E29AA8BBC004A28AA /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		C44F2D3029AA986B004A28AA /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		C44F2D3229AAA06D004A28AA /* LyricsViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsViewHandler.swift; sourceTree = "<group>"; };
+		C44F2D3229AAA06D004A28AA /* LyricsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsViewController.swift; sourceTree = "<group>"; };
 		C47536532CD7EC48006F71E7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C47536552CD7ED85006F71E7 /* FirestoreDeckModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDeckModel.swift; sourceTree = "<group>"; };
 		C47536582CD7FEA7006F71E7 /* DeckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckView.swift; sourceTree = "<group>"; };
@@ -119,13 +124,18 @@
 		C4BE116229B7ECC60064D8FC /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		C4BE116429B8B5CD0064D8FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C4C1AFCF29E73A9400CA5D18 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
-		C4C1AFD129E73B4A00CA5D18 /* RegisterViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewHandler.swift; sourceTree = "<group>"; };
-		C4C1AFD329E7488C00CA5D18 /* DeleteAccountApiData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountApiData.swift; sourceTree = "<group>"; };
+		C4C1AFD129E73B4A00CA5D18 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		C4C1AFD329E7488C00CA5D18 /* DeleteAccountResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountResponse.swift; sourceTree = "<group>"; };
 		C4C58F4729A823D8009120C8 /* DecksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecksView.swift; sourceTree = "<group>"; };
 		C4C58F4929A893FE009120C8 /* Deck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deck.swift; sourceTree = "<group>"; };
 		C4C58F4B29A90304009120C8 /* DeckSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckSettingsView.swift; sourceTree = "<group>"; };
 		C4C58F4D29A91AEB009120C8 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		C4D82A5529BF70D1009A3342 /* ReusableViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableViews.swift; sourceTree = "<group>"; };
+		C4E0D4542CD90B1D00AE0C87 /* UserContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserContext.swift; sourceTree = "<group>"; };
+		C4E0D4562CD91EC300AE0C87 /* QuickSearchInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickSearchInput.swift; sourceTree = "<group>"; };
+		C4E0D4582CD91F1600AE0C87 /* TrailExpiredButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailExpiredButton.swift; sourceTree = "<group>"; };
+		C4E0D45A2CD91F6100AE0C87 /* TrialExpiredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrialExpiredView.swift; sourceTree = "<group>"; };
+		C4E0D45C2CD9211800AE0C87 /* QuickSearchButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickSearchButton.swift; sourceTree = "<group>"; };
 		C4F2267829DF83760082B9F1 /* BrowseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseView.swift; sourceTree = "<group>"; };
 		C4F2267A29DF841B0082B9F1 /* BrowseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewController.swift; sourceTree = "<group>"; };
 		C4F2267C29DF8C850082B9F1 /* PopularSongsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularSongsResponse.swift; sourceTree = "<group>"; };
@@ -202,9 +212,9 @@
 				C47536652CD83774006F71E7 /* SongApiModel */,
 				C47536552CD7ED85006F71E7 /* FirestoreDeckModel.swift */,
 				C4B38AA929A3602300EEFAF9 /* Constants.swift */,
-				C44F2D2B29AA8B7B004A28AA /* Schemas */,
-				C434F3F729DDA38A00DF07E8 /* LocaleStorage.swift */,
-				C434F3F929DDAA3C00DF07E8 /* FirebaseModel.swift */,
+				C44F2D2B29AA8B7B004A28AA /* Types */,
+				C434F3F729DDA38A00DF07E8 /* LocaleStorageModel.swift */,
+				C434F3F929DDAA3C00DF07E8 /* UserModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -225,13 +235,14 @@
 		C434F3F629DD9BF300DF07E8 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				C4E0D4542CD90B1D00AE0C87 /* UserContext.swift */,
 				C47536612CD83356006F71E7 /* SongContext.swift */,
 				C475365F2CD8128A006F71E7 /* DeckContext.swift */,
-				C406045629A2138900D56C0D /* AppBrain.swift */,
-				C4C1AFD129E73B4A00CA5D18 /* RegisterViewHandler.swift */,
-				C44F2D2E29AA8BBC004A28AA /* LoginViewHandler.swift */,
+				C406045629A2138900D56C0D /* AppContext.swift */,
+				C4C1AFD129E73B4A00CA5D18 /* RegisterViewController.swift */,
+				C44F2D2E29AA8BBC004A28AA /* LoginViewController.swift */,
 				C44F2D3029AA986B004A28AA /* HomeViewController.swift */,
-				C44F2D3229AAA06D004A28AA /* LyricsViewHandler.swift */,
+				C44F2D3229AAA06D004A28AA /* LyricsViewController.swift */,
 				C4F2267A29DF841B0082B9F1 /* BrowseViewController.swift */,
 				C443138329AA3960007D7CA9 /* Flashcards */,
 			);
@@ -245,6 +256,7 @@
 				C4C58F4B29A90304009120C8 /* DeckSettingsView.swift */,
 				C4C58F4D29A91AEB009120C8 /* CardView.swift */,
 				C443138629AA485B007D7CA9 /* EditCardsView.swift */,
+				C475365B2CD80148006F71E7 /* EditCardsViewCard.swift */,
 			);
 			path = Flashcards;
 			sourceTree = "<group>";
@@ -260,7 +272,7 @@
 			path = Flashcards;
 			sourceTree = "<group>";
 		};
-		C44F2D2B29AA8B7B004A28AA /* Schemas */ = {
+		C44F2D2B29AA8B7B004A28AA /* Types */ = {
 			isa = PBXGroup;
 			children = (
 				C475365D2CD80B59006F71E7 /* Card.swift */,
@@ -270,7 +282,7 @@
 				C492FA3529BA6430003A07E9 /* Api */,
 				C4C58F4929A893FE009120C8 /* Deck.swift */,
 			);
-			path = Schemas;
+			path = Types;
 			sourceTree = "<group>";
 		};
 		C44F2D2D29AA8BA3004A28AA /* Onboarding */ = {
@@ -285,7 +297,6 @@
 			isa = PBXGroup;
 			children = (
 				C4D82A5529BF70D1009A3342 /* ReusableViews.swift */,
-				C475365B2CD80148006F71E7 /* EditCardsViewCard.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -293,14 +304,8 @@
 		C47536652CD83774006F71E7 /* SongApiModel */ = {
 			isa = PBXGroup;
 			children = (
-				C47536822CD8CD98006F71E7 /* ApiError.swift */,
-				C475366A2CD83E0F006F71E7 /* QuickSearchResponse.swift */,
-				C47536682CD83B81006F71E7 /* SelectedSongResponse.swift */,
-				C47536662CD83929006F71E7 /* ManualSearchResponse.swift */,
+				C4FEEA9F2CDAC192003BA67E /* Types */,
 				C47536632CD8375E006F71E7 /* SongApiModel.swift */,
-				C4204540299945D2009699F7 /* LyricsApiData.swift */,
-				C4F2267C29DF8C850082B9F1 /* PopularSongsResponse.swift */,
-				C4C1AFD329E7488C00CA5D18 /* DeleteAccountApiData.swift */,
 			);
 			path = SongApiModel;
 			sourceTree = "<group>";
@@ -324,6 +329,10 @@
 		C475366E2CD841FA006F71E7 /* HomeView */ = {
 			isa = PBXGroup;
 			children = (
+				C4E0D45C2CD9211800AE0C87 /* QuickSearchButton.swift */,
+				C4E0D45A2CD91F6100AE0C87 /* TrialExpiredView.swift */,
+				C4E0D4582CD91F1600AE0C87 /* TrailExpiredButton.swift */,
+				C4E0D4562CD91EC300AE0C87 /* QuickSearchInput.swift */,
 				C420450D299905EC009699F7 /* HomeView.swift */,
 			);
 			path = HomeView;
@@ -368,6 +377,20 @@
 				C4B0824E29B4FEA800640349 /* PlanApiData.swift */,
 			);
 			path = Api;
+			sourceTree = "<group>";
+		};
+		C4FEEA9F2CDAC192003BA67E /* Types */ = {
+			isa = PBXGroup;
+			children = (
+				C47536822CD8CD98006F71E7 /* ApiError.swift */,
+				C475366A2CD83E0F006F71E7 /* QuickSearchResponse.swift */,
+				C47536682CD83B81006F71E7 /* SelectedSongResponse.swift */,
+				C47536662CD83929006F71E7 /* ManualSearchResponse.swift */,
+				C4204540299945D2009699F7 /* LyricsApiData.swift */,
+				C4F2267C29DF8C850082B9F1 /* PopularSongsResponse.swift */,
+				C4C1AFD329E7488C00CA5D18 /* DeleteAccountResponse.swift */,
+			);
+			path = Types;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -450,10 +473,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4C1AFD429E7488C00CA5D18 /* DeleteAccountApiData.swift in Sources */,
+				C4C1AFD429E7488C00CA5D18 /* DeleteAccountResponse.swift in Sources */,
 				C475366B2CD83E13006F71E7 /* QuickSearchResponse.swift in Sources */,
 				C475367A2CD8AF7B006F71E7 /* LyricBarView.swift in Sources */,
-				C4C1AFD229E73B4A00CA5D18 /* RegisterViewHandler.swift in Sources */,
+				C4C1AFD229E73B4A00CA5D18 /* RegisterViewController.swift in Sources */,
+				C4E0D4572CD91EC800AE0C87 /* QuickSearchInput.swift in Sources */,
 				C47536812CD8B597006F71E7 /* ResultView.swift in Sources */,
 				C4C1AFD029E73A9400CA5D18 /* RegisterView.swift in Sources */,
 				C47536642CD83767006F71E7 /* SongApiModel.swift in Sources */,
@@ -464,15 +488,16 @@
 				C406045929A21BEC00D56C0D /* Song.swift in Sources */,
 				C47536762CD8ADC5006F71E7 /* PopUpWebView.swift in Sources */,
 				C443137F29AA2BE3007D7CA9 /* DeckSettingsHandler.swift in Sources */,
-				C406045729A2138900D56C0D /* AppBrain.swift in Sources */,
+				C406045729A2138900D56C0D /* AppContext.swift in Sources */,
+				C4E0D4552CD90B2100AE0C87 /* UserContext.swift in Sources */,
 				C420450A299905A2009699F7 /* LoginView.swift in Sources */,
-				C434F3FA29DDAA3C00DF07E8 /* FirebaseModel.swift in Sources */,
+				C434F3FA29DDAA3C00DF07E8 /* UserModel.swift in Sources */,
 				C47536722CD8AD62006F71E7 /* WordView.swift in Sources */,
 				C44F2D3129AA986B004A28AA /* HomeViewController.swift in Sources */,
 				C443138129AA344E007D7CA9 /* DecksViewHandler.swift in Sources */,
 				C4C58F4C29A90304009120C8 /* DeckSettingsView.swift in Sources */,
-				C44F2D3329AAA06D004A28AA /* LyricsViewHandler.swift in Sources */,
-				C434F3F829DDA38A00DF07E8 /* LocaleStorage.swift in Sources */,
+				C44F2D3329AAA06D004A28AA /* LyricsViewController.swift in Sources */,
+				C434F3F829DDA38A00DF07E8 /* LocaleStorageModel.swift in Sources */,
 				C443138729AA485B007D7CA9 /* EditCardsView.swift in Sources */,
 				C443138929AA4B9E007D7CA9 /* EditCardViewHandler.swift in Sources */,
 				C420454329995FF0009699F7 /* Language.swift in Sources */,
@@ -482,6 +507,7 @@
 				C420450E299905EC009699F7 /* HomeView.swift in Sources */,
 				C47536562CD7ED88006F71E7 /* FirestoreDeckModel.swift in Sources */,
 				C4C58F4829A823D8009120C8 /* DecksView.swift in Sources */,
+				C4E0D4592CD91F1C00AE0C87 /* TrailExpiredButton.swift in Sources */,
 				C492FA3429BA52CD003A07E9 /* User.swift in Sources */,
 				C4F2267D29DF8C850082B9F1 /* PopularSongsResponse.swift in Sources */,
 				C44C62D1299B8EE20091C401 /* DefaultLanguageView.swift in Sources */,
@@ -494,16 +520,18 @@
 				C4BE115F29B7EAB20064D8FC /* Extensions.swift in Sources */,
 				C4C58F4E29A91AEB009120C8 /* CardView.swift in Sources */,
 				C47536602CD8128F006F71E7 /* DeckContext.swift in Sources */,
+				C4E0D45B2CD91F6500AE0C87 /* TrialExpiredView.swift in Sources */,
 				C42044FA29990571009699F7 /* LyricsFluencer.swift in Sources */,
 				C475367F2CD8B535006F71E7 /* ManualSearchView.swift in Sources */,
 				C443138529AA39D7007D7CA9 /* CardViewHandler.swift in Sources */,
 				C47536622CD83359006F71E7 /* SongContext.swift in Sources */,
 				C47536832CD8CD9C006F71E7 /* ApiError.swift in Sources */,
 				C47536692CD83B86006F71E7 /* SelectedSongResponse.swift in Sources */,
-				C44F2D2F29AA8BBC004A28AA /* LoginViewHandler.swift in Sources */,
+				C44F2D2F29AA8BBC004A28AA /* LoginViewController.swift in Sources */,
 				C4F2267B29DF841B0082B9F1 /* BrowseViewController.swift in Sources */,
 				C4D82A5629BF70D1009A3342 /* ReusableViews.swift in Sources */,
 				C47536742CD8AD85006F71E7 /* AddWordView.swift in Sources */,
+				C4E0D45D2CD9211C00AE0C87 /* QuickSearchButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

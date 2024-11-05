@@ -11,7 +11,7 @@ import FirebaseFirestore
 class CardViewHandler: ObservableObject{
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
-    var appBrain: AppBrain?
+    var appBrain: AppContext?
     var deckContext: DeckContext!
     @Published var isFrontClicked = false
     @Published var filteredDeck: [Card] = []
@@ -21,7 +21,7 @@ class CardViewHandler: ObservableObject{
         let documentID = filteredDeck[index].id
         let documentFront = filteredDeck[index].front
         let documentBack = filteredDeck[index].back
-        let uid = FirebaseModel.getCurrentUser()
+        let uid = UserModel.getCurrentUserId()
         var interval = filteredDeck[index].interval
         if interval == 0 {
             interval = 1

@@ -41,8 +41,10 @@ class SongContext: ObservableObject {
                 return;
             }
             
-            self.songResults = songs!;
-            completion(songs, nil)
+            DispatchQueue.main.async {
+                self.songResults = songs!;
+                completion(songs, nil)
+            }
         }
     }
 

@@ -11,7 +11,7 @@ import FirebaseFirestore
 
 struct DecksView: View {
     
-    @EnvironmentObject var appBrain: AppBrain
+    @EnvironmentObject var appBrain: AppContext
     @EnvironmentObject var deckContext: DeckContext
     @StateObject var decksViewHandler: DecksViewHandler = DecksViewHandler()
     
@@ -56,7 +56,7 @@ struct DecksView: View {
 }
 
 struct FlashcardsView_Previews: PreviewProvider {
-    static let appBrain = AppBrain()
+    static let appBrain = AppContext()
     static var previews: some View {
         DecksView()
             .environmentObject(appBrain)

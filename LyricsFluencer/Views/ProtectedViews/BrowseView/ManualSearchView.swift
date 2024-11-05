@@ -8,7 +8,7 @@ import SwiftUI
 
 struct ManualSearchView: View {
     
-    @EnvironmentObject var appBrain: AppBrain
+    @EnvironmentObject var appBrain: AppContext
     @StateObject var browseViewController = BrowseViewController()
     @EnvironmentObject var songContext: SongContext
     

@@ -9,7 +9,7 @@ import WebKit
 
 struct PopUpWebView: View{
     
-    @StateObject var lyricsViewHandler: LyricsViewHandler
+    @StateObject var lyricsViewController: LyricsViewController
     
     var body: some View{
         ZStack {
@@ -17,12 +17,12 @@ struct PopUpWebView: View{
                 .ignoresSafeArea()
             
             VStack {
-                WebView(url: URL(string: lyricsViewHandler.urlString.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!)!)
+                WebView(url: URL(string: lyricsViewController.urlString.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!)!)
                     .cornerRadius(10)
                     .shadow(color: .black.opacity(0.3), radius: 20.0, x: 5, y: 5)
                 
                 Button("Close") {
-                    self.lyricsViewHandler.isWebViewShown = false
+                    self.lyricsViewController.isWebViewShown = false
                 }
                 .padding()
             }

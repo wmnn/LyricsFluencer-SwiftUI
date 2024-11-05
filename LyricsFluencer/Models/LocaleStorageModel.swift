@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct LocaleStorage{
+struct LocalStorageModel{
     static let defaults = UserDefaults.standard
     
     static func removeData(){
@@ -16,7 +16,6 @@ struct LocaleStorage{
         defaults.removeObject(forKey: "defaultLanguage")
         defaults.removeObject(forKey: "learnedLanguage")
         defaults.removeObject(forKey: "nativeLanguage")
-        defaults.removeObject(forKey: "requests")
     }
     static func getValue(for key: String) -> String?{
         let data = defaults.string(forKey: key)
@@ -24,6 +23,12 @@ struct LocaleStorage{
     }
     static func setValue(for key: String, value: Any?){
         defaults.set(value, forKey: key)
+    }
+    static func updateUser(user: User) {
+        //Saving to local storage
+        // self.defaults.set(user.subscriptionPlan, forKey: "subscriptionPlan")
+        self.defaults.set(user.nativeLanguage, forKey: "nativeLanguage")
+        self.defaults.set(user.learnedLanguage, forKey: "learnedLanguage")
     }
 }
 

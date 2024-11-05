@@ -14,7 +14,7 @@ class FirestoreDeckModel: DeckProtocol {
     let db = Firestore.firestore();
     
     func createDeck(deckName: String, completion: @escaping (Deck) -> Void) {
-        let uid = FirebaseModel.getCurrentUser()
+        let uid = UserModel.getCurrentUserId()
         let deckName = deckName
         
         self.db.collection("flashcards").document(uid).getDocument { (document, error) in
@@ -42,7 +42,7 @@ class FirestoreDeckModel: DeckProtocol {
     
     func fetchingDecks(completion: @escaping ([Deck]) -> Void) {
         
-        let uid = FirebaseModel.getCurrentUser()
+        let uid = UserModel.getCurrentUserId()
         self.db.collection("flashcards").document(uid).collection("decks").getDocuments { (querySnapshot, error) in
             if let error = error {
                 print("Error getting decks: \(error)")
@@ -77,7 +77,7 @@ class FirestoreDeckModel: DeckProtocol {
             return ""//Bad outcome 1
         }
         
-        let uid = FirebaseModel.getCurrentUser()
+        let uid = UserModel.getCurrentUserId()
         var ref: DocumentReference? = nil
         ref = db.collection("flashcards").document(uid).collection("decks").document(deckName).collection("cards").addDocument(data: [
             "front": front,
@@ -95,7 +95,7 @@ class FirestoreDeckModel: DeckProtocol {
         return documentID
     }
     func handleDeleteDeck(deckName: String, completion: @escaping (String) -> Void) {
-        let uid = FirebaseModel.getCurrentUser()
+        let uid = UserModel.getCurrentUserId()
         
         let subcollectionRef = db.collection("flashcards").document(uid).collection("decks").document(deckName).collection("cards")
         subcollectionRef.getDocuments { (querySnapshot, error) in
@@ -117,7 +117,7 @@ class FirestoreDeckModel: DeckProtocol {
     }
     
     func getDecks(completion: @escaping (QuerySnapshot?, Error?) -> Void) {
-        let uid = FirebaseModel.getCurrentUser()
+        let uid = UserModel.getCurrentUserId()
         self.db.collection("flashcards").document(uid).collection("decks").getDocuments() { (querySnapshot, error) in
             if let error = error {
                 print("Error getting subcollection: \(error)")

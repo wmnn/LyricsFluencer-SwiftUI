@@ -10,20 +10,20 @@ import WrappingHStack
 struct TranslationBarView: View {
     
     var bar : String
-    @StateObject var lyricsViewHandler: LyricsViewHandler
-    @EnvironmentObject var appBrain: AppBrain
+    @StateObject var lyricsViewController: LyricsViewController
+    @EnvironmentObject var appBrain: AppContext
     @EnvironmentObject var songContext: SongContext
     
     var body: some View {
         
-        let words = lyricsViewHandler.handleSplittingLine(line: bar)
+        let words = lyricsViewController.handleSplittingLine(line: bar)
         
         WrappingHStack(alignment: .leading){
             ForEach(0..<words.count, id:\.self){ idx in
                 WordView(
                     word: String(words[idx]),
                     color: "secondaryColor",
-                    lyricsViewHandler: lyricsViewHandler
+                    lyricsViewController: lyricsViewController
                 )
             }
         }

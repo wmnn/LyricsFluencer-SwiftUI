@@ -4,14 +4,14 @@
 //
 //  Created by Peter Christian Würdemann on 07.04.23.
 //
-
 import SwiftUI
 
 struct BrowseView: View {
     
-    @EnvironmentObject var appBrain: AppBrain
-    @StateObject var browseViewController = BrowseViewController()
+    @EnvironmentObject var appBrain: AppContext
     @EnvironmentObject var songContext: SongContext
+    @StateObject var browseViewController = BrowseViewController()
+    
     
     var body: some View {
         GeometryReader { g in

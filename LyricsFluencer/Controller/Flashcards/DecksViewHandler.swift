@@ -8,7 +8,7 @@
 import Foundation
 
 class DecksViewHandler: ObservableObject{
-    var appBrain: AppBrain?
+    var appBrain: AppContext?
     var deckContext: DeckContext!
     @Published var showCreateDeckAlert = false
     @Published var createDeckName = ""

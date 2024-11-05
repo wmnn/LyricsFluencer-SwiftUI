@@ -10,9 +10,12 @@ import Firebase
 import FirebaseFirestore
 
 struct SettingsView: View {
+    
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
-    @EnvironmentObject var appBrain: AppBrain
+    @EnvironmentObject var appBrain: AppContext
+    @EnvironmentObject var songContext: SongContext
+    @EnvironmentObject var userContext: UserContext
     @State var nativeLanguage = Language(language: "None")
     @State var learnedLanguage = Language(language: "None")
     @State var isDeleteAccountModalPresented = false
@@ -50,7 +53,16 @@ struct SettingsView: View {
                 }
                 Spacer()
                 SomeButton(text: "Save Settings") {
-                    self.saveSettings()
+                    self.userContext.updateSettings(nativeLanguage: self.nativeLanguage.language, learnedLanguage: self.learnedLanguage.language){ user, error in
+                        
+                        guard user != nil, error == nil else {
+                            return;
+                        }
+                        
+                        DispatchQueue.main.async{
+                            self.appBrain.path.removeLast()
+                        }
+                    }
                 }
                 
                 //Delete Account
@@ -88,30 +100,16 @@ struct SettingsView: View {
             
         }
         .onAppear{
-            setStateVariables()
+            /*
+            self.nativeLanguage.language = STATIC.languages.first(where: { Language in
+                return Language.language == self.songContext.user!.nativeLanguage
+            })
+            self.learnedLanguage.language = STATIC.languages.first(where: { Language in
+                return Language.language == self.songContext.user!.learnedLanguage
+            })*/
         }
+
     }
-    
-    func setStateVariables(){
-        self.nativeLanguage.language = self.appBrain.user.nativeLanguage.language
-        self.learnedLanguage.language = self.appBrain.user.learnedLanguage.language
-    }
-    
-    func saveSettings(){
-        let uid = FirebaseModel.getCurrentUser()
-        let data: [String: Any] = ["nativeLanguage": self.nativeLanguage.language, "learnedLanguage" : self.learnedLanguage.language]
-        //Save to firebase
-        db.collection("users").document(uid).setData(data, merge: true)
-        //Save into local Storage
-        LocaleStorage.setValue(for: "nativeLanguage", value: self.nativeLanguage.language)
-        LocaleStorage.setValue(for: "learnedLanguage", value: self.learnedLanguage.language)
-        //Adapt changes to the app
-        self.appBrain.user.nativeLanguage.language = self.nativeLanguage.language
-        self.appBrain.user.learnedLanguage.language = self.learnedLanguage.language
-        //Go back to Home View
-        self.appBrain.path.removeLast()
-    }
-    
 }
 
 struct SettingsView_Previews: PreviewProvider {
@@ -122,8 +120,10 @@ struct SettingsView_Previews: PreviewProvider {
 
 
 struct DeleteAccountModal: View{
+    
     let db = Firestore.firestore()
-    @EnvironmentObject var appBrain: AppBrain
+    @EnvironmentObject var appContext: AppContext
+    @EnvironmentObject var userContext: UserContext
     @Binding var isDeleteAccountModalPresented: Bool
     
     var body: some View{
@@ -139,58 +139,13 @@ struct DeleteAccountModal: View{
                     
                     SomeSmallButton(text: "Delete", buttonAction: {
                         isDeleteAccountModalPresented = false
-                        handleDelete()
+                        userContext.handleDelete(appContext: appContext)
                     }, textColor: Color.red)
                     
                     
                 }
             }
         }
-    }
-    func handleDelete(){
-            let currentUser = Auth.auth().currentUser
-            currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
-                if let error = error {
-                    // Handle error
-                    print(error)
-                    return;
-                }
-                let urlString = "\(STATIC.API_ROOT)/payment/account"
-                if let url = URL(string: urlString){
-                    let json: [String: String] = ["token": idToken ?? ""]
-                    var request = URLRequest(url: url)
-                    request.httpMethod = "DELETE"
-                    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-                    request.httpBody = try? JSONSerialization.data(withJSONObject: json)
-                    
-                    let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                        if let err = error {
-                            print("Error while sending request: \(err)")
-                            return
-                        }
-                        
-                        guard let data = data, let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
-                            print("Error while receiving response")
-                            return
-                        }
-                        //print("Success: \(data)")
-                        if let deleteAccountApiData: DeleteAccountApiData = AppBrain.parseData(data: data, dataModel: DeleteAccountApiData.self){
-                            DispatchQueue.main.async {
-                                Task {
-                                    if deleteAccountApiData.status == 200 {
-                                        appBrain.logout()
-                                    }else{
-                                        print("Error")
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    task.resume()
-                }
-                
-            }
-        }
-    
+    }    
 }
 

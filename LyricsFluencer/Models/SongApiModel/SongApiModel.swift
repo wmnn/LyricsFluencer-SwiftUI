@@ -33,7 +33,7 @@ class SongApiModel {
                 }
                 
                 //Successfull Request
-                if let res: ManualSearchResponse = AppBrain.parseData(data: data, dataModel: ManualSearchResponse.self){
+                if let res: ManualSearchResponse = AppContext.parseData(data: data, dataModel: ManualSearchResponse.self){
                     completion(res.songs, nil);
                 }
             }
@@ -67,7 +67,7 @@ class SongApiModel {
                     return
                 }
                 //Successfull Request
-                if let res: SelectedSongResponse = AppBrain.parseData(data: data, dataModel: SelectedSongResponse.self) {
+                if let res: SelectedSongResponse = AppContext.parseData(data: data, dataModel: SelectedSongResponse.self) {
                     completion(res)
                 }
             }
@@ -100,7 +100,7 @@ class SongApiModel {
                     return
                 }
             
-                if let res: QuickSearchResponse = AppBrain.parseData(data: data, dataModel: QuickSearchResponse.self) {
+                if let res: QuickSearchResponse = AppContext.parseData(data: data, dataModel: QuickSearchResponse.self) {
                     completion(res.song, nil)
                 }
                 
@@ -136,7 +136,7 @@ class SongApiModel {
                 }
                 
                 //Successfull Request
-                if let res: PopularSongsResponse = AppBrain.parseData(data: data, dataModel: PopularSongsResponse.self) {
+                if let res: PopularSongsResponse = AppContext.parseData(data: data, dataModel: PopularSongsResponse.self) {
                     completion(res.songs, nil)
                 }
                 

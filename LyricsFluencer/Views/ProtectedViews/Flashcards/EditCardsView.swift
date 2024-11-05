@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EditCardsView: View {
     
-    @EnvironmentObject var appBrain: AppBrain
+    @EnvironmentObject var appBrain: AppContext
     @EnvironmentObject var deckContext: DeckContext
     @StateObject var editCardViewHandler = EditCardsViewHandler()
     

@@ -47,22 +47,118 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct LyricsFluencer: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @StateObject var appBrain = AppBrain()
+    @StateObject var appContext = AppContext()
     @StateObject var deckContext = DeckContext()
     @StateObject var songContext = SongContext()
+    @StateObject var userContext = UserContext()
     
     init() {
-        print("My App is starting")
         FirebaseApp.configure()
     }
     
     var body: some Scene {
         WindowGroup {
-            LoginView()
-                .environmentObject(appBrain)
-                .environmentObject(deckContext)
-                .environmentObject(songContext)
-                
+            
+            NavigationStack(path: $appContext.path){
+                    ZStack {
+                        Color.background
+                            .ignoresSafeArea()
+                        
+                        ZStack{
+                            if userContext.user != nil {
+                                HomeView()
+                                    .environmentObject(appContext)
+                                    .environmentObject(deckContext)
+                                    .environmentObject(songContext)
+                                    .environmentObject(userContext)
+                            } else {
+                                LoginView()
+                                    .environmentObject(appContext)
+                                    .environmentObject(deckContext)
+                                    .environmentObject(songContext)
+                                    .environmentObject(userContext)
+                            }
+                        }
+                    }
+                    .navigationDestination(for: String.self){ stringVal in
+                        switch stringVal {
+                        case "Login":
+                            LoginView()
+                                .environmentObject(appContext)
+                                .environmentObject(deckContext)
+                                .environmentObject(songContext)
+                                .environmentObject(userContext)
+                        case "DefaultLanguage":
+                            DefaultLanguageView()
+                                .environmentObject(appContext)
+                                .environmentObject(deckContext)
+                                .environmentObject(songContext)
+                                .environmentObject(userContext)
+                        case "Home":
+                            HomeView()
+                                .environmentObject(appContext)
+                                .environmentObject(deckContext)
+                                .environmentObject(songContext)
+                                .environmentObject(userContext)
+                        case "Lyrics":
+                            LyricsView()
+                                .environmentObject(appContext)
+                                .environmentObject(deckContext)
+                                .environmentObject(songContext)
+                                .environmentObject(userContext)
+                        case "Flashcards":
+                            DecksView()
+                                .environmentObject(appContext)
+                                .environmentObject(deckContext)
+                                .environmentObject(songContext)
+                                .environmentObject(userContext)
+                        case "DeckSettingsView":
+                            DeckSettingsView()
+                                .environmentObject(appContext)
+                                .environmentObject(deckContext)
+                                .environmentObject(songContext)
+                                .environmentObject(userContext)
+                        case "CardsView":
+                            CardView()
+                                .environmentObject(appContext)
+                                .environmentObject(deckContext)
+                                .environmentObject(songContext)
+                                .environmentObject(userContext)
+                        case "EditCardsView":
+                            EditCardsView()
+                                .environmentObject(appContext)
+                                .environmentObject(deckContext)
+                                .environmentObject(songContext)
+                                .environmentObject(userContext)
+                        case "Settings":
+                            SettingsView()
+                                .environmentObject(appContext)
+                                .environmentObject(deckContext)
+                                .environmentObject(songContext)
+                                .environmentObject(userContext)
+                        case "Browse":
+                            BrowseView()
+                                .environmentObject(appContext)
+                                .environmentObject(deckContext)
+                                .environmentObject(songContext)
+                                .environmentObject(userContext)
+                        case "Register":
+                            RegisterView()
+                                .environmentObject(appContext)
+                                .environmentObject(deckContext)
+                                .environmentObject(songContext)
+                                .environmentObject(userContext)
+                        default:
+                            LoginView()
+                                .environmentObject(appContext)
+                                .environmentObject(deckContext)
+                                .environmentObject(songContext)
+                                .environmentObject(userContext)
+                        }
+                    }
+            }
+            
         }
     }
+    
 }

@@ -11,11 +11,13 @@ import FirebaseAuth
 import FirebaseFirestore
 
 struct DefaultLanguageView: View {
+    
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
     @State var nativeLanguage = Language(language: "None")
     @State var learnedLanguage = Language(language: "None")
-    @EnvironmentObject var appBrain: AppBrain
+    @EnvironmentObject var appBrain: AppContext
+    @EnvironmentObject var userContext: UserContext
     
     var body: some View {
         ZStack{
@@ -50,46 +52,19 @@ struct DefaultLanguageView: View {
                 }
                 Spacer()
                 SomeButton(text: "Save your choices") {
-                    saveSettings()
+                    userContext.updateSettings(nativeLanguage: nativeLanguage.language, learnedLanguage: learnedLanguage.language){ user, error in
+                        
+                        guard user != nil, error == nil else {
+                            return;
+                        }
+                        //Go back to Home View
+                        self.appBrain.path.append("Home")
+                    }
                 }
             }
         }
         .navigationBarBackButtonHidden(true)
     }
-    func saveSettings(){
-        let uid = FirebaseModel.getCurrentUser()
-        let data: [String: Any] = ["nativeLanguage": self.nativeLanguage.language, "learnedLanguage" : self.learnedLanguage.language, "requests" : 0]
-        //Save to firebase
-        db.collection("users").document(uid).setData(data, merge: true)
-        //Save into local Storage
-        LocaleStorage.setValue(for: "nativeLanguage", value: self.nativeLanguage.language)
-        LocaleStorage.setValue(for: "learnedLanguage", value: self.learnedLanguage.language)
-        LocaleStorage.setValue(for: "requests", value: 0)
-        LocaleStorage.setValue(for: "subscriptionPlan", value: "free")
-        
-        //Adapt changes to the app
-        self.appBrain.user.nativeLanguage.language = self.nativeLanguage.language
-        self.appBrain.user.learnedLanguage.language = self.learnedLanguage.language
-        self.appBrain.user.requests = 0
-        self.appBrain.user.subscriptionPlan = "free"
-        //Go back to Home View
-        self.appBrain.path.append("Home")
-    }/*
-    func handleData(_ nativeLanguage: Language){
-        let uid = FirebaseModel.getCurrentUser()
-        if uid != ""{
-            //Adding data to db
-            let data: [String: Any] = ["nativeLanguage": nativeLanguage.language, "requests": 0]
-            db.collection("users").document(uid).setData(data, merge: true)
-            //Saving data locally
-            defaults.set(nativeLanguage.language, forKey: "defaultLanguage")
-            defaults.set(0, forKey: "requests")
-            self.appBrain.user.nativeLanguage.language = nativeLanguage.language
-            self.appBrain.user.requests = 0
-            //Redirect
-            appBrain.path.append("Home")
-        }
-    }*/
 }
 
 struct SetDefaultLanguageView_Previews: PreviewProvider {
