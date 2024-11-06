@@ -25,7 +25,7 @@ struct ResultView: View {
             print("Clicked on song, ", song)
             songContext.handleSelectedSong(song: song, nativeLanguage: userContext.user!.nativeLanguage ?? "") {_ in
                 DispatchQueue.main.async {
-                    self.appBrain.path.append("Lyrics")
+                    self.appBrain.navigate(to: Views.Lyrics)
                 }
             }
             

@@ -18,7 +18,7 @@ class DecksViewHandler: ObservableObject{
         //Selected a deck
         self.deckContext.selectedDeck.deckName = deckName
         self.deckContext.selectedDeck.cards = cards
-        self.appBrain!.path.append("CardsView")
+        self.appBrain!.navigate(to: Views.CardsView)
     }
     func handleCountDueCards(cards: [Card]) -> Int{
         let today = Date()

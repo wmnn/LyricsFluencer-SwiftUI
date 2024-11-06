@@ -10,6 +10,20 @@ import Firebase
 import FirebaseAuth
 import FirebaseFirestore
 
+enum Views: String {
+    case Login = "Login"
+    case Home = "Home"
+    case Lyrics = "Lyrics"
+    case Flashcards = "Flashcards"
+    case DeckSettingsView = "DeckSettingsView"
+    case CardsView = "CardsView"
+    case EditCardsView = "EditCardsView"
+    case Settings = "Settings"
+    case Browse = "Browse"
+    case Register = "Register"
+    
+}
+
 class AppContext: ObservableObject {
     
     let db = Firestore.firestore()
@@ -27,5 +41,13 @@ class AppContext: ObservableObject {
             }
             return nil
         }
+    }
+    
+    // Method to navigate to a specific view using the Views enum
+    func navigate(to view: Views) {
+        path.append(view.rawValue)
+    }
+    func resetNavigationPath() {
+        self.path = NavigationPath()
     }
 }

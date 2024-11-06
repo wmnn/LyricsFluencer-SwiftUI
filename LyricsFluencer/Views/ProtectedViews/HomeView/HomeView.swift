@@ -58,11 +58,11 @@ struct HomeView: View{
                 
                 // }
                 SomeButton(text: "Browse Songs") {
-                    self.appContext.path.append("Browse")
+                    self.appContext.navigate(to: Views.Browse)
                 }
                 //Flashcard
                 SomeButton(text: "Your Flashcards") {
-                    self.appContext.path.append("Flashcards")
+                    self.appContext.navigate(to: Views.Flashcards)
                 }
             }//Closing VStack
         }//Closing ZStack
@@ -71,7 +71,7 @@ struct HomeView: View{
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu{
                     Button("Settings") {
-                        self.appContext.path.append("Settings")
+                        self.appContext.navigate(to: Views.Settings)
                     }
                     Button("Logout") {
                         userContext.logout{ error in
@@ -79,7 +79,7 @@ struct HomeView: View{
                                 return;
                             }
                             DispatchQueue.main.async{
-                                appContext.path = NavigationPath()
+                                appContext.resetNavigationPath()
                             }
                         }
                     }

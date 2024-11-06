@@ -32,8 +32,8 @@ class SettingsViewController: ObservableObject {
             }
             
             DispatchQueue.main.async{
-                self.appContext!.path = NavigationPath()
-                self.appContext!.path.append("Home")
+                self.appContext!.resetNavigationPath()
+                self.appContext!.navigate(to: Views.Home)
             }
         }
     }

@@ -103,7 +103,7 @@ class UserContext: ObservableObject {
                 guard error == nil else {
                     return;
                 }
-                appContext.path = NavigationPath()
+                appContext.resetNavigationPath()
             }
         }
         

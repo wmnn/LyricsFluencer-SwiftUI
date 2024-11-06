@@ -51,7 +51,7 @@ struct DeckView: View {
                 
                 Button {
                     deckContext.selectedDeck = deck;
-                    appBrain.path.append("DeckSettingsView")
+                    appBrain.navigate(to: Views.DeckSettingsView)
                 } label: {
                     Image(systemName: "gearshape")
                         .bold()

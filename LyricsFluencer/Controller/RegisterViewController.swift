@@ -18,7 +18,7 @@ class RegisterViewController: ObservableObject {
         self.isSignUpLoading = true
         userContext?.register(email: email, password: password) { user, error in
             DispatchQueue.main.async {
-                appBrain.path.append("Settings")
+                appBrain.navigate(to: Views.Settings)
                 self.isSignUpLoading = false
             }
         }

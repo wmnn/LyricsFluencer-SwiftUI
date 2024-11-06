@@ -23,7 +23,7 @@ struct DeckSettingsView: View {
                     TextWithIcon(text: "Add Card", systemName: "plus")
                 }
                 Button {
-                    appBrain.path.append("EditCardsView")
+                    appBrain.navigate(to: Views.EditCardsView)
                 } label: {
                     TextWithIcon(text: "Edit Cards", systemName: "gearshape")
                 }

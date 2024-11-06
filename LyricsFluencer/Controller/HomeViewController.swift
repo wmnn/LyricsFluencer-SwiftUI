@@ -69,7 +69,7 @@ class HomeViewController: NSObject, ObservableObject{ //NSObject because the nee
                         self.isRecording = false
                         self.isShazamLoading = false
                     }
-                    self.appBrain!.path.append("Lyrics")
+                    self.appBrain!.navigate(to: Views.Lyrics)
                 }
                 
             }

@@ -32,9 +32,9 @@ class LoginViewController: ObservableObject {
             self.isLoginLoading = false
             
             if user!.learnedLanguage != nil {
-                self.appBrain!.path.append("Home")
+                self.appBrain!.navigate(to: Views.Home)
             } else {
-                self.appBrain!.path.append("Settings")
+                self.appBrain!.navigate(to: Views.Settings)
             }
         }
     }

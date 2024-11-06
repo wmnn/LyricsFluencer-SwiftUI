@@ -67,7 +67,7 @@ struct LoginView: View {
                 }, systemName: "arrow.right", binding: $loginViewController.isLoginLoading)
                 Spacer()
                 SomeButton(text: "Go to Register", buttonAction:{
-                    self.appBrain.path.append("Register")
+                    self.appBrain.navigate(to: Views.Register)
                 }, systemName: "arrow")
                 
                 .navigationTitle("Login")

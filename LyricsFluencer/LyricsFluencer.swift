@@ -41,8 +41,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
      
 }
 
-
-
 @main
 struct LyricsFluencer: App {
     
@@ -81,62 +79,63 @@ struct LyricsFluencer: App {
                         }
                     }
                     .navigationDestination(for: String.self){ stringVal in
+                            
                         switch stringVal {
-                        case "Login":
+                        case Views.Login.rawValue:
                             LoginView()
                                 .environmentObject(appContext)
                                 .environmentObject(deckContext)
                                 .environmentObject(songContext)
                                 .environmentObject(userContext)
-                        case "Home":
+                        case Views.Home.rawValue:
                             HomeView()
                                 .environmentObject(appContext)
                                 .environmentObject(deckContext)
                                 .environmentObject(songContext)
                                 .environmentObject(userContext)
-                        case "Lyrics":
+                        case Views.Lyrics.rawValue:
                             LyricsView()
                                 .environmentObject(appContext)
                                 .environmentObject(deckContext)
                                 .environmentObject(songContext)
                                 .environmentObject(userContext)
-                        case "Flashcards":
+                        case Views.Flashcards.rawValue:
                             DecksView()
                                 .environmentObject(appContext)
                                 .environmentObject(deckContext)
                                 .environmentObject(songContext)
                                 .environmentObject(userContext)
-                        case "DeckSettingsView":
+                        case Views.DeckSettingsView.rawValue:
                             DeckSettingsView()
                                 .environmentObject(appContext)
                                 .environmentObject(deckContext)
                                 .environmentObject(songContext)
                                 .environmentObject(userContext)
-                        case "CardsView":
+                        case Views.CardsView.rawValue:
                             CardView()
                                 .environmentObject(appContext)
                                 .environmentObject(deckContext)
                                 .environmentObject(songContext)
                                 .environmentObject(userContext)
-                        case "EditCardsView":
+                        case Views.EditCardsView.rawValue:
                             EditCardsView()
                                 .environmentObject(appContext)
                                 .environmentObject(deckContext)
                                 .environmentObject(songContext)
                                 .environmentObject(userContext)
-                        case "Settings":
+                        case Views.Settings.rawValue:
                             SettingsView()
                                 .environmentObject(appContext)
                                 .environmentObject(deckContext)
                                 .environmentObject(songContext)
                                 .environmentObject(userContext)
-                        case "Browse":
+                        case Views.Browse.rawValue:
                             BrowseView()
                                 .environmentObject(appContext)
                                 .environmentObject(deckContext)
                                 .environmentObject(songContext)
                                 .environmentObject(userContext)
-                        case "Register":
+                        case Views.Register.rawValue:
                             RegisterView()
                                 .environmentObject(appContext)
                                 .environmentObject(deckContext)
