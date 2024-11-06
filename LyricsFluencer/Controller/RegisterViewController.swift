@@ -6,13 +6,9 @@
 //
 
 import Foundation
-import Firebase
-import FirebaseFirestore
 
-class RegisterViewController: ObservableObject{
+class RegisterViewController: ObservableObject {
     
-    let db = Firestore.firestore()
-    let defaults = UserDefaults.standard
     var userContext: UserContext?
     @Published var email: String = ""
     @Published var password: String = ""
@@ -22,7 +18,7 @@ class RegisterViewController: ObservableObject{
         self.isSignUpLoading = true
         userContext?.register(email: email, password: password) { user, error in
             DispatchQueue.main.async {
-                appBrain.path.append("DefaultLanguage")
+                appBrain.path.append("Settings")
                 self.isSignUpLoading = false
             }
         }

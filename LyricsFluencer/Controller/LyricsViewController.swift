@@ -8,6 +8,7 @@
 import Foundation
 
 class LyricsViewController: ObservableObject{
+    
     @Published var isWebViewShown = false
     @Published var isAddToDeckViewShown = false
     @Published var selectedWord: String = ""
@@ -30,6 +31,7 @@ class LyricsViewController: ObservableObject{
         }
         return words
     }
+    
     func cleanWord(_ word: String) -> String {
         var newWord = word
         if word.hasSuffix(",") || word.hasSuffix("'") {

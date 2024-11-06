@@ -88,12 +88,6 @@ struct LyricsFluencer: App {
                                 .environmentObject(deckContext)
                                 .environmentObject(songContext)
                                 .environmentObject(userContext)
-                        case "DefaultLanguage":
-                            DefaultLanguageView()
-                                .environmentObject(appContext)
-                                .environmentObject(deckContext)
-                                .environmentObject(songContext)
-                                .environmentObject(userContext)
                         case "Home":
                             HomeView()
                                 .environmentObject(appContext)

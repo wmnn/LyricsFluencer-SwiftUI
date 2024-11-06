@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Language: Codable, Identifiable{
-    var language: String = "None"
+    var language: String
     var name: String?
     var id: String {
         language

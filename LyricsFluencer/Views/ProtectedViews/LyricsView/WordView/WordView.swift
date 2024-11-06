@@ -22,14 +22,14 @@ struct WordView: View {
                 lyricsViewController.selectedWord = lyricsViewController.cleanWord(word)
                 lyricsViewController.front = ""
                 lyricsViewController.back = lyricsViewController.cleanWord(word)
-                lyricsViewController.urlString = "https://www.google.com/search?q=\(lyricsViewController.cleanWord(word))+\(appBrain.getLanguageName(songContext.song.detectedLanguage ?? "EN")?.lowercased() ?? "show")+meaning"
+                lyricsViewController.urlString = "https://www.google.com/search?q=\(lyricsViewController.cleanWord(word))+\(LanguageUtil.getLanguageName(songContext.song.detectedLanguage ?? "EN")?.lowercased() ?? "show")+meaning"
                 lyricsViewController.isAddToDeckViewShown.toggle()
             } label: {
                 Text("Add to deck")
             }
             Button {
                 lyricsViewController.selectedWord = lyricsViewController.cleanWord(word)
-                lyricsViewController.urlString = "https://www.google.com/search?q=\(lyricsViewController.cleanWord(word))+\(appBrain.getLanguageName(songContext.song.detectedLanguage ?? "EN")?.lowercased() ?? "show")+meaning"
+                lyricsViewController.urlString = "https://www.google.com/search?q=\(lyricsViewController.cleanWord(word))+\(LanguageUtil.getLanguageName(songContext.song.detectedLanguage ?? "EN")?.lowercased() ?? "show")+meaning"
                 lyricsViewController.isWebViewShown.toggle()
             } label: {
                 Text("Google Meaning")
@@ -44,6 +44,7 @@ struct WordView: View {
                 Text("Google Translate")
             }
             
+            /*
             ForEach(0..<STATIC.languages.count, id: \.self) { i in
                 if STATIC.languages[i].language == songContext.song.detectedLanguage ?? "EN"{
                     Button {
@@ -56,7 +57,7 @@ struct WordView: View {
                         Text("Show Conjugation (only on Verbs)")
                     }
                 }
-            }
+            }*/
             /*
                 Button {
                     lyricsViewController.selectedWord = lyricsViewController.cleanWord(word)

@@ -28,7 +28,7 @@ struct UserModel{
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             
             guard error == nil else {
-                print(error?.localizedDescription ?? "Unknown error")
+                print(error?.localizedDescription ?? "Unknown error, couldn't log in")
                 completion(nil, error)
                 return
             }
@@ -36,7 +36,7 @@ struct UserModel{
             self.getCurrentUser{ user, error in
                 
                 guard user != nil, error == nil else {
-                    print(error?.localizedDescription ?? "Unknown error")
+                    print(error?.localizedDescription ?? "Unknown error, couldn't get user")
                     return
                 }
                 
@@ -57,15 +57,14 @@ struct UserModel{
         
         UserModel.db.collection("users").document(uid).getDocument { (document, error) in
             
+            print("Document not found")
             guard document != nil && document!.exists else {
-                
-                completion(nil, error)
+                completion(User(id: document!.documentID), error)
                 return;
             }
             
             var user = User(id: document!.documentID)
             print(user.id)
-            // user.subscriptionPlan = document!.get("subscriptionPlan") as? String
             user.nativeLanguage = document!.get("nativeLanguage") as? String
             user.learnedLanguage = document!.get("learnedLanguage") as? String
             

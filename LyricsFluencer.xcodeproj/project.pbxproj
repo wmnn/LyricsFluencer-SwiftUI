@@ -26,7 +26,6 @@
 		C443138529AA39D7007D7CA9 /* CardViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C443138429AA39D7007D7CA9 /* CardViewHandler.swift */; };
 		C443138729AA485B007D7CA9 /* EditCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C443138629AA485B007D7CA9 /* EditCardsView.swift */; };
 		C443138929AA4B9E007D7CA9 /* EditCardViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C443138829AA4B9E007D7CA9 /* EditCardViewHandler.swift */; };
-		C44C62D1299B8EE20091C401 /* DefaultLanguageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44C62D0299B8EE20091C401 /* DefaultLanguageView.swift */; };
 		C44F2D2F29AA8BBC004A28AA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F2D2E29AA8BBC004A28AA /* LoginViewController.swift */; };
 		C44F2D3129AA986B004A28AA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F2D3029AA986B004A28AA /* HomeViewController.swift */; };
 		C44F2D3329AAA06D004A28AA /* LyricsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F2D3229AAA06D004A28AA /* LyricsViewController.swift */; };
@@ -72,6 +71,11 @@
 		C4F2267929DF83760082B9F1 /* BrowseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F2267829DF83760082B9F1 /* BrowseView.swift */; };
 		C4F2267B29DF841B0082B9F1 /* BrowseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F2267A29DF841B0082B9F1 /* BrowseViewController.swift */; };
 		C4F2267D29DF8C850082B9F1 /* PopularSongsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F2267C29DF8C850082B9F1 /* PopularSongsResponse.swift */; };
+		C4FEEAA12CDB478C003BA67E /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FEEAA02CDB4787003BA67E /* SettingsViewController.swift */; };
+		C4FEEAA42CDB493D003BA67E /* LanguageMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FEEAA32CDB4938003BA67E /* LanguageMenuView.swift */; };
+		C4FEEAA72CDB49F0003BA67E /* LanguageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FEEAA62CDB49ED003BA67E /* LanguageUtil.swift */; };
+		C4FEEAA92CDB4E15003BA67E /* DeleteAccountModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FEEAA82CDB4E10003BA67E /* DeleteAccountModal.swift */; };
+		C4FEEAAC2CDB5075003BA67E /* DeleteAccountButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FEEAAB2CDB5071003BA67E /* DeleteAccountButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -93,7 +97,6 @@
 		C443138429AA39D7007D7CA9 /* CardViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewHandler.swift; sourceTree = "<group>"; };
 		C443138629AA485B007D7CA9 /* EditCardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardsView.swift; sourceTree = "<group>"; };
 		C443138829AA4B9E007D7CA9 /* EditCardViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardViewHandler.swift; sourceTree = "<group>"; };
-		C44C62D0299B8EE20091C401 /* DefaultLanguageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLanguageView.swift; sourceTree = "<group>"; };
 		C44F2D2E29AA8BBC004A28AA /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		C44F2D3029AA986B004A28AA /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		C44F2D3229AAA06D004A28AA /* LyricsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsViewController.swift; sourceTree = "<group>"; };
@@ -139,6 +142,11 @@
 		C4F2267829DF83760082B9F1 /* BrowseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseView.swift; sourceTree = "<group>"; };
 		C4F2267A29DF841B0082B9F1 /* BrowseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewController.swift; sourceTree = "<group>"; };
 		C4F2267C29DF8C850082B9F1 /* PopularSongsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularSongsResponse.swift; sourceTree = "<group>"; };
+		C4FEEAA02CDB4787003BA67E /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		C4FEEAA32CDB4938003BA67E /* LanguageMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageMenuView.swift; sourceTree = "<group>"; };
+		C4FEEAA62CDB49ED003BA67E /* LanguageUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageUtil.swift; sourceTree = "<group>"; };
+		C4FEEAA82CDB4E10003BA67E /* DeleteAccountModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountModal.swift; sourceTree = "<group>"; };
+		C4FEEAAB2CDB5071003BA67E /* DeleteAccountButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +182,7 @@
 		C42044F829990571009699F7 /* LyricsFluencer */ = {
 			isa = PBXGroup;
 			children = (
+				C4FEEAA52CDB49E5003BA67E /* Util */,
 				C4BE116429B8B5CD0064D8FC /* Info.plist */,
 				C420450829990580009699F7 /* Models */,
 				C42045072999057A009699F7 /* Views */,
@@ -222,11 +231,10 @@
 		C420453B29992A89009699F7 /* ProtectedViews */ = {
 			isa = PBXGroup;
 			children = (
+				C4FEEAA22CDB491A003BA67E /* SettingsView */,
 				C475367D2CD8B51A006F71E7 /* BrowseView */,
 				C475366F2CD84205006F71E7 /* LyricsView */,
 				C475366E2CD841FA006F71E7 /* HomeView */,
-				C44F2D2D29AA8BA3004A28AA /* Onboarding */,
-				C4BE116229B7ECC60064D8FC /* SettingsView.swift */,
 				C443138229AA3942007D7CA9 /* Flashcards */,
 			);
 			path = ProtectedViews;
@@ -235,6 +243,7 @@
 		C434F3F629DD9BF300DF07E8 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				C4FEEAA02CDB4787003BA67E /* SettingsViewController.swift */,
 				C4E0D4542CD90B1D00AE0C87 /* UserContext.swift */,
 				C47536612CD83356006F71E7 /* SongContext.swift */,
 				C475365F2CD8128A006F71E7 /* DeckContext.swift */,
@@ -285,14 +294,6 @@
 			path = Types;
 			sourceTree = "<group>";
 		};
-		C44F2D2D29AA8BA3004A28AA /* Onboarding */ = {
-			isa = PBXGroup;
-			children = (
-				C44C62D0299B8EE20091C401 /* DefaultLanguageView.swift */,
-			);
-			path = Onboarding;
-			sourceTree = "<group>";
-		};
 		C47536572CD7FE96006F71E7 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -341,12 +342,12 @@
 		C475366F2CD84205006F71E7 /* LyricsView */ = {
 			isa = PBXGroup;
 			children = (
+				C4FEEAB02CDB5243003BA67E /* WordView */,
 				C475367B2CD8AF80006F71E7 /* TranslationBarView.swift */,
 				C47536792CD8AF74006F71E7 /* LyricBarView.swift */,
 				C47536772CD8ADF1006F71E7 /* VisualEffectView.swift */,
 				C47536752CD8ADBF006F71E7 /* PopUpWebView.swift */,
 				C47536732CD8AD82006F71E7 /* AddWordView.swift */,
-				C47536712CD8AD5F006F71E7 /* WordView.swift */,
 				C420453929992A78009699F7 /* LyricsView.swift */,
 			);
 			path = LyricsView;
@@ -391,6 +392,33 @@
 				C4C1AFD329E7488C00CA5D18 /* DeleteAccountResponse.swift */,
 			);
 			path = Types;
+			sourceTree = "<group>";
+		};
+		C4FEEAA22CDB491A003BA67E /* SettingsView */ = {
+			isa = PBXGroup;
+			children = (
+				C4FEEAAB2CDB5071003BA67E /* DeleteAccountButton.swift */,
+				C4FEEAA82CDB4E10003BA67E /* DeleteAccountModal.swift */,
+				C4FEEAA32CDB4938003BA67E /* LanguageMenuView.swift */,
+				C4BE116229B7ECC60064D8FC /* SettingsView.swift */,
+			);
+			path = SettingsView;
+			sourceTree = "<group>";
+		};
+		C4FEEAA52CDB49E5003BA67E /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				C4FEEAA62CDB49ED003BA67E /* LanguageUtil.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		C4FEEAB02CDB5243003BA67E /* WordView */ = {
+			isa = PBXGroup;
+			children = (
+				C47536712CD8AD5F006F71E7 /* WordView.swift */,
+			);
+			path = WordView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -493,9 +521,11 @@
 				C420450A299905A2009699F7 /* LoginView.swift in Sources */,
 				C434F3FA29DDAA3C00DF07E8 /* UserModel.swift in Sources */,
 				C47536722CD8AD62006F71E7 /* WordView.swift in Sources */,
+				C4FEEAA42CDB493D003BA67E /* LanguageMenuView.swift in Sources */,
 				C44F2D3129AA986B004A28AA /* HomeViewController.swift in Sources */,
 				C443138129AA344E007D7CA9 /* DecksViewHandler.swift in Sources */,
 				C4C58F4C29A90304009120C8 /* DeckSettingsView.swift in Sources */,
+				C4FEEAA12CDB478C003BA67E /* SettingsViewController.swift in Sources */,
 				C44F2D3329AAA06D004A28AA /* LyricsViewController.swift in Sources */,
 				C434F3F829DDA38A00DF07E8 /* LocaleStorageModel.swift in Sources */,
 				C443138729AA485B007D7CA9 /* EditCardsView.swift in Sources */,
@@ -506,13 +536,15 @@
 				C47536672CD8392F006F71E7 /* ManualSearchResponse.swift in Sources */,
 				C420450E299905EC009699F7 /* HomeView.swift in Sources */,
 				C47536562CD7ED88006F71E7 /* FirestoreDeckModel.swift in Sources */,
+				C4FEEAA72CDB49F0003BA67E /* LanguageUtil.swift in Sources */,
+				C4FEEAAC2CDB5075003BA67E /* DeleteAccountButton.swift in Sources */,
 				C4C58F4829A823D8009120C8 /* DecksView.swift in Sources */,
 				C4E0D4592CD91F1C00AE0C87 /* TrailExpiredButton.swift in Sources */,
 				C492FA3429BA52CD003A07E9 /* User.swift in Sources */,
 				C4F2267D29DF8C850082B9F1 /* PopularSongsResponse.swift in Sources */,
-				C44C62D1299B8EE20091C401 /* DefaultLanguageView.swift in Sources */,
 				C4F2267929DF83760082B9F1 /* BrowseView.swift in Sources */,
 				C475365C2CD8014D006F71E7 /* EditCardsViewCard.swift in Sources */,
+				C4FEEAA92CDB4E15003BA67E /* DeleteAccountModal.swift in Sources */,
 				C475367C2CD8AF84006F71E7 /* TranslationBarView.swift in Sources */,
 				C4BE116329B7ECC60064D8FC /* SettingsView.swift in Sources */,
 				C47536592CD7FEA9006F71E7 /* DeckView.swift in Sources */,

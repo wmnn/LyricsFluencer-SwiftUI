@@ -14,15 +14,6 @@ class AppContext: ObservableObject {
     
     let db = Firestore.firestore()
     @Published var path: NavigationPath = NavigationPath()
-
-    func getLanguageName(_ languageCode: String) -> String?{
-        for language in STATIC.languages {
-            if language.language == languageCode {
-                return language.name
-            }
-        }
-        return nil
-    }
     
     static func parseData<T: Decodable>(data: Data, dataModel: T.Type, errorAction: (() -> Void)? = nil) -> T?{ //I am parsing data with the dataModel that defines the structure of the data
         let decoder = JSONDecoder()

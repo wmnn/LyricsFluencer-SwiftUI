@@ -34,7 +34,7 @@ class LoginViewController: ObservableObject {
             if user!.learnedLanguage != nil {
                 self.appBrain!.path.append("Home")
             } else {
-                self.appBrain!.path.append("DefaultLanguage")
+                self.appBrain!.path.append("Settings")
             }
         }
     }
