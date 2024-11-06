@@ -76,6 +76,7 @@
 		C4FEEAA72CDB49F0003BA67E /* LanguageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FEEAA62CDB49ED003BA67E /* LanguageUtil.swift */; };
 		C4FEEAA92CDB4E15003BA67E /* DeleteAccountModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FEEAA82CDB4E10003BA67E /* DeleteAccountModal.swift */; };
 		C4FEEAAC2CDB5075003BA67E /* DeleteAccountButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FEEAAB2CDB5071003BA67E /* DeleteAccountButton.swift */; };
+		C4FEEAB22CDB8669003BA67E /* ErrorModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FEEAB12CDB865F003BA67E /* ErrorModal.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -147,6 +148,7 @@
 		C4FEEAA62CDB49ED003BA67E /* LanguageUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageUtil.swift; sourceTree = "<group>"; };
 		C4FEEAA82CDB4E10003BA67E /* DeleteAccountModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountModal.swift; sourceTree = "<group>"; };
 		C4FEEAAB2CDB5071003BA67E /* DeleteAccountButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountButton.swift; sourceTree = "<group>"; };
+		C4FEEAB12CDB865F003BA67E /* ErrorModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorModal.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -297,6 +299,7 @@
 		C47536572CD7FE96006F71E7 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				C4FEEAB12CDB865F003BA67E /* ErrorModal.swift */,
 				C4D82A5529BF70D1009A3342 /* ReusableViews.swift */,
 			);
 			path = Components;
@@ -535,6 +538,7 @@
 				C4C58F4A29A893FE009120C8 /* Deck.swift in Sources */,
 				C47536672CD8392F006F71E7 /* ManualSearchResponse.swift in Sources */,
 				C420450E299905EC009699F7 /* HomeView.swift in Sources */,
+				C4FEEAB22CDB8669003BA67E /* ErrorModal.swift in Sources */,
 				C47536562CD7ED88006F71E7 /* FirestoreDeckModel.swift in Sources */,
 				C4FEEAA72CDB49F0003BA67E /* LanguageUtil.swift in Sources */,
 				C4FEEAAC2CDB5075003BA67E /* DeleteAccountButton.swift in Sources */,

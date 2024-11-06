@@ -13,6 +13,8 @@ class SettingsViewController: ObservableObject {
     @Published var nativeLanguage: Language?
     @Published var learnedLanguage: Language?
     @Published var isDeleteAccountModalPresented = false
+    @Published var isErrorModalShown = false
+    var errorMessage = ""
     var userContext: UserContext?
     var appContext: AppContext?
     

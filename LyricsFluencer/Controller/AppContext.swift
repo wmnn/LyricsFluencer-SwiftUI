@@ -45,6 +45,7 @@ class AppContext: ObservableObject {
     
     // Method to navigate to a specific view using the Views enum
     func navigate(to view: Views) {
+        print(path)
         path.append(view.rawValue)
     }
     func resetNavigationPath() {

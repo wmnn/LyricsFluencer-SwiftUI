@@ -11,10 +11,11 @@ import FirebaseFirestore
 
 struct SettingsView: View {
     
-    @EnvironmentObject var appBrain: AppContext
+    @EnvironmentObject var appContext: AppContext
     @EnvironmentObject var songContext: SongContext
     @EnvironmentObject var userContext: UserContext
     @StateObject var settingsViewController: SettingsViewController = SettingsViewController()
+    @State var isErrorModalShown = false
     
     var body: some View {
         ZStack{
@@ -55,13 +56,51 @@ struct SettingsView: View {
                 DeleteAccountModal(isDeleteAccountModalPresented: $settingsViewController.isDeleteAccountModalPresented)
             }
             
+            if settingsViewController.isErrorModalShown {
+                
+                ErrorModal(
+                    isErrorModalShown: $settingsViewController.isErrorModalShown,
+                    message: settingsViewController.errorMessage
+                )
+            }
+            
         }
+        .navigationBarBackButtonHidden(true)
         .onAppear{
             
-            self.settingsViewController.appContext = self.appBrain
+            self.settingsViewController.appContext = self.appContext
             self.settingsViewController.userContext = self.userContext
             self.settingsViewController.updateState(user: userContext.user!)
             
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                
+                Button {
+                    guard self.userContext.user!.nativeLanguage != nil else {
+                        
+                        self.settingsViewController.isErrorModalShown = true
+                        self.settingsViewController.errorMessage = "You haven't selected a native language "
+                        return;
+                    }
+                    
+                    guard self.userContext.user!.learnedLanguage != nil else {
+                        
+                        self.settingsViewController.isErrorModalShown = true
+                        self.settingsViewController.errorMessage = "You haven't selected the language you are learning "
+                        return;
+                    }
+            
+                    appContext.resetNavigationPath()
+                    
+                    
+                } label: {
+                    HStack {
+                        Image(systemName: "chevron.backward")
+                        Text("Back")
+                    }
+                }
+            }
         }
 
     }
