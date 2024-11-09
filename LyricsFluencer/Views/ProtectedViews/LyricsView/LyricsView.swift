@@ -15,6 +15,7 @@ struct LyricsView: View {
     
     @EnvironmentObject var appBrain: AppContext
     @EnvironmentObject var songContext: SongContext
+    @EnvironmentObject var userContext: UserContext
     @StateObject var lyricsViewController = LyricsViewController()
     
     var body: some View {
@@ -63,6 +64,10 @@ struct LyricsView: View {
                 
             }//Closing ZStack
             .navigationBarBackButtonHidden(true)
+            .onAppear{
+                self.lyricsViewController.userContext = self.userContext
+                self.lyricsViewController.songContext = self.songContext
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     

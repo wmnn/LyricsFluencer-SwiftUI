@@ -4,6 +4,8 @@
 //
 //  Created by Peter Christian Würdemann on 06.11.24.
 //
+import Foundation
+
 class LanguageUtil {
     
     static func getLanguageName(_ languageCode: String) -> String? {
@@ -16,4 +18,5 @@ class LanguageUtil {
         return nil
     
     }
+    
 }

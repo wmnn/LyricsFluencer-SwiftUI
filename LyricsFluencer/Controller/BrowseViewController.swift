@@ -12,6 +12,8 @@ class BrowseViewController: ObservableObject {
     @Published var isShowSearchResultsLoading : Bool = false
     @Published var searchQuery : String = ""
     @Published var songContext: SongContext?
+    @Published var isErrorModalShown = false;
+    @Published var errorMessage = "";
     
     func handleManualSearch() {
         self.isShowSearchResultsLoading = true
@@ -19,7 +21,13 @@ class BrowseViewController: ObservableObject {
             
             guard error == nil && songs != nil else {
                 print("handleManualSearch Error, inside browse view controller")
-                self.isShowSearchResultsLoading = false;
+                
+                DispatchQueue.main.async{
+                    self.errorMessage = "An error occured.";
+                    self.isErrorModalShown = true;
+                    self.isShowSearchResultsLoading = false;
+                }
+                
                 return;
             }
             

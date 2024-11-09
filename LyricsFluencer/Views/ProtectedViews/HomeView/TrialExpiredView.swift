@@ -32,7 +32,7 @@ struct TrialExpiredView: View{
         .autocapitalization(.none)
         .autocorrectionDisabled(true)
         .onSubmit {
-            homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: userContext.user!.nativeLanguage ?? "DE")
+            homeViewHandler.handleQuickSearch()
             fieldInFocus = HomeViewField.none
             self.homeViewHandler.isQuickSearchLoading = true
         }

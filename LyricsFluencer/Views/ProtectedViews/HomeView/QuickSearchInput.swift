@@ -37,9 +37,8 @@ struct QuickSearchInput: View{
                     self.homeViewHandler.isShazamLoading = false
                 }
             } else {
-                print("Else")
                 if !homeViewHandler.isShazamLoading{
-                    homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: userContext.user!.nativeLanguage ?? "DE")
+                    homeViewHandler.handleQuickSearch()
                     fieldInFocus = HomeViewField.none
                 }
             }

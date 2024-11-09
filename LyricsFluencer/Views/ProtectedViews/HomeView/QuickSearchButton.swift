@@ -8,7 +8,7 @@ import SwiftUI
 
 struct QuickSearchButton: View{
     
-    @StateObject var homeViewHandler = HomeViewController()
+    @StateObject var homeViewController = HomeViewController()
     @EnvironmentObject var userContext: UserContext
     @FocusState.Binding var fieldInFocus: HomeViewField?
     
@@ -16,23 +16,9 @@ struct QuickSearchButton: View{
         
         HStack{
             SomeButtonWithActivityIndicator(text: "Quick Search", buttonAction: {
-                if self.homeViewHandler.isQuickSearchLoading {
-                    fieldInFocus = HomeViewField.none
-                    DispatchQueue.main.async {
-                        self.homeViewHandler.isQuickSearchLoading = false
-                        self.homeViewHandler.isShazamLoading = false
-                    }
-                } else {
-                    if !homeViewHandler.isShazamLoading{
-                        DispatchQueue.main.async {
-                            self.homeViewHandler.isQuickSearchLoading = true
-                            print("Calling inside HomeView handleQuickSearch")
-                            homeViewHandler.handleQuickSearch(searchQuery: homeViewHandler.searchQuery, target: userContext.user!.nativeLanguage ?? "DE")
-                            fieldInFocus = HomeViewField.none
-                        }
-                    }
-                }
-            }, systemName: "magnifyingglass", binding: $homeViewHandler.isQuickSearchLoading, width: 300)
+                homeViewController.handleQuickSearch();
+                fieldInFocus = HomeViewField.none;
+            }, systemName: "magnifyingglass", binding: $homeViewController.isQuickSearchLoading, width: 300)
         }
         .frame(width:300)
         

@@ -14,13 +14,12 @@ struct Song: Codable {
     var name: String?
     var lyrics: [String]?
     var translation: [String]?
-    var languageCode: String?
-    var detectedLanguage: String?
+    var language: String?
     var url: String?
     var album: String?
     
     private enum CodingKeys: String, CodingKey {
-        case id, artist, name, lyrics, translation, languageCode, detectedLanguage, url, album
+        case id, artist, name, lyrics, translation, language, url, album
     }
     
     init() {}
@@ -41,8 +40,7 @@ struct Song: Codable {
         name = try? container.decode(String.self, forKey: .name)
         lyrics = try? container.decode([String].self, forKey: .lyrics)
         translation = try? container.decode([String].self, forKey: .translation)
-        languageCode = try? container.decode(String.self, forKey: .languageCode)
-        detectedLanguage = try? container.decode(String.self, forKey: .detectedLanguage)
+        language = try? container.decode(String.self, forKey: .language)
         url = try? container.decode(String.self, forKey: .url)
         album = try? container.decode(String.self, forKey: .album)
     }

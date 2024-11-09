@@ -9,27 +9,43 @@ import Foundation
 
 class LyricsViewController: ObservableObject{
     
-    @Published var isWebViewShown = false
-    @Published var isAddToDeckViewShown = false
+    // Environment Objects
+    var userContext: UserContext?
+    var songContext: SongContext?
+    
     @Published var selectedWord: String = ""
     //For the WebView
+    @Published var isWebViewShown = false
     @Published var urlString: String = "https://www.google.com"
     //For creating a new card
+    @Published var isAddToDeckViewShown = false
     @Published var front: String = ""
     @Published var back: String = ""
     @Published var showCreateDeckAlert = false
     @Published var createDeckName = ""
     
-    func handleSplittingLine(line:String) -> [String]{
-        let separator = CharacterSet(charactersIn: " \n")
-        let words = line.components(separatedBy: separator).map { word -> String in
-            if word.hasSuffix("\n") {
-                return String(word.dropLast()) + "\n"
-            } else {
-                return word
-            }
-        }
-        return words
+    func setSelectedWord(word: String) {
+        self.selectedWord = self.cleanWord(word)
+    }
+    
+    func updateAddToDeckValues(_ word: String) {
+        self.setSelectedWord(word: word)
+        self.front = ""
+        self.back = self.cleanWord(word)
+        self.urlString = """
+        https://www.google.com/search?q=\(selectedWord)+\(
+            (LanguageUtil.getLanguageName(songContext!.song.language ?? "") ?? "").lowercased()
+        )+meaning
+        """
+        self.isAddToDeckViewShown.toggle()
+    }
+    
+    func updateGoogleTranslateValues(_ word: String) {
+        setSelectedWord(word: word)
+        urlString = """
+        https://translate.google.com/?sl=\(songContext!.song.language ?? "EN")&tl=\(userContext!.user!.nativeLanguage ?? "DE")&text=\(selectedWord.lowercased())&op=translate
+        """
+        isWebViewShown.toggle()
     }
     
     func cleanWord(_ word: String) -> String {

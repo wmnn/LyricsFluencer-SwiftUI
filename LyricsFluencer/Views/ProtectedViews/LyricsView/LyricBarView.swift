@@ -16,7 +16,7 @@ struct LyricBarView: View {
     
     var body: some View {
         
-        let words = lyricsViewController.handleSplittingLine(line: bar)
+        let words = LyricsUtil.getWordsFromString(line: bar)
         
         WrappingHStack(alignment: .leading){
             ForEach(0..<words.count, id:\.self){ idx in

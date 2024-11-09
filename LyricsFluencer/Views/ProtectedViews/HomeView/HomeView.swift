@@ -25,7 +25,7 @@ struct HomeView: View{
     @EnvironmentObject var userContext: UserContext
     @EnvironmentObject var deckContext: DeckContext
     
-    @StateObject var homeViewHandler = HomeViewController()
+    @StateObject var homeViewController = HomeViewController()
     
     @FocusState var fieldInFocus: HomeViewField?
     
@@ -43,16 +43,16 @@ struct HomeView: View{
                 
                     //handling Shazam
                     SomeButtonWithActivityIndicator(text: "Recognize Song ", buttonAction: {
-                        homeViewHandler.handleShazam()
-                    }, systemName: "shazam.logo.fill", binding: $homeViewHandler.isShazamLoading)
+                        homeViewController.handleShazam()
+                    }, systemName: "shazam.logo.fill", binding: $homeViewController.isShazamLoading)
                     
                     QuickSearchInput(
-                        homeViewHandler: self.homeViewHandler,
+                        homeViewHandler: self.homeViewController,
                         fieldInFocus: self.$fieldInFocus
                     )
                     
                     QuickSearchButton(
-                        homeViewHandler: self.homeViewHandler,
+                        homeViewController: self.homeViewController,
                         fieldInFocus: self.$fieldInFocus
                     )
                 
@@ -64,7 +64,17 @@ struct HomeView: View{
                 SomeButton(text: "Your Flashcards") {
                     self.appContext.navigate(to: Views.Flashcards)
                 }
+                
             }//Closing VStack
+            
+            if homeViewController.isErrorModalShown {
+                
+                ErrorModal(
+                    isErrorModalShown: $homeViewController.isErrorModalShown,
+                    message: homeViewController.errorMessage
+                )
+            }
+            
         }//Closing ZStack
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -76,6 +86,8 @@ struct HomeView: View{
                     Button("Logout") {
                         userContext.logout{ error in
                             guard error == nil else {
+                                homeViewController.errorMessage = "Couldn't log out user."
+                                homeViewController.isErrorModalShown = true
                                 return;
                             }
                             DispatchQueue.main.async{
@@ -90,9 +102,9 @@ struct HomeView: View{
             }
         }
         .onAppear{
-            self.homeViewHandler.appBrain = self.appContext
-            self.homeViewHandler.songContext = self.songContext
-            self.homeViewHandler.userContext = self.userContext
+            self.homeViewController.appBrain = self.appContext
+            self.homeViewController.songContext = self.songContext
+            self.homeViewController.userContext = self.userContext
             if deckContext.decks.count == 0 {
                 self.deckContext.fetchingDecks()
             }

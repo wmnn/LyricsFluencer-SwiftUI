@@ -14,18 +14,34 @@ struct BrowseView: View {
     
     
     var body: some View {
-        GeometryReader { g in
-            ScrollView{
-                
-                ManualSearchView(
-                    browseViewController: browseViewController
-                )
-                
-                if self.songContext.songResults.count > 1{
-                    SomeHeadline(text: "Search Results:", fontSize: 28)
+        ZStack {
+            
+            GeometryReader { g in
+                ScrollView{
                     
+                    ManualSearchView(
+                        browseViewController: browseViewController
+                    )
+                    
+                    if self.songContext.songResults.count > 1{
+                        SomeHeadline(text: "Search Results:", fontSize: 28)
+                        
+                        Divider()
+                        ForEach(Array(songContext.songResults.enumerated()), id: \.offset) { (index, song) in
+                            ResultView(
+                                song: song,
+                                gWidht: g.size.width,
+                                idx: index,
+                                browseViewController: browseViewController
+                            )
+                        }
+                    }
+                    
+                    Spacer()
+                    SomeHeadline(text: "Popular Songs:", fontSize: 28)
                     Divider()
-                    ForEach(Array(songContext.songResults.enumerated()), id: \.offset) { (index, song) in
+                    
+                    ForEach(Array(songContext.popularSongs.enumerated()), id: \.offset) { (index, song) in
                         ResultView(
                             song: song,
                             gWidht: g.size.width,
@@ -33,28 +49,24 @@ struct BrowseView: View {
                             browseViewController: browseViewController
                         )
                     }
+                    
+                    
                 }
-                
-                Spacer()
-                SomeHeadline(text: "Popular Songs:", fontSize: 28)
-                Divider()
-                
-                ForEach(Array(songContext.popularSongs.enumerated()), id: \.offset) { (index, song) in
-                    ResultView(
-                        song: song,
-                        gWidht: g.size.width,
-                        idx: index,
-                        browseViewController: browseViewController
-                    )
+                .onAppear{
+                    browseViewController.songContext = songContext;
+                    if songContext.popularSongs.count == 0 {
+                        self.songContext.updatePopularSongs()
+                    }
                 }
-                
-                
             }
-            .onAppear{
-                browseViewController.songContext = songContext;
-                if songContext.popularSongs.count == 0 {
-                    self.songContext.updatePopularSongs()
-                }
+            
+            
+            if browseViewController.isErrorModalShown {
+                
+                ErrorModal(
+                    isErrorModalShown: $browseViewController.isErrorModalShown,
+                    message: browseViewController.errorMessage
+                )
             }
         }
         

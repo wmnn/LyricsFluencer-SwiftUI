@@ -15,7 +15,6 @@ struct SettingsView: View {
     @EnvironmentObject var songContext: SongContext
     @EnvironmentObject var userContext: UserContext
     @StateObject var settingsViewController: SettingsViewController = SettingsViewController()
-    @State var isErrorModalShown = false
     
     var body: some View {
         ZStack{

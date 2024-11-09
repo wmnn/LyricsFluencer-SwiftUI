@@ -77,6 +77,7 @@
 		C4FEEAA92CDB4E15003BA67E /* DeleteAccountModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FEEAA82CDB4E10003BA67E /* DeleteAccountModal.swift */; };
 		C4FEEAAC2CDB5075003BA67E /* DeleteAccountButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FEEAAB2CDB5071003BA67E /* DeleteAccountButton.swift */; };
 		C4FEEAB22CDB8669003BA67E /* ErrorModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FEEAB12CDB865F003BA67E /* ErrorModal.swift */; };
+		C4FEEAB42CDB8E97003BA67E /* LyricsUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FEEAB32CDB8E92003BA67E /* LyricsUtil.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -149,6 +150,7 @@
 		C4FEEAA82CDB4E10003BA67E /* DeleteAccountModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountModal.swift; sourceTree = "<group>"; };
 		C4FEEAAB2CDB5071003BA67E /* DeleteAccountButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountButton.swift; sourceTree = "<group>"; };
 		C4FEEAB12CDB865F003BA67E /* ErrorModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorModal.swift; sourceTree = "<group>"; };
+		C4FEEAB32CDB8E92003BA67E /* LyricsUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsUtil.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -411,6 +413,7 @@
 		C4FEEAA52CDB49E5003BA67E /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				C4FEEAB32CDB8E92003BA67E /* LyricsUtil.swift */,
 				C4FEEAA62CDB49ED003BA67E /* LanguageUtil.swift */,
 			);
 			path = Util;
@@ -515,6 +518,7 @@
 				C4204541299945D2009699F7 /* LyricsApiData.swift in Sources */,
 				C475365E2CD80B5B006F71E7 /* Card.swift in Sources */,
 				C4B0824F29B4FEA800640349 /* PlanApiData.swift in Sources */,
+				C4FEEAB42CDB8E97003BA67E /* LyricsUtil.swift in Sources */,
 				C420453A29992A78009699F7 /* LyricsView.swift in Sources */,
 				C406045929A21BEC00D56C0D /* Song.swift in Sources */,
 				C47536762CD8ADC5006F71E7 /* PopUpWebView.swift in Sources */,
