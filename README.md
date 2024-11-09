@@ -4,11 +4,11 @@ The projects comprises 2 repositories, the NextJS [backend](https://github.com/w
 
 ## What can you do with the app ?
 
-The goal of the app is to learn a language through music lyrics. Each bar will be translated to your mother tongue and a bar will be displayed under the bar of the orginal lyrics. You can click on a word and add it to your vocabulary deck. You can also google the meaning and display conjugation within the app. It is possible to recognize the song you are currently playing through the ShazamKit.
+The goal of the app is to learn a language through music lyrics. Each bar will display a bar, that will be translated to your mother tongue, under the original bar. You can click on a word and add it to your vocabulary deck. You can also google the meaning and display the conjugation within the app. It is possible to recognize the song you are currently playing through the ShazamKit.
 
 ## How does the app work ?
 
-The app depends on a [backend](https://github.com/wmnn/LyricsFluencerBackend), that will also display a React/NextJS website, but not feature complete. You can either do a quick search (the lyrics will be displayed afterwards without selecting the right song) or click on browse songs and select the right song manually. In both cases an api endpoint will be called. The backend will then use the musixmatch api to find a corresponding song in relation to the search query. 
+The app depends on a [backend](https://github.com/wmnn/LyricsFluencerBackend), that will also display a React/NextJS website. You can either do a quick search (the lyrics will be displayed afterwards without selecting the right song) or click on browse songs and select the right song manually. In both cases an api endpoint will be called. The backend will then use the musixmatch api to find a corresponding song in relation to the search query. 
 
 The musixmatch api reponse will contain a link to a site where the lyrics are displayed. On quicksearch the backend will repond with the lyrics and translated lyrics right away. On manual search, where the user can select the right song, only the search results will be displayed and after clicking on the right song, the api will be called and the lyrics will be generated. Look into the "How the lyrics are generated" section to find out more about how the lyrics are generated.
 
@@ -26,8 +26,20 @@ If the lyrics couldn't be scraped, the limited results for non commercial use fr
 In 2023 the app was available in the apple app store, but I didn't renew my app developer license. You can clone the repository and run it local in XCode.
 
 - Run the [backend](https://github.com/wmnn/LyricsFluencerBackend)
-- Add api route to `Models > Constants.swift`
+- Create a firebase project
 - Add a firebase GoogleService-Info.plist file inside ./LyricsFluencer
+- Create a firestore database
+- This firestore rules will work (in development): 
+```
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
+```
+- Add the api route to `Models > Constants.swift`
 
 ## Possible future implementations:
 
@@ -36,9 +48,7 @@ In 2023 the app was available in the apple app store, but I didn't renew my app 
 
 ## Previews
 
-A video preview is available.
-
-[![Preview](https://img.youtube.com/vi/r6hOcPQAIJY/0.jpg)](https://youtu.be/r6hOcPQAIJY)
+A [video preview](https://youtu.be/r6hOcPQAIJY) is available.
 
 ### 1. Recognize a Song with Shazam or Search a Song
 
