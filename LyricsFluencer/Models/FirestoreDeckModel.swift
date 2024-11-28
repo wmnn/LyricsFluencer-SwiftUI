@@ -55,16 +55,66 @@ class FirestoreDeckModel: DeckProtocol {
             
             // Process the documents into Deck objects
             var decks: [Deck] = []
+            let dispatchGroup = DispatchGroup()
+            
             for document in querySnapshot?.documents ?? [] {
-                // Create a Deck object from the document data
-                let deck = Deck(deckName: document.documentID, cards: [])
-                decks.append(deck)
+                
+                dispatchGroup.enter()
+                
+                self.getCards(deckReference: document.reference) { cards in
+                    let deck = Deck(deckName: document.documentID, cards: cards)
+                    decks.append(deck)
+                    dispatchGroup.leave()
+                }
             }
             
-            // Call the completion handler on the main thread
-            DispatchQueue.main.async {
+            // After all asynchronous tasks are done, call the completion handler
+            dispatchGroup.notify(queue: .main) {
+                // Call the completion handler on the main thread
                 completion(decks)
             }
+        }
+    }
+    
+    func getCards(deckReference: DocumentReference, completion: @escaping ([Card]) -> Void) {
+        deckReference.collection("cards").getDocuments { (querySnapshot, error) in
+            
+            if let error = error {
+                print("Error getting decks: \(error)")
+                // Return an empty array in case of error
+                DispatchQueue.main.async {
+                    completion([])
+                }
+                return
+            }
+            
+            // Process the documents into Deck objects
+            var cards: [Card] = []
+            
+            // Loop through the documents
+            for document in querySnapshot?.documents ?? [] {
+                // Get the data from the document
+                let data = document.data()
+                
+                // Extract the fields from the document data (assuming fields are present)
+                if let front = data["front"] as? String,
+                   let back = data["back"] as? String,
+                   let interval = data["interval"] as? Int,
+                   let dueTimestamp = data["due"] as? Timestamp
+                {
+                    let due = dueTimestamp.dateValue()
+                    let card = Card(front: front, back: back, interval: interval, due: due, id: document.documentID)
+                    cards.append(card)
+                } else {
+                    // If this block is not being executed, this helps debug why
+                    print("Skipping document due to missing or incorrect data fields")
+                }
+            }
+            
+            DispatchQueue.main.async {
+                completion(cards)
+            }
+
         }
     }
 
@@ -116,26 +166,4 @@ class FirestoreDeckModel: DeckProtocol {
         }
     }
     
-    func getDecks(completion: @escaping (QuerySnapshot?, Error?) -> Void) {
-        let uid = UserModel.getCurrentUserId()
-        self.db.collection("flashcards").document(uid).collection("decks").getDocuments() { (querySnapshot, error) in
-            if let error = error {
-                print("Error getting subcollection: \(error)")
-                completion(nil, error)
-            } else {
-                completion(querySnapshot, nil)
-            }
-        }
-    }
-    
-    func getCards(reference: DocumentReference, completion: @escaping (QuerySnapshot?, Error?) -> Void) {
-        reference.collection("cards").getDocuments { (cardsQuerySnapshot, error) in
-            if let error = error {
-                print("Error getting subcollection: \(error)")
-                completion(nil, error)
-            } else {
-                completion(cardsQuerySnapshot, nil)
-            }
-        }
-    }
 }
