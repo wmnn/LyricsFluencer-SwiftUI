@@ -8,23 +8,6 @@
 import Foundation
 
 class DecksViewHandler: ObservableObject{
-    var appBrain: AppContext?
-    var deckContext: DeckContext!
     @Published var showCreateDeckAlert = false
     @Published var createDeckName = ""
-    
-    
-    func handleSelectedADeck(deckName: String, cards: [Card]){
-        //Selected a deck
-        self.deckContext.selectedDeck.deckName = deckName
-        self.deckContext.selectedDeck.cards = cards
-        self.appBrain!.navigate(to: Views.CardsView)
-    }
-    func handleCountDueCards(cards: [Card]) -> Int{
-        let today = Date()
-        let filteredCards = cards.filter { card in
-            return card.due < today
-        }
-        return Int(filteredCards.count)
-    } 
 }

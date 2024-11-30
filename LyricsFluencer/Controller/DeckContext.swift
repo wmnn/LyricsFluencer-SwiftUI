@@ -27,7 +27,9 @@ class DeckContext: ObservableObject {
     func fetchingDecks(completion: @escaping ([Deck]?) -> Void) {
         deckModel.fetchingDecks{ decks in
             guard decks != nil else {
-                self.decks = [];
+                DispatchQueue.main.async {
+                    self.decks = [];
+                }
                 completion(nil);
                 return;
             }
@@ -64,6 +66,49 @@ class DeckContext: ObservableObject {
             }
             
         }
+        
+    }
+    
+    func updateCard(deckName: String, cardId: String, newCard: Card) {
+        if let deckIdx = self.decks.firstIndex(where: { $0.deckName == deckName }),
+           let cardIdx = self.decks[deckIdx].cards?.firstIndex(where: { $0.id == cardId }) {
+                      
+            self.decks[deckIdx].cards?[cardIdx] = newCard
+            self.selectedDeck = decks[deckIdx];
+        }
+    }
+    
+    func deleteCard(deckName: String, cardId: String) {
+     
+        let newDecks = self.decks.map { deck in
+            
+            if deck.deckName == self.selectedDeck.deckName {
+            
+                let filteredCards = deck.cards?.filter { card in
+                    return card.id != cardId
+                }
+
+                var updatedDeck = deck
+                updatedDeck.cards = filteredCards
+                self.selectedDeck.cards = filteredCards
+                return updatedDeck
+            }
+            
+            return deck
+        }
+        
+        self.decks = newDecks
+    }
+    
+    func handleCountDueCards(_ deck: Deck) -> Int{
+        
+        let cards = deck.cards ?? [];
+        let today = Date()
+        let filteredCards = cards.filter { card in
+            return card.due < today
+        }
+        
+        return Int(filteredCards.count)
         
     }
 }

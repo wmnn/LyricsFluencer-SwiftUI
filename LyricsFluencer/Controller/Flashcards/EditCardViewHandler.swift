@@ -10,97 +10,46 @@ import FirebaseFirestore
 
 
 class EditCardsViewHandler: ObservableObject {
-    let db = Firestore.firestore()
-    let defaults = UserDefaults.standard
-    var appBrain: AppContext?
-    var deckContext: DeckContext!
-    @Published var front: String = ""
-    @Published var back: String = ""
-    @Published var selectedCardID: String = ""
+  
+    var cardContext: CardContext!
     @Published var isEditCardAlertShown: Bool = false
     @Published var isDeleteCardAlertShown: Bool = false
     
-    
-    func handleIsEditCardClicked(front: String, back: String, id: String){
-        self.front = front
-        self.back = back
-        self.selectedCardID = id
+    func handleIsEditCardClicked(_ card: Card) {
+        self.cardContext.selectedCard = card;
+        self.cardContext.tmpCard = Card(card)
         self.isEditCardAlertShown = true
     }
+
+    func handleIsDeleteCardAlertClicked(_ card: Card){
+        self.cardContext.selectedCard = card;
+        self.cardContext.tmpCard = Card(card)
+        self.isDeleteCardAlertShown = true
+    }
+    
     func handleCancel(){
         self.isEditCardAlertShown = false
         self.isDeleteCardAlertShown = false
+        self.cardContext.selectedCard = nil;
     }
-    func handleEditCard(){
-        let uid = UserModel.getCurrentUserId()
-        self.db.collection("flashcards").document(uid).collection("decks").document(self.deckContext.selectedDeck.deckName).collection("cards").document(self.selectedCardID).setData([
-            "front" : self.front,
-            "back" : self.back
-            ], merge: true){ err in
-            if let err = err {
-                print("Error while editing card \(err)")
-            } else {
-                // Filter the decks array and create a new array with updated decks
-                let newDecks = self.deckContext.decks.map { deck in
-                    if deck.deckName == self.deckContext.selectedDeck.deckName {
-                        // If deck name matches selected deck, filter the cards array and create a new array with updated cards
-                        let newCards = deck.cards?.map { card in
-                            if card.id == self.selectedCardID {
-                                let updatedCard = Card(front: self.front, back: self.back, interval: card.interval, due: card.due, id: card.id)
-                                return updatedCard
-                            } else {
-                                return card
-                            }
-                        }
-                        // Update the deck's cards property with the new array of cards
-                        var updatedDeck = deck
-                        updatedDeck.cards = newCards
-                        self.deckContext.selectedDeck.cards = newCards
-                        return updatedDeck
-                    } else {
-                        // For all other decks, return them as is
-                        return deck
-                    }
-                }
-                // Update the appBrain's decks array with the new array of decks
-                self.deckContext.decks = newDecks
-                self.isEditCardAlertShown = false
+    
+    func handleEdit() {
+        cardContext.editCard() { updatedCard in
+            guard updatedCard != nil else {
+                return;
             }
+            self.isEditCardAlertShown = false
+            self.cardContext.selectedCard = nil;
         }
-        
     }
-    func handleIsDeleteCardAlertClicked(id: String){
-        self.selectedCardID = id
-        self.isDeleteCardAlertShown = true
-    }
-    func handleDeleteCard(){
-        let uid = UserModel.getCurrentUserId()
-        
-        self.db.collection("flashcards").document(uid).collection("decks").document(self.deckContext.selectedDeck.deckName).collection("cards").document(self.selectedCardID).delete(){ err in
-            if let err = err {
-                print("Error while deleting deck \(err)")
-            } else {
-                // Filter the decks array and create a new array with updated decks
-                let newDecks = self.deckContext.decks.map { deck in
-                    if deck.deckName == self.deckContext.selectedDeck.deckName {
-                        // If deck name matches selected deck, filter the cards array and create a new array with updated cards
-                        let newCards = deck.cards?.filter { card in
-                            return card.id != self.selectedCardID
-                        }
-                        // Update the deck's cards property with the new array of cards
-                        var updatedDeck = deck
-                        updatedDeck.cards = newCards
-                        self.deckContext.selectedDeck.cards = newCards
-                        return updatedDeck
-                    } else {
-                        // For all other decks, return them as is
-                        return deck
-                    }
-                }
-                // Update the appBrain's decks array with the new array of decks
-                self.deckContext.decks = newDecks
-                self.isDeleteCardAlertShown = false
+    
+    func handleDelete() {
+        cardContext.deleteCard { isDeleted in
+            guard isDeleted == true else {
+                return;
             }
+            self.isDeleteCardAlertShown = false
+            self.cardContext.selectedCard = nil;
         }
     }
 }

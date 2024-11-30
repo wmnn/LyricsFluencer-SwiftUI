@@ -26,6 +26,15 @@ struct Card: Hashable, Identifiable, Codable{
         self.due = due
         self.id = id
     }
+    
+    init(_ card: Card) {
+        self.front = card.front
+        self.back = card.back
+        self.interval = card.interval
+        self.due = card.due
+        self.id = card.id
+    }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         

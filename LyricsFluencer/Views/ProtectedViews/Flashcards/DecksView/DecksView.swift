@@ -23,19 +23,16 @@ struct DecksView: View {
                 .ignoresSafeArea()
             VStack{
                 ForEach(deckContext.decks) { deck in
-                    DeckView{
-                        return deck
-                    }
+                    DeckView(deck: deck)
                 }
+                
                 //Create a new deck Button
                 Button {
                     self.decksViewHandler.showCreateDeckAlert.toggle()
                 } label: {
                     TextWithIcon(text: "Add Deck", systemName: "plus")
                 }
-                .onAppear{
-                    self.decksViewHandler.appBrain = self.appBrain
-                }
+                
                 //Create a new deck alert
                 .alert("Create deck", isPresented: $decksViewHandler.showCreateDeckAlert, actions: {
                     TextField("Deckname", text: $decksViewHandler.createDeckName)

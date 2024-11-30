@@ -10,6 +10,7 @@ struct EditCardsViewCard: View {
     
     @EnvironmentObject var appBrain: AppContext
     @StateObject var editCardsViewHandler: EditCardsViewHandler = EditCardsViewHandler()
+    @EnvironmentObject var cardContext: CardContext
     
     let card: Card
         
@@ -26,12 +27,12 @@ struct EditCardsViewCard: View {
                 }
                 Spacer()
                 Button {
-                    editCardsViewHandler.handleIsEditCardClicked(front: card.front, back: card.back, id: card.id)
+                    editCardsViewHandler.handleIsEditCardClicked(card)
                 } label: {
                     Image(systemName: "pencil")
                 }
                 Button {
-                    editCardsViewHandler.handleIsDeleteCardAlertClicked(id: card.id)
+                    editCardsViewHandler.handleIsDeleteCardAlertClicked(card)
                 } label: {
                     Image(systemName: "trash")
                 }
@@ -46,12 +47,12 @@ struct EditCardsViewCard: View {
             }
             .cornerRadius(18)
             .alert("Edit Card", isPresented: self.$editCardsViewHandler.isEditCardAlertShown, actions: {
-                TextField("Front", text: self.$editCardsViewHandler.front)
+                TextField("Front", text: self.$cardContext.tmpCard.front)
                     .autocorrectionDisabled(true)
-                TextField("Back", text: self.$editCardsViewHandler.back)
+                TextField("Back", text: self.$cardContext.tmpCard.back)
                     .autocorrectionDisabled(true)
                 Button("Save Changes", action: {
-                    editCardsViewHandler.handleEditCard()
+                    editCardsViewHandler.handleEdit()
                 })
                 Button("Cancel", role: .cancel, action: {
                     editCardsViewHandler.handleCancel()
@@ -61,7 +62,7 @@ struct EditCardsViewCard: View {
             })
             .alert("Do you want to delete this card?", isPresented: self.$editCardsViewHandler.isDeleteCardAlertShown, actions: {
                 Button("Yes, delete", action: {
-                    editCardsViewHandler.handleDeleteCard()
+                    editCardsViewHandler.handleDelete()
                 })
                 Button("Cancel", role: .cancel, action: {
                     editCardsViewHandler.handleCancel()
@@ -70,7 +71,7 @@ struct EditCardsViewCard: View {
                 //Text("Are you sure?")
             })
             .onAppear{
-                self.editCardsViewHandler.appBrain = self.appBrain
+                self.editCardsViewHandler.cardContext = self.cardContext
             }
         
     }

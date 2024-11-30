@@ -11,33 +11,39 @@ import FirebaseFirestore
 struct CardView: View {
     
     @EnvironmentObject var appBrain: AppContext
-    @StateObject var cardViewHandler: CardViewHandler = CardViewHandler()
+    @EnvironmentObject var cardContext: CardContext
+    @EnvironmentObject var deckContext: DeckContext
     
     var body: some View {
         ZStack{
             Color.background
                 .ignoresSafeArea()
             VStack{
-                if cardViewHandler.filteredDeck.count != 0 && cardViewHandler.index < cardViewHandler.filteredDeck.count{
-                    Text(cardViewHandler.filteredDeck[cardViewHandler.index].front)
-                    if cardViewHandler.isFrontClicked{
-                        Text(cardViewHandler.filteredDeck[cardViewHandler.index].back)
+                if cardContext.filteredDeck.count != 0 && cardContext.currentIdxInFilteredDeck < cardContext.filteredDeck.count{
+                    
+                    Text(cardContext.filteredDeck[cardContext.currentIdxInFilteredDeck].front)
+                    
+                    if cardContext.isFrontClicked{
+                        Text(cardContext.filteredDeck[cardContext.currentIdxInFilteredDeck].back)
                     }
                 }
             }
         }
         .onTapGesture {
-            self.cardViewHandler.isFrontClicked.toggle()
+            self.cardContext.isFrontClicked.toggle()
         }
         .onAppear{
-            self.cardViewHandler.appBrain = self.appBrain
-            cardViewHandler.handleFilteringForDueCards()
+            self.cardContext.appBrain = self.appBrain
+            self.cardContext.deckContext = self.deckContext
+            cardContext.handleFilteringForDueCards()
         }
-        if cardViewHandler.isFrontClicked && cardViewHandler.index < cardViewHandler.filteredDeck.count{
+        
+        if cardContext.isFrontClicked && cardContext.currentIdxInFilteredDeck < cardContext.filteredDeck.count {
+            
             ZStack{
                 HStack{
                     Button {
-                        self.cardViewHandler.handleAgain()
+                        self.cardContext.handleAgain()
                     } label: {
                         Text("Again")
                             .font(.system(size:24))
@@ -51,7 +57,7 @@ struct CardView: View {
                             .cornerRadius(18)
                     }
                     Button {
-                        self.cardViewHandler.handleGood()
+                        self.cardContext.handleGood()
                     } label: {
                         Text("Good")
                             .font(.system(size:24))

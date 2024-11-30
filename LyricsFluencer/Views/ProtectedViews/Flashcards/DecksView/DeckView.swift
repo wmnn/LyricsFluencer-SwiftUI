@@ -13,10 +13,6 @@ struct DeckView: View {
     @StateObject var decksViewHandler: DecksViewHandler = DecksViewHandler()
     
     let deck: Deck
-
-    init(@ViewBuilder _ getDeck: () -> Deck) {
-        self.deck = getDeck()
-    }
     
     var body: some View{
         
@@ -24,10 +20,11 @@ struct DeckView: View {
             
         } label: {
             HStack{
-                let countDueCards = decksViewHandler.handleCountDueCards(cards: deck.cards ?? [])
+                let countDueCards = deckContext.handleCountDueCards(deck)
                 if countDueCards > 0{
                     Button {
-                        decksViewHandler.handleSelectedADeck(deckName: deck.deckName, cards: deck.cards ?? [])
+                        deckContext.selectedDeck = deck
+                        self.appBrain.navigate(to: Views.CardsView)
                     } label: {
                         Spacer()
                         Text(deck.deckName)
@@ -38,7 +35,7 @@ struct DeckView: View {
                         Text("\(countDueCards)")
                             .foregroundColor(Color("secondaryColor"))
                     }
-                }else{
+                } else {
                     Spacer()
                     Text(deck.deckName)
                         .bold()
@@ -58,6 +55,7 @@ struct DeckView: View {
                         .font(.system(size:24))
                         .foregroundColor(Color.white)
                 }
+                
             }
             .frame(width: 300, height: 20, alignment: .center)
             .padding()

@@ -49,6 +49,7 @@ struct LyricsFluencer: App {
     @StateObject var deckContext = DeckContext()
     @StateObject var songContext = SongContext()
     @StateObject var userContext = UserContext()
+    @StateObject var cardContext = CardContext()
     
     init() {
         FirebaseApp.configure()
@@ -117,12 +118,15 @@ struct LyricsFluencer: App {
                                 .environmentObject(deckContext)
                                 .environmentObject(songContext)
                                 .environmentObject(userContext)
+                                .environmentObject(cardContext)
+                                .environmentObject(cardContext)
                         case Views.EditCardsView.rawValue:
                             EditCardsView()
                                 .environmentObject(appContext)
                                 .environmentObject(deckContext)
                                 .environmentObject(songContext)
                                 .environmentObject(userContext)
+                                .environmentObject(cardContext)
                         case Views.Settings.rawValue:
                             SettingsView()
                                 .environmentObject(appContext)

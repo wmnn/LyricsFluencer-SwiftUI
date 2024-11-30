@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EditCardsView: View {
     
-    @EnvironmentObject var appBrain: AppContext
+    @EnvironmentObject var cardContext: CardContext
     @EnvironmentObject var deckContext: DeckContext
     @StateObject var editCardViewHandler = EditCardsViewHandler()
     
@@ -23,7 +23,8 @@ struct EditCardsView: View {
         }
         .navigationTitle(deckContext.selectedDeck.deckName)
         .onAppear{
-            self.editCardViewHandler.appBrain = self.appBrain
+            self.editCardViewHandler.cardContext = self.cardContext
+            self.cardContext.deckContext = self.deckContext
         }
     }
 }
