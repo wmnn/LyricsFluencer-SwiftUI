@@ -48,8 +48,10 @@ class EditCardsViewHandler: ObservableObject {
             guard isDeleted == true else {
                 return;
             }
-            self.isDeleteCardAlertShown = false
-            self.cardContext.selectedCard = nil;
+            DispatchQueue.main.async {
+                self.isDeleteCardAlertShown = false
+                self.cardContext.selectedCard = nil;
+            }
         }
     }
 }

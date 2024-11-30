@@ -32,15 +32,44 @@ class CardModel {
     }
     
     func deleteCard(_ deckName: String, _ cardId: String, completion: @escaping (Bool) -> Void) {
-        let uid = UserModel.getCurrentUserId()
         
-        self.db.collection("flashcards").document(uid).collection("decks").document(deckName).collection("cards").document(cardId).delete(){ err in
-            if let err = err {
-                print("Error while deleting deck \(err)")
-                completion(false);
-            } else {
-                completion(true);
+        UserModel.getToken{ token, error in
+            
+            guard error == nil else {
+                return;
             }
+            let urlString = "\(STATIC.API_ROOT)/flashcards/decks/cards"
+            
+            if let url = URL(string: urlString){
+                var request = URLRequest(url: url)
+                request.httpMethod = "DELETE"
+                request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
+                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                
+                let json: [String: Any] = ["deckName": deckName, "id": cardId]
+                request.httpBody = try? JSONSerialization.data(withJSONObject: json)
+
+                
+                let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                    if let err = error {
+                        completion(false);
+                        print("Error while sending request: \(err)")
+                        return
+                    }
+
+                    print((response as? HTTPURLResponse)!.statusCode)
+                    guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
+                        completion(false);
+                        print("Error while receiving response")
+                        return
+                    }
+                    
+                    //Successfull Request
+                    completion(true);
+                }
+                task.resume()
+            }
+            
         }
         
     }

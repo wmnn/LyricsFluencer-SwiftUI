@@ -80,24 +80,27 @@ class DeckContext: ObservableObject {
     
     func deleteCard(deckName: String, cardId: String) {
      
-        let newDecks = self.decks.map { deck in
-            
-            if deck.deckName == self.selectedDeck.deckName {
-            
-                let filteredCards = deck.cards?.filter { card in
-                    return card.id != cardId
-                }
+        DispatchQueue.main.async {
+            let newDecks = self.decks.map { deck in
+                
+                if deck.deckName == self.selectedDeck.deckName {
+                
+                    let filteredCards = deck.cards?.filter { card in
+                        return card.id != cardId
+                    }
 
-                var updatedDeck = deck
-                updatedDeck.cards = filteredCards
-                self.selectedDeck.cards = filteredCards
-                return updatedDeck
+                    var updatedDeck = deck
+                    updatedDeck.cards = filteredCards
+                    self.selectedDeck.cards = filteredCards
+                    return updatedDeck
+                }
+                
+                return deck
             }
             
-            return deck
+            self.decks = newDecks
         }
         
-        self.decks = newDecks
     }
     
     func handleCountDueCards(_ deck: Deck) -> Int{
