@@ -32,26 +32,44 @@ class CardContext: ObservableObject {
         
     }
     
+    func calculateNextInterval(_ currentInterval: Int) -> Int {
+        if currentInterval == 0 {
+            return 1
+        }
+        return currentInterval * 2
+    }
+    
+    func calculateDueDate(interval: Int) -> Date {
+        let currentDate = Date()
+        var dateComponent = DateComponents()
+        dateComponent.day = interval
+        return Calendar.current.date(byAdding: dateComponent, to: currentDate)!
+    }
+    
     func handleGood() {
         
-        let currentCard = filteredDeck[currentIdxInFilteredDeck];
-        print(currentCard)
+        let uid = UserModel.getCurrentUserId()
+        let deckName = self.deckContext.selectedDeck.deckName;
+        var updatedCard = Card(filteredDeck[currentIdxInFilteredDeck]);
+        updatedCard.interval = calculateNextInterval(updatedCard.interval)
+        updatedCard.due = calculateDueDate(interval: updatedCard.interval)
         
-        cardModel.handleGood(card: currentCard, deckName: self.deckContext.selectedDeck.deckName) { newCard in
-        
-            DispatchQueue.main.async {
-            
-                // Replace the old card instance with the updated one
-                self.deckContext.updateCard(deckName: self.deckContext.selectedDeck.deckName, cardId: newCard.id, newCard: newCard)
-                
-                self.currentIdxInFilteredDeck += 1
-                
-                // Completed all due cards
-                if self.currentIdxInFilteredDeck == self.filteredDeck.count{
-                    self.appBrain!.path.removeLast()
-                }
-                self.isFrontClicked.toggle()
+        cardModel.updateCard(deckName: deckName, updatedCard: updatedCard) { newCard in
+            guard newCard != nil else {
+                return;
             }
+            
+            // Replace the old card instance with the updated one
+            self.deckContext.updateCard(deckName: deckName, cardId: updatedCard.id, newCard: updatedCard)
+            
+            self.currentIdxInFilteredDeck += 1
+            
+            // Completed all due cards
+            if self.currentIdxInFilteredDeck == self.filteredDeck.count{
+                self.appBrain!.path.removeLast()
+            }
+            self.isFrontClicked.toggle()
+            
         }
         
     }
@@ -67,7 +85,7 @@ class CardContext: ObservableObject {
         
         DispatchQueue.main.async {
             
-            self.cardModel.editCard(deckName: deckName, updatedCard: currentCard) { card in
+            self.cardModel.updateCard(deckName: deckName, updatedCard: currentCard) { card in
                 
                 // updating card in deck context
                 self.deckContext.updateCard(deckName: deckName, cardId: currentCard.id, newCard: currentCard)
@@ -85,7 +103,7 @@ class CardContext: ObservableObject {
         let deckName = self.deckContext.selectedDeck.deckName;
         let updatedCard = self.tmpCard;
         
-        cardModel.editCard(deckName: deckName, updatedCard: updatedCard) { card in
+        cardModel.updateCard(deckName: deckName, updatedCard: updatedCard) { card in
             guard card != nil else {
                 completion(nil)
                 return;
