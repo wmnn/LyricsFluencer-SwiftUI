@@ -9,7 +9,7 @@ import Firebase
 import FirebaseAuth
 import FirebaseFirestore
 
-class FirestoreDeckModel: DeckProtocol {
+class DeckModel: DeckProtocol {
     
     let db = Firestore.firestore();
     
@@ -94,9 +94,7 @@ class FirestoreDeckModel: DeckProtocol {
                 }
                 task.resume()
             }
-            
         }
-        
     }
     
     func handleAddToDeck(front: String, back: String, deckName: String) -> String {
@@ -123,26 +121,48 @@ class FirestoreDeckModel: DeckProtocol {
         
         return documentID
     }
+    
     func handleDeleteDeck(deckName: String, completion: @escaping (String) -> Void) {
-        let uid = UserModel.getCurrentUserId()
         
-        let subcollectionRef = db.collection("flashcards").document(uid).collection("decks").document(deckName).collection("cards")
-        subcollectionRef.getDocuments { (querySnapshot, error) in
-            if let error = error {
-                print("Error getting documents: \(error)")
-            } else {
-                for document in querySnapshot!.documents {
-                    document.reference.delete()
-                }
-                self.db.collection("flashcards").document(uid).collection("decks").document(deckName).delete(){ err in
-                    if let err = err{
-                        print("Error while deleting deck \(err)")
-                    } else {
-                        completion(deckName)
-                    }
-                }
+        UserModel.getToken{ token, error in
+            
+            guard error == nil else {
+                return;
             }
+            let urlString = "\(STATIC.API_ROOT)/flashcards/decks"
+            
+            if let url = URL(string: urlString){
+                var request = URLRequest(url: url)
+                request.httpMethod = "DELETE"
+                request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
+                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                
+                let json: [String: String] = ["deckName": deckName]
+                request.httpBody = try? JSONSerialization.data(withJSONObject: json)
+
+                
+                let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                    if let err = error {
+                        completion(deckName);
+                        print("Error while sending request: \(err)")
+                        return
+                    }
+
+                    print((response as? HTTPURLResponse)!.statusCode)
+                    guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
+                        completion(deckName);
+                        print("Error while receiving response")
+                        return
+                    }
+                    
+                    //Successfull Request
+                    completion(deckName);
+                }
+                task.resume()
+            }
+            
         }
+        
     }
     
 }

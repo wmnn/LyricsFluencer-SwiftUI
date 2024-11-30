@@ -30,7 +30,7 @@
 		C44F2D3129AA986B004A28AA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F2D3029AA986B004A28AA /* HomeViewController.swift */; };
 		C44F2D3329AAA06D004A28AA /* LyricsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F2D3229AAA06D004A28AA /* LyricsViewController.swift */; };
 		C47536542CD7EC48006F71E7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C47536532CD7EC48006F71E7 /* GoogleService-Info.plist */; };
-		C47536562CD7ED88006F71E7 /* FirestoreDeckModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47536552CD7ED85006F71E7 /* FirestoreDeckModel.swift */; };
+		C47536562CD7ED88006F71E7 /* DeckModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47536552CD7ED85006F71E7 /* DeckModel.swift */; };
 		C47536592CD7FEA9006F71E7 /* DeckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47536582CD7FEA7006F71E7 /* DeckView.swift */; };
 		C475365C2CD8014D006F71E7 /* EditCardsViewCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C475365B2CD80148006F71E7 /* EditCardsViewCard.swift */; };
 		C475365E2CD80B5B006F71E7 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = C475365D2CD80B59006F71E7 /* Card.swift */; };
@@ -51,6 +51,7 @@
 		C47536832CD8CD9C006F71E7 /* ApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47536822CD8CD98006F71E7 /* ApiError.swift */; };
 		C492FA3429BA52CD003A07E9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C492FA3329BA52CD003A07E9 /* User.swift */; };
 		C49E86072CFAE44200177B7B /* CreateDeckResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49E86062CFAE43D00177B7B /* CreateDeckResponse.swift */; };
+		C49E86092CFAE5C200177B7B /* DeckProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49E86082CFAE5BF00177B7B /* DeckProtocol.swift */; };
 		C4B0824F29B4FEA800640349 /* PlanApiData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B0824E29B4FEA800640349 /* PlanApiData.swift */; };
 		C4B38AAA29A3602300EEFAF9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B38AA929A3602300EEFAF9 /* Constants.swift */; };
 		C4B38AAD29A39B2500EEFAF9 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = C4B38AAC29A39B2500EEFAF9 /* WrappingHStack */; };
@@ -105,7 +106,7 @@
 		C44F2D3029AA986B004A28AA /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		C44F2D3229AAA06D004A28AA /* LyricsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsViewController.swift; sourceTree = "<group>"; };
 		C47536532CD7EC48006F71E7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		C47536552CD7ED85006F71E7 /* FirestoreDeckModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDeckModel.swift; sourceTree = "<group>"; };
+		C47536552CD7ED85006F71E7 /* DeckModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckModel.swift; sourceTree = "<group>"; };
 		C47536582CD7FEA7006F71E7 /* DeckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckView.swift; sourceTree = "<group>"; };
 		C475365B2CD80148006F71E7 /* EditCardsViewCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardsViewCard.swift; sourceTree = "<group>"; };
 		C475365D2CD80B59006F71E7 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
@@ -126,6 +127,7 @@
 		C47536822CD8CD98006F71E7 /* ApiError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiError.swift; sourceTree = "<group>"; };
 		C492FA3329BA52CD003A07E9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C49E86062CFAE43D00177B7B /* CreateDeckResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDeckResponse.swift; sourceTree = "<group>"; };
+		C49E86082CFAE5BF00177B7B /* DeckProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckProtocol.swift; sourceTree = "<group>"; };
 		C4B0824E29B4FEA800640349 /* PlanApiData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanApiData.swift; sourceTree = "<group>"; };
 		C4B38AA929A3602300EEFAF9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C4BE115E29B7EAB20064D8FC /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -392,8 +394,9 @@
 		C4D2EF692CF85C3700E3AB4C /* Flashcards */ = {
 			isa = PBXGroup;
 			children = (
+				C49E86082CFAE5BF00177B7B /* DeckProtocol.swift */,
 				C4D2EF6A2CF85C4100E3AB4C /* types */,
-				C47536552CD7ED85006F71E7 /* FirestoreDeckModel.swift */,
+				C47536552CD7ED85006F71E7 /* DeckModel.swift */,
 			);
 			path = Flashcards;
 			sourceTree = "<group>";
@@ -567,7 +570,7 @@
 				C47536672CD8392F006F71E7 /* ManualSearchResponse.swift in Sources */,
 				C420450E299905EC009699F7 /* HomeView.swift in Sources */,
 				C4FEEAB22CDB8669003BA67E /* ErrorModal.swift in Sources */,
-				C47536562CD7ED88006F71E7 /* FirestoreDeckModel.swift in Sources */,
+				C47536562CD7ED88006F71E7 /* DeckModel.swift in Sources */,
 				C4FEEAA72CDB49F0003BA67E /* LanguageUtil.swift in Sources */,
 				C4FEEAAC2CDB5075003BA67E /* DeleteAccountButton.swift in Sources */,
 				C4C58F4829A823D8009120C8 /* DecksView.swift in Sources */,
@@ -587,6 +590,7 @@
 				C4E0D45B2CD91F6500AE0C87 /* TrialExpiredView.swift in Sources */,
 				C42044FA29990571009699F7 /* LyricsFluencer.swift in Sources */,
 				C475367F2CD8B535006F71E7 /* ManualSearchView.swift in Sources */,
+				C49E86092CFAE5C200177B7B /* DeckProtocol.swift in Sources */,
 				C443138529AA39D7007D7CA9 /* CardViewHandler.swift in Sources */,
 				C47536622CD83359006F71E7 /* SongContext.swift in Sources */,
 				C47536832CD8CD9C006F71E7 /* ApiError.swift in Sources */,
