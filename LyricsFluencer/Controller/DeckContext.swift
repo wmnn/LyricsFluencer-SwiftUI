@@ -27,7 +27,9 @@ class DeckContext: ObservableObject {
     
     func createDeck(deckName: String) {
         deckModel.createDeck(deckName: deckName) { deck in
-            self.decks.append(deck)
+            DispatchQueue.main.async {
+                self.decks.append(deck)
+            }
         }
     }
     
