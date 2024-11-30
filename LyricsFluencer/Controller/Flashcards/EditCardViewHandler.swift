@@ -46,7 +46,7 @@ class EditCardsViewHandler: ObservableObject {
                         // If deck name matches selected deck, filter the cards array and create a new array with updated cards
                         let newCards = deck.cards?.map { card in
                             if card.id == self.selectedCardID {
-                                let updatedCard = Card(front: self.front, back: self.back, due: card.due, id: card.id)
+                                let updatedCard = Card(front: self.front, back: self.back, interval: card.interval, due: card.due, id: card.id)
                                 return updatedCard
                             } else {
                                 return card

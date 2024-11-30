@@ -33,13 +33,15 @@ class DeckContext: ObservableObject {
     
     func fetchingDecks() {
         deckModel.fetchingDecks{ decks in
-            self.decks = decks
+            DispatchQueue.main.async {
+                self.decks = decks
+            }
         }
     }
     
     func handleAddToDeck(front: String, back: String) -> String {
         let docId =  deckModel.handleAddToDeck(front: front, back: back, deckName: self.selectedDeck.deckName)
-        let newCard = Card(front: front, back: back, createdAt: Date(), interval: 0, due: Date(), id: docId)
+        let newCard = Card(front: front, back: back,/* createdAt: Date(),*/ interval: 0, due: Date(), id: docId)
         self.selectedDeck.cards?.append(newCard)
         
         if let deckIndex = self.decks.firstIndex(where: { $0.deckName == self.selectedDeck.deckName }) {

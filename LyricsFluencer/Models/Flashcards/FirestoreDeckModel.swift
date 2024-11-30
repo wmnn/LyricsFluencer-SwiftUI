@@ -42,38 +42,43 @@ class FirestoreDeckModel: DeckProtocol {
     
     func fetchingDecks(completion: @escaping ([Deck]) -> Void) {
         
-        let uid = UserModel.getCurrentUserId()
-        self.db.collection("flashcards").document(uid).collection("decks").getDocuments { (querySnapshot, error) in
-            if let error = error {
-                print("Error getting decks: \(error)")
-                // Return an empty array in case of error
-                DispatchQueue.main.async {
-                    completion([])
-                }
-                return
+        UserModel.getToken{ token, error in
+            
+            guard error == nil else {
+                return;
             }
+            let urlString = "\(STATIC.API_ROOT)/flashcards/decks"
             
-            // Process the documents into Deck objects
-            var decks: [Deck] = []
-            let dispatchGroup = DispatchGroup()
-            
-            for document in querySnapshot?.documents ?? [] {
+            if let url = URL(string: urlString){
+                var request = URLRequest(url: url)
+                request.httpMethod = "GET"
+                request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
                 
-                dispatchGroup.enter()
-                
-                self.getCards(deckReference: document.reference) { cards in
-                    let deck = Deck(deckName: document.documentID, cards: cards)
-                    decks.append(deck)
-                    dispatchGroup.leave()
+                let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                    if let err = error {
+                        completion([]);
+                        print("Error while sending request: \(err)")
+                        return
+                    }
+
+                    print((response as? HTTPURLResponse)!.statusCode)
+                    guard let data = data, let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
+                        completion([]);
+                        print("Error while receiving response")
+                        return
+                    }
+                    
+                    //Successfull Request
+                    if let res: GetDecksResponse = AppContext.parseData(data: data, dataModel: GetDecksResponse.self) {
+                        print(res.decks);
+                        completion(res.decks);
+                    }
                 }
+                task.resume()
             }
             
-            // After all asynchronous tasks are done, call the completion handler
-            dispatchGroup.notify(queue: .main) {
-                // Call the completion handler on the main thread
-                completion(decks)
-            }
         }
+        
     }
     
     func getCards(deckReference: DocumentReference, completion: @escaping ([Card]) -> Void) {

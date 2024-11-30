@@ -23,6 +23,23 @@ struct UserModel{
         return uid
     }
     
+    // Get the current user's Firebase ID token (to send to backend)
+    static func getToken(completion: @escaping (String?, Error?) -> Void) {
+        guard let currentUser = Auth.auth().currentUser else {
+            completion(nil, NSError(domain: "UserModel", code: 401, userInfo: [NSLocalizedDescriptionKey: "No user logged in"]))
+            return
+        }
+        
+        currentUser.getIDToken { token, error in
+            if let error = error {
+                completion(nil, error)
+                return
+            }
+            
+            completion(token, nil)
+        }
+    }
+    
     func login(email: String, password: String, completion: @escaping (User?, Error?) -> Void) {
         
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
