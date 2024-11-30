@@ -48,7 +48,6 @@ class CardContext: ObservableObject {
     
     func handleGood() {
         
-        let uid = UserModel.getCurrentUserId()
         let deckName = self.deckContext.selectedDeck.deckName;
         var updatedCard = Card(filteredDeck[currentIdxInFilteredDeck]);
         updatedCard.interval = calculateNextInterval(updatedCard.interval)
@@ -59,17 +58,18 @@ class CardContext: ObservableObject {
                 return;
             }
             
-            // Replace the old card instance with the updated one
-            self.deckContext.updateCard(deckName: deckName, cardId: updatedCard.id, newCard: updatedCard)
-            
-            self.currentIdxInFilteredDeck += 1
-            
-            // Completed all due cards
-            if self.currentIdxInFilteredDeck == self.filteredDeck.count{
-                self.appBrain!.path.removeLast()
+            DispatchQueue.main.async {
+                // Replace the old card instance with the updated one
+                self.deckContext.updateCard(deckName: deckName, cardId: updatedCard.id, newCard: updatedCard)
+                
+                self.currentIdxInFilteredDeck += 1
+                
+                // Completed all due cards
+                if self.currentIdxInFilteredDeck == self.filteredDeck.count{
+                    self.appBrain!.path.removeLast()
+                }
+                self.isFrontClicked.toggle()
             }
-            self.isFrontClicked.toggle()
-            
         }
         
     }

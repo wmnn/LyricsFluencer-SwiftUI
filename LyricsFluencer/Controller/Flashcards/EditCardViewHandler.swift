@@ -38,8 +38,10 @@ class EditCardsViewHandler: ObservableObject {
             guard updatedCard != nil else {
                 return;
             }
-            self.isEditCardAlertShown = false
-            self.cardContext.selectedCard = nil;
+            DispatchQueue.main.async {
+                self.isEditCardAlertShown = false
+                self.cardContext.selectedCard = nil;
+            }
         }
     }
     
