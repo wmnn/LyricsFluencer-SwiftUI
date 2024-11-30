@@ -24,23 +24,33 @@ class DeckContext: ObservableObject {
         }
     }
     
-    func fetchingDecks() {
+    func fetchingDecks(completion: @escaping ([Deck]?) -> Void) {
         deckModel.fetchingDecks{ decks in
+            guard decks != nil else {
+                self.decks = [];
+                completion(nil);
+                return;
+            }
             DispatchQueue.main.async {
-                self.decks = decks
+                self.decks = decks!;
+                completion(decks!);
             }
         }
     }
     
-    func handleAddToDeck(front: String, back: String) -> String {
-        let docId =  deckModel.handleAddToDeck(front: front, back: back, deckName: self.selectedDeck.deckName)
-        let newCard = Card(front: front, back: back,/* createdAt: Date(),*/ interval: 0, due: Date(), id: docId)
-        self.selectedDeck.cards?.append(newCard)
-        
-        if let deckIndex = self.decks.firstIndex(where: { $0.deckName == self.selectedDeck.deckName }) {
-            self.decks[deckIndex].cards?.append(newCard)
+    func handleAddToDeck(front: String, back: String) {
+        deckModel.handleAddToDeck(front: front, back: back, deckName: self.selectedDeck.deckName) { newCard in
+            guard newCard != nil else {
+                return;
+            }
+            DispatchQueue.main.async {
+                self.selectedDeck.cards?.append(newCard!)
+                
+                if let deckIndex = self.decks.firstIndex(where: { $0.deckName == self.selectedDeck.deckName }) {
+                    self.decks[deckIndex].cards?.append(newCard!)
+                }
+            }
         }
-        return docId
     }
     
     func handleDeleteDeck() {

@@ -106,7 +106,17 @@ struct HomeView: View{
             self.homeViewController.songContext = self.songContext
             self.homeViewController.userContext = self.userContext
             if deckContext.decks.count == 0 {
-                self.deckContext.fetchingDecks()
+                self.deckContext.fetchingDecks { decks in
+                    guard decks == nil else {
+                        return;
+                    }
+                    DispatchQueue.main.async {
+                        homeViewController.errorMessage = "Couldn't connect to server."
+                        homeViewController.isErrorModalShown = true
+                    }
+                    
+                    
+                }
             }
         }
     }
