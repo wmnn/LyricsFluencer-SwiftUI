@@ -35,6 +35,7 @@ class DeckContext: ObservableObject {
             }
             DispatchQueue.main.async {
                 self.decks = decks!;
+                print(decks!);
                 completion(decks!);
             }
         }

@@ -53,21 +53,29 @@ struct Card: Hashable, Identifiable, Codable{
         
         // Decode `due` (handle Timestamp, String, or Integer cases)
         if let timestamp = try? container.decode(FirebaseFirestore.Timestamp.self, forKey: .due) {
+            
             due = timestamp.dateValue()  // Convert Timestamp to Date
+            
         } else if let dueString = try? container.decode(String.self, forKey: .due) {
+            
             // If the `due` is a String (ISO 8601 format)
-            if let date = ISO8601DateFormatter().date(from: dueString) {
+            let formatter = ISO8601DateFormatter()
+            // Set the options for fractional seconds support (microseconds, etc.)
+            formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+            
+            if let date = formatter.date(from: dueString) {
                 due = date
             } else {
-                // Fallback if parsing fails
-                due = Date() // Or handle error accordingly
+                due = Date()  // Fallback if parsing fails
             }
+            
         } else if let dueInt = try? container.decode(Int.self, forKey: .due) {
+            
             // If `due` is an Integer (timestamp in seconds since epoch)
             due = Date(timeIntervalSince1970: TimeInterval(dueInt))
+            
         } else {
-            // Fallback case, if nothing matches
-            due = Date()  // Set a default value if nothing is decoded
+            due = Date()  // Fallback case, if nothing matches
         }
     }
     
