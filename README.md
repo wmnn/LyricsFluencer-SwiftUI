@@ -1,5 +1,7 @@
 # LyricsFluencer SwiftUI App
 
+Add words from music lyrics to flashcard decks. 
+
 ## How does the app work ?
 
 The app depends on a [backend](https://github.com/wmnn/LyricsFluencerBackend), that will also display a React/NextJS website. 
