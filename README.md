@@ -1,26 +1,36 @@
-# LyricsFluencer SwiftUI App
+# LyricsFluencer SwiftUI App  
 
-Add words from music lyrics to flashcard decks. 
+Easily add words from song lyrics to your flashcard decks.  
 
-## How does the app work ?
+## How Does the App Work?  
 
-The app depends on a [backend](https://github.com/wmnn/LyricsFluencerBackend), that will also display a React/NextJS website. 
+LyricsFluencer relies on a [backend](https://github.com/wmnn/LyricsFluencerBackend) that also serves a React/Next.js website.  
 
-You can either do a quick search (the lyrics will be displayed afterwards without selecting the right song) or click on browse songs and select the right song manually. In both cases an api endpoint will be called. The backend will then use the musixmatch api to find a corresponding song in relation to the search query. 
+You can either:  
+- Perform a **quick search**, which fetches lyrics immediately but may not always match the exact song.  
+- **Browse songs manually**, selecting the correct track before retrieving its lyrics.  
 
-The musixmatch api reponse will contain a link to a site where the lyrics are displayed. On quicksearch the backend will repond with the lyrics and translated lyrics right away. On manual search, where the user can select the right song, only the search results will be displayed and after clicking on the right song, the api will be called and the lyrics will be generated. Look into the "How the lyrics are generated" section to find out more about how the lyrics are generated.
+In both cases, an API request is sent to the backend, which uses the Musixmatch API to find a corresponding song based on your search query.  
 
-Authentication is done through firebase and is not depended on the backend. 
+The Musixmatch API response includes a link to a webpage where the lyrics are displayed.  
+- **Quick Search**: The backend directly returns the lyrics along with a translation.  
+- **Manual Search**: The app first displays search results. After selecting the correct song, another API request retrieves the lyrics.  
 
-A role and subscription system was implemented, subscriptions were possible on the website served from the backend, not in app due to app store policies. Subscriptions were possible through stripe and paypal, the api endpoints and the code for the subscriptions is still available on the backend, but subscriptions are removed from the website.
+For more details on how lyrics are retrieved, see the **"How Lyrics Are Generated"** section.  
 
-## How the lyrics are generated ?
+### Authentication & Subscription  
 
-It is quite hard to find a good api for music lyrics, musixmatch offers a free api, where only a part of the lyrics will be send and not the whole song. Other services only provide enterprise solutions. 
+Authentication is handled through Firebase and is independent of the backend.  
 
-In order to display the lyrics of the whole song the lyrics will be scraped from the musixmatch website. In order to translate the lyrics into your native tongue, the lyrics will be translated through the google translate api. The backend reponse for the client will contain the original and the translated lyrics. The client is responsible for showing it correctly beneath each other.
+A role-based subscription system was originally implemented. While subscriptions were available on the backend-hosted website via Stripe and PayPal, they were **not** available in the app due to App Store policies. Though subscriptions have been removed from the website, the relevant API endpoints and code remain in the backend.  
 
-If the lyrics couldn't be scraped, the limited results for non commercial use from the musixmatch api are displayed. If the lyrics couldn't be translated through the google translate api, only the lyrics will be displayed, without the translation beneath.
+## How Are Lyrics Generated?  
+
+Finding a reliable lyrics API is challenging. Musixmatch offers a free API, but it only provides partial lyrics. Other services typically require enterprise-level plans.  
+
+To display full song lyrics, the app **scrapes** them from the Musixmatch website. Translations are then generated using the Google Translate API. The backend response includes both the original and translated lyrics, which the client displays side by side.  
+
+If scraping fails, the app falls back on Musixmatch’s limited free lyrics. If translation via Google Translate is unsuccessful, only the original lyrics will be shown.  
 
 
 ## Run yourself? 
